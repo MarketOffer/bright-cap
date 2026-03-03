@@ -4,10 +4,7 @@ const HeroSection = () =>
 <section className="flex min-h-screen items-center px-6 pt-24 md:px-10">
     <div className="mx-auto max-w-4xl">
       <FadeIn>
-        <h1 className="text-[2.5rem] font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem]">Investing in real estate for the
-AI Decade          
-
-
+         <h1 className="text-[2.5rem] font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem]">Investing in real estate for{"\n"}the AI decade
       </h1>
       </FadeIn>
       <FadeIn delay={0.15}>
