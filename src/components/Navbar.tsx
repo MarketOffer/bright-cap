@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import brightcapLogo from "@/assets/brightcap_logo.svg";
 
 const navLinks = [
   { label: "Opportunity", href: "#opportunity" },
@@ -24,8 +25,8 @@ const Navbar = () => {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
-        <a href="#" className="text-xl font-semibold tracking-tight text-foreground">
-          brightcap
+        <a href="#">
+          <img src={brightcapLogo} alt="brightcap" className="h-4" />
         </a>
 
         {/* Desktop */}
