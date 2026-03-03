@@ -1,0 +1,22 @@
+const Footer = () => (
+  <footer className="border-t border-border px-6 py-12 md:px-10">
+    <div className="mx-auto max-w-6xl">
+      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+        <span className="font-serif text-lg font-medium tracking-tight text-foreground">
+          brightcap
+        </span>
+        <div className="flex items-center gap-6">
+          <span className="font-sans text-xs text-muted-foreground">© 2025 brightcap</span>
+          <a href="#" className="font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+            Privacy Policy
+          </a>
+        </div>
+      </div>
+      <p className="mt-8 max-w-xl font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+        brightcap does not provide regulated financial advice. Co-investment opportunities are available to sophisticated and high net worth investors only.
+      </p>
+    </div>
+  </footer>
+);
+
+export default Footer;
