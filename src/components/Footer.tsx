@@ -4,7 +4,7 @@ const Footer = () => (
   <footer className="border-t border-border px-6 py-12 md:px-10">
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-        <img src={brightcapLogo} alt="brightcap" className="h-4" />
+        <img src={brightcapLogo} alt="brightcap" className="h-7" />
         <div className="flex items-center gap-6">
           <span className="font-sans text-xs text-muted-foreground">© 2025 brightcap</span>
           <a href="#" className="font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">

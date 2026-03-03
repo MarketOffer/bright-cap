@@ -26,7 +26,7 @@ const Navbar = () => {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
         <a href="#">
-          <img src={brightcapLogo} alt="brightcap" className="h-4" />
+          <img src={brightcapLogo} alt="brightcap" className="h-7" />
         </a>
 
         {/* Desktop */}
