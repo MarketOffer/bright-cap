@@ -22,7 +22,7 @@ const HowItWorksSection = () => (
   <section id="how-it-works" className="border-t border-border px-6 py-28 md:px-10 md:py-36">
     <div className="mx-auto max-w-5xl">
       <FadeIn>
-        <h2 className="font-serif text-3xl font-light tracking-tight text-foreground md:text-5xl">
+        <h2 className="font-serif text-3xl tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
           A focused model. Selective partnerships.
         </h2>
       </FadeIn>
@@ -31,7 +31,7 @@ const HowItWorksSection = () => (
         {steps.map((step, i) => (
           <FadeIn key={step.label} delay={0.1 + i * 0.1}>
             <div>
-              <h3 className="font-serif text-xl font-medium text-foreground md:text-2xl">
+              <h3 className="font-serif text-xl text-foreground md:text-2xl">
                 {step.label}
               </h3>
               <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground md:text-base">

@@ -4,7 +4,7 @@ const OpportunitySection = () => (
   <section id="opportunity" className="px-6 py-28 md:px-10 md:py-36">
     <div className="mx-auto max-w-3xl">
       <FadeIn>
-        <h2 className="font-serif text-3xl font-light tracking-tight text-foreground md:text-5xl">
+        <h2 className="font-serif text-3xl tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
           Not all cities will grow equally.
         </h2>
       </FadeIn>
