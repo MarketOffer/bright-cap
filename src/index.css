@@ -4,38 +4,38 @@
 
 @layer base {
   :root {
-    --background: 37 25% 95%;
-    --foreground: 240 25% 5%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 4%;
 
-    --card: 37 25% 95%;
-    --card-foreground: 240 25% 5%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
 
-    --popover: 37 25% 95%;
-    --popover-foreground: 240 25% 5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
 
     --primary: 163 22% 71%;
-    --primary-foreground: 240 25% 5%;
+    --primary-foreground: 240 10% 4%;
 
-    --secondary: 37 15% 90%;
-    --secondary-foreground: 240 25% 5%;
+    --secondary: 220 5% 96%;
+    --secondary-foreground: 240 10% 4%;
 
-    --muted: 37 15% 88%;
-    --muted-foreground: 240 10% 45%;
+    --muted: 220 5% 94%;
+    --muted-foreground: 220 5% 40%;
 
     --accent: 163 22% 71%;
-    --accent-foreground: 240 25% 5%;
+    --accent-foreground: 240 10% 4%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 37 15% 85%;
-    --input: 37 15% 85%;
+    --border: 220 5% 90%;
+    --input: 220 5% 90%;
     --ring: 163 22% 71%;
 
     --radius: 0.25rem;
 
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Syne', system-ui, sans-serif;
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-sans: 'DM Sans', system-ui, sans-serif;
   }
 }
 

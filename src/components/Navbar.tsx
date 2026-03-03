@@ -24,7 +24,7 @@ const Navbar = () => {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
-        <a href="#" className="font-serif text-2xl font-medium tracking-tight text-foreground">
+        <a href="#" className="font-sans text-xl font-bold tracking-tight text-foreground">
           brightcap
         </a>
 

@@ -2,7 +2,7 @@ const Footer = () => (
   <footer className="border-t border-border px-6 py-12 md:px-10">
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-        <span className="font-serif text-lg font-medium tracking-tight text-foreground">
+        <span className="font-sans text-base font-bold tracking-tight text-foreground">
           brightcap
         </span>
         <div className="flex items-center gap-6">

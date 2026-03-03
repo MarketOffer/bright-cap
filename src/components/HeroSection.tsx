@@ -4,7 +4,7 @@ const HeroSection = () => (
   <section className="flex min-h-screen items-center px-6 pt-24 md:px-10">
     <div className="mx-auto max-w-4xl">
       <FadeIn>
-        <h1 className="font-serif text-4xl font-light leading-[1.15] tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="font-serif text-4xl font-normal leading-[1.1] tracking-[-0.02em] text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
           Capital positioned for the cities that will lead the next economy.
         </h1>
       </FadeIn>
