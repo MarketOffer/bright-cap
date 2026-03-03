@@ -8,7 +8,7 @@ const HeroSection = () =>
       </h1>
       </FadeIn>
       <FadeIn delay={0.15}>
-        <p className="mt-8 max-w-2xl font-sans text-base leading-relaxed text-muted-foreground md:text-[1.0625rem]">We partner with business owners to grow and protect their operating wealth through real estate in cities leading the AI era.
+        <p className="mt-8 max-w-2xl font-sans text-base leading-relaxed text-muted-foreground md:text-[1.0625rem]">We partner with business owners to grow and protect their operating wealth through real estate in cities leading the AI era.
 
       </p>
       </FadeIn>
