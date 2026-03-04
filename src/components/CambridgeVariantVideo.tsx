@@ -1,5 +1,7 @@
+import { useRef, useEffect, useState } from "react";
 import FadeIn from "./FadeIn";
 import cambridgeVideo from "@/assets/cambridge-video.mp4";
+import cambridgePoster from "@/assets/hero-cambridge.jpg";
 
 const stats = [
   { label: "Global Science & Tech", highlight: "No.1", detail: "Cluster in world — three years running", source: "WIPO 2022–2024" },
@@ -9,7 +11,23 @@ const stats = [
   { label: "High Employment Growth", highlight: "5×", detail: "UK's average" },
 ];
 
-const CambridgeVariantVideo = () => (
+const CambridgeVariantVideo = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
   <section className="px-6 pt-10 pb-20 md:px-10 md:pt-14 md:pb-28" style={{ backgroundColor: "rgba(163, 196, 188, 0.08)" }}>
     <div className="mx-auto max-w-5xl">
       <FadeIn>
@@ -23,15 +41,21 @@ const CambridgeVariantVideo = () => (
 
       <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <FadeIn delay={0.15}>
-          <div className="h-full min-h-[220px] overflow-hidden rounded-2xl border border-border">
-            <video
-              src={cambridgeVideo}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="h-full w-full object-cover"
-            />
+          <div ref={containerRef} className="h-full min-h-[220px] overflow-hidden rounded-2xl border border-border">
+            {isVisible ? (
+              <video
+                ref={videoRef}
+                src={cambridgeVideo}
+                poster={cambridgePoster}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <img src={cambridgePoster} alt="Cambridge skyline" className="h-full w-full object-cover" />
+            )}
           </div>
         </FadeIn>
 
@@ -48,6 +72,7 @@ const CambridgeVariantVideo = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default CambridgeVariantVideo;
