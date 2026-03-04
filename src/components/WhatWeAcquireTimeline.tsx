@@ -13,7 +13,7 @@ const steps = [
   },
   {
     num: "03",
-    title: "Generate long-term income and capital growth",
+    title: "Generate long-term hands-off income",
     detail: "Let to professional tenants or supported living providers",
   },
 ];
