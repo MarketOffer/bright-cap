@@ -46,14 +46,14 @@ const CambridgeSection = () => (
       <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat, i) => (
           <FadeIn key={i} delay={0.15 + i * 0.08}>
-            <div className="flex h-full flex-col items-center rounded-2xl border border-border bg-card p-7 text-center transition-colors hover:border-primary/40">
-              <span className="text-sm font-semibold tracking-wide text-foreground">
+            <div className="flex h-full flex-col items-center justify-start rounded-2xl border border-border bg-card px-5 py-8 text-center transition-colors hover:border-primary/40">
+              <span className="text-base font-semibold leading-snug tracking-wide text-foreground md:text-lg">
                 {stat.label}
               </span>
-              <span className="mt-3 text-4xl font-semibold tracking-tight text-primary md:text-5xl">
+              <span className="mt-4 text-5xl font-semibold tracking-tight text-primary md:text-6xl">
                 {stat.highlight}
               </span>
-              <p className="mt-3 font-sans text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground">
                 {stat.detail}
               </p>
               {stat.source && (
