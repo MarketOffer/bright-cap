@@ -5,7 +5,7 @@ const HeroSection = () =>
 <section className="relative flex min-h-screen items-center px-6 pt-24 md:px-10 overflow-hidden">
     <div className="absolute inset-0">
       <img src={heroBg} alt="Cambridge cityscape" className="h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
     </div>
     <div className="relative mx-auto max-w-4xl">
       <FadeIn>
