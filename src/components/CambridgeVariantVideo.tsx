@@ -13,18 +13,52 @@ const stats = [
 
 const CambridgeVariantVideo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldPlay, setShouldPlay] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setShouldLoad(true); observer.disconnect(); } },
-      { rootMargin: "300px" }
+
+    const preloadObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          preloadObserver.disconnect();
+        }
+      },
+      { rootMargin: "900px" }
     );
-    observer.observe(el);
-    return () => observer.disconnect();
+
+    preloadObserver.observe(el);
+    return () => preloadObserver.disconnect();
   }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const playObserver = new IntersectionObserver(
+      ([entry]) => setShouldPlay(entry.isIntersecting),
+      { threshold: 0.35 }
+    );
+
+    playObserver.observe(el);
+    return () => playObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (shouldPlay) {
+      const playPromise = video.play();
+      if (playPromise) playPromise.catch(() => undefined);
+    } else {
+      video.pause();
+    }
+  }, [shouldPlay, shouldLoad]);
 
   return (
   <section className="px-6 pt-10 pb-20 md:px-10 md:pt-14 md:pb-28" style={{ backgroundColor: "rgba(163, 196, 188, 0.08)" }}>
@@ -42,13 +76,13 @@ const CambridgeVariantVideo = () => {
         <FadeIn delay={0.15}>
           <div ref={containerRef} className="h-full min-h-[220px] overflow-hidden rounded-2xl border border-border">
             <video
+              ref={videoRef}
               src={shouldLoad ? cambridgeVideo : undefined}
               poster={cambridgePoster}
-              autoPlay
               loop
               muted
               playsInline
-              preload="none"
+              preload={shouldLoad ? "metadata" : "none"}
               className="h-full w-full object-cover"
             />
           </div>
