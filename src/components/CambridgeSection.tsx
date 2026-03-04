@@ -30,7 +30,7 @@ const stats = [
 ];
 
 const CambridgeSection = () => (
-  <section id="cambridge" className="px-6 pt-10 pb-20 md:px-10 md:pt-14 md:pb-28">
+  <section id="cambridge" className="bg-card px-6 pt-10 pb-20 md:px-10 md:pt-14 md:pb-28">
     <div className="mx-auto max-w-5xl">
       <FadeIn>
         <h2 className="text-4xl font-semibold tracking-[-0.02em] text-foreground md:text-[3.5rem] md:leading-[1.05]">
