@@ -24,7 +24,7 @@ const Navbar = () => {
         scrolled ? "shadow-[0_1px_0_0_hsl(var(--border))]" : ""
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
+      <div className="flex items-center justify-between px-6 py-5 md:px-16 lg:px-24">
         <a href="#">
           <img src={brightcapLogo} alt="brightcap" className="h-6" />
         </a>
