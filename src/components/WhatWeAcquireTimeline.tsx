@@ -27,7 +27,7 @@ const WhatWeAcquireTimeline = () => (
         </h2>
       </FadeIn>
       <FadeIn delay={0.1}>
-        <p className="mt-3 font-sans text-base text-muted-foreground md:text-lg">
+        <p className="mt-3 text-xl font-semibold tracking-[-0.01em] text-primary md:text-2xl">
           With our partner investors
         </p>
       </FadeIn>
