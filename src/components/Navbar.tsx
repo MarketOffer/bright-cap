@@ -68,15 +68,18 @@ const Navbar = () => {
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className={`block py-3 text-sm tracking-[0.02em] ${
-                link.label === "Contact"
-                  ? "text-primary font-semibold"
-                  : "text-muted-foreground"
-              }`}
+              className="block py-3 text-sm tracking-[0.02em] text-muted-foreground"
             >
               {link.label}
             </a>
           ))}
+          <a
+            href="#contact"
+            onClick={() => setMobileOpen(false)}
+            className="mt-3 inline-block rounded-sm bg-primary px-6 py-2.5 text-sm font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
+          >
+            Invest With Us
+          </a>
         </div>
       )}
     </nav>
