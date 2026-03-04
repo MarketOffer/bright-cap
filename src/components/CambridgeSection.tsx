@@ -2,25 +2,30 @@ import FadeIn from "./FadeIn";
 
 const stats = [
   {
+    label: "High Capital Growth",
+    highlight: "50%",
+    detail: "Over last 10 years",
+  },
+  {
+    label: "Global Science & Tech",
     highlight: "No.1",
-    text: "global science & tech cluster — three years running",
+    detail: "Cluster in world — three years running",
     source: "WIPO 2022–2024",
   },
   {
-    highlight: "50%",
-    text: "property capital growth over 10 years",
-  },
-  {
+    label: "High Employment Growth",
     highlight: "5×",
-    text: "UK average employment growth",
+    detail: "UK's average",
   },
   {
-    highlight: "5,300+",
-    text: "science & tech firms including Google, Apple, ARM, AstraZeneca",
-  },
-  {
+    label: "World-Class Talent",
     highlight: "No.1",
-    text: "UK university — a permanent engine of world-class talent",
+    detail: "UK university",
+  },
+  {
+    label: "Deep Tech Ecosystem",
+    highlight: "5,300+",
+    detail: "Science & tech firms incl. Google, Apple, ARM, AstraZeneca",
   },
 ];
 
@@ -38,18 +43,21 @@ const CambridgeSection = () => (
         </p>
       </FadeIn>
 
-      <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat, i) => (
           <FadeIn key={i} delay={0.15 + i * 0.08}>
-            <div className="group rounded-2xl border border-border bg-card p-7 transition-colors hover:border-primary/40">
-              <span className="text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+            <div className="flex h-full flex-col items-center rounded-2xl border border-border bg-card p-7 text-center transition-colors hover:border-primary/40">
+              <span className="text-sm font-semibold tracking-wide text-foreground">
+                {stat.label}
+              </span>
+              <span className="mt-3 text-4xl font-semibold tracking-tight text-primary md:text-5xl">
                 {stat.highlight}
               </span>
-              <p className="mt-3 font-sans text-sm leading-relaxed text-muted-foreground md:text-base">
-                {stat.text}
+              <p className="mt-3 font-sans text-sm leading-relaxed text-muted-foreground">
+                {stat.detail}
               </p>
               {stat.source && (
-                <p className="mt-2 font-sans text-xs text-muted-foreground/60">
+                <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/50">
                   {stat.source}
                 </p>
               )}
