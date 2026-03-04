@@ -1,7 +1,7 @@
 import FadeIn from "./FadeIn";
 
 const OpportunitySection = () => (
-  <section id="opportunity" className="px-6 py-28 md:px-10 md:py-36">
+  <section id="opportunity" className="px-6 py-20 md:px-10 md:py-28">
     <div className="mx-auto max-w-3xl border-l-2 border-primary pl-8 md:pl-12">
       <FadeIn>
         <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
