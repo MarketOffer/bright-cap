@@ -72,6 +72,7 @@ const CambridgeVariantVideo = () => {
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default CambridgeVariantVideo;
