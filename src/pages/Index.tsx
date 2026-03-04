@@ -6,6 +6,7 @@ import CambridgeVariantAccent from "@/components/CambridgeVariantAccent";
 import CambridgeVariantGeometric from "@/components/CambridgeVariantGeometric";
 import CambridgeVariantPhotoStrip from "@/components/CambridgeVariantPhotoStrip";
 import CambridgeVariantPhotoCard from "@/components/CambridgeVariantPhotoCard";
+import CambridgeVariantPhotoFirst from "@/components/CambridgeVariantPhotoFirst";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
@@ -21,6 +22,7 @@ const Index = () => (
     <CambridgeVariantGeometric />
     <CambridgeVariantPhotoStrip />
     <CambridgeVariantPhotoCard />
+    <CambridgeVariantPhotoFirst />
     <HowItWorksSection />
     <AboutSection />
     <ContactSection />
