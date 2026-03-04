@@ -43,7 +43,7 @@ const CambridgeSection = () => (
         </p>
       </FadeIn>
 
-      <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat, i) => (
           <FadeIn key={i} delay={0.15 + i * 0.08}>
             <div className="flex h-full flex-col items-center justify-start rounded-2xl border border-border bg-card px-5 py-8 text-center transition-colors hover:border-primary/40">
