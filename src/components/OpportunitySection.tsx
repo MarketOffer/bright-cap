@@ -5,7 +5,7 @@ const OpportunitySection = () => (
     <div className="mx-auto max-w-3xl border-l-2 border-primary pl-8 md:pl-12">
       <FadeIn>
         <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-          Not all cities will grow equally.
+          AI is deciding which cities win.
         </h2>
       </FadeIn>
       <FadeIn delay={0.1}>
