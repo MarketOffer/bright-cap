@@ -21,7 +21,7 @@ const HeroSection = () =>
             href="#contact"
             className="mt-10 inline-block rounded-sm bg-primary px-8 py-3.5 font-sans text-sm font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
           >
-            Explore co-investment
+            Invest With Us
           </a>
         </FadeIn>
       </div>

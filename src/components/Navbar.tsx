@@ -5,7 +5,7 @@ const navLinks = [
   { label: "Opportunity", href: "#opportunity" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  
 ];
 
 const Navbar = () => {
@@ -35,15 +35,17 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className={`text-sm tracking-[0.02em] transition-colors duration-200 ${
-                link.label === "Contact"
-                  ? "text-primary font-semibold hover:opacity-80"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className="text-sm tracking-[0.02em] text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
               {link.label}
             </a>
           ))}
+          <a
+            href="#contact"
+            className="rounded-sm bg-primary px-6 py-2.5 text-sm font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
+          >
+            Invest With Us
+          </a>
         </div>
 
         {/* Mobile toggle */}
