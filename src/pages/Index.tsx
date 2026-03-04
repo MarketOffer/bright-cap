@@ -5,13 +5,13 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import NavbarCTAVariants from "@/components/NavbarCTAVariants";
+import CTAComparison from "@/components/CTAComparison";
 
 const Index = () => (
   <>
     <Navbar />
     <HeroSection />
-    <NavbarCTAVariants />
+    <CTAComparison />
     <OpportunitySection />
     <HowItWorksSection />
     <AboutSection />
