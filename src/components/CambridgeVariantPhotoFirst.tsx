@@ -12,7 +12,7 @@ const stats = [
 const CambridgeVariantPhotoFirst = () => (
   <section className="px-6 pt-10 pb-20 md:px-10 md:pt-14 md:pb-28" style={{ backgroundColor: "rgba(163, 196, 188, 0.08)" }}>
     <div className="mx-auto max-w-5xl">
-      <p className="mb-2 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-primary">Variant F — Photo as Standalone First Card</p>
+      
       <FadeIn>
         <h2 className="text-4xl font-semibold tracking-[-0.02em] text-foreground md:text-[3.5rem] md:leading-[1.05]">Cambridge.</h2>
       </FadeIn>
