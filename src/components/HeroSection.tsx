@@ -1,5 +1,5 @@
 import FadeIn from "./FadeIn";
-import heroBg from "@/assets/hero-cambridge.jpg";
+import heroBg from "@/assets/hero-cambridge.webp";
 
 const HeroSection = () =>
   <section className="flex min-h-screen flex-col pt-24 md:flex-row md:pt-0">
