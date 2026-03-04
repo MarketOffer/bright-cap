@@ -12,16 +12,15 @@ const stats = [
 ];
 
 const CambridgeVariantVideo = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-      { rootMargin: "200px" }
+      ([entry]) => { if (entry.isIntersecting) { setShouldLoad(true); observer.disconnect(); } },
+      { rootMargin: "300px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -42,20 +41,16 @@ const CambridgeVariantVideo = () => {
       <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <FadeIn delay={0.15}>
           <div ref={containerRef} className="h-full min-h-[220px] overflow-hidden rounded-2xl border border-border">
-            {isVisible ? (
-              <video
-                ref={videoRef}
-                src={cambridgeVideo}
-                poster={cambridgePoster}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <img src={cambridgePoster} alt="Cambridge skyline" className="h-full w-full object-cover" />
-            )}
+            <video
+              src={shouldLoad ? cambridgeVideo : undefined}
+              poster={cambridgePoster}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              className="h-full w-full object-cover"
+            />
           </div>
         </FadeIn>
 
