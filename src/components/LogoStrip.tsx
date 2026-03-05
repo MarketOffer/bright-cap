@@ -3,15 +3,17 @@ import logoLandlordToday from "@/assets/logo-landlord-today.svg";
 import logoLandlordZone from "@/assets/logo-landlord-zone.svg";
 import logoNRLA from "@/assets/logo-nrla.svg";
 import logoPropertyNotify from "@/assets/logo-property-notify.svg";
+import logoBBC from "@/assets/logo-bbc.svg";
+import logoTelegraph from "@/assets/logo-telegraph.svg";
 
 const logos = [
-  { src: logoLandlordZone, alt: "LandlordZONE", height: "h-4 md:h-5" },
+  { src: logoBBC, alt: "BBC", height: "h-5 md:h-6" },
+  { src: logoTelegraph, alt: "The Telegraph", height: "h-[14px] md:h-[18px]" },
+  { src: logoLandlordZone, alt: "LandlordZONE", height: "h-[14px] md:h-[18px]" },
   { src: logoNRLA, alt: "NRLA", height: "h-5 md:h-6" },
-  { src: logoPropertyNotify, alt: "Property Notify", height: "h-3.5 md:h-4" },
-  { src: logoLandlordToday, alt: "Landlord TODAY", height: "h-4 md:h-5" },
+  { src: logoPropertyNotify, alt: "Property Notify", height: "h-[14px] md:h-[18px]" },
+  { src: logoLandlordToday, alt: "Landlord TODAY", height: "h-[14px] md:h-[18px]" },
 ];
-
-const placeholders = ["BBC", "The Telegraph"];
 
 const LogoStrip = () => (
   <section className="px-6 py-10 md:py-14">
@@ -22,14 +24,14 @@ const LogoStrip = () => (
         </p>
       </FadeIn>
       <FadeIn delay={0.1}>
-        <div className="flex items-center justify-center gap-8 md:gap-12">
+        <div className="flex items-end justify-center gap-8 md:gap-12">
           {logos.map((logo) => (
-            <img key={logo.alt} src={logo.src} alt={logo.alt} className={`${logo.height} w-auto opacity-40 grayscale`} />
-          ))}
-          {placeholders.map((name) => (
-            <span key={name} className="font-serif text-base font-semibold tracking-tight text-muted-foreground/30 md:text-lg">
-              {name}
-            </span>
+            <img
+              key={logo.alt}
+              src={logo.src}
+              alt={logo.alt}
+              className={`${logo.height} w-auto opacity-50 grayscale`}
+            />
           ))}
         </div>
       </FadeIn>
