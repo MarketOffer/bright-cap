@@ -8,10 +8,10 @@ const founders = [
 const stats = [
   { number: "£5.7M", label: "Property portfolio" },
   { number: "34", label: "Years combined experience" },
-  { number: "20+", label: "UK & Global awards" },
+  { number: "20+", label: "UK & Global property and business awards" },
 ];
 
-const credentialsText = `Founded by entrepreneurs with a proven track record delivering property projects for HNW investors — backed by a group of property businesses including MarketOffer, a social housing leasing platform, and a construction & property maintenance business.`;
+const credentialsText = `Founded by experienced entrepreneurs in business and property - with a proven track record delivering property projects for HNW investors.\n\nThey own a group of businesses including MarketOffer, a nationwide social housing leasing platform, plus a Cambridge construction and maintenance business.`;
 
 /* ── Variant A: Current – Hero-style with stat strip ── */
 const VariantA = () => (
