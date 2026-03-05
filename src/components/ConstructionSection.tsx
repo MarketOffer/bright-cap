@@ -1,12 +1,14 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import FadeIn from "./FadeIn";
+import kitchenBefore from "@/assets/construction-kitchen-before.webp";
+import kitchenAfter from "@/assets/construction-kitchen-after.webp";
 
 const pairs = [
-  { label: "Chapel conversion" },
-  { label: "Interior refurbishment" },
-  { label: "Garden flat" },
-  { label: "Loft extension" },
+  { label: "Kitchen renovation", before: kitchenBefore, after: kitchenAfter },
+  { label: "Interior refurbishment", before: null, after: null },
+  { label: "Garden flat", before: null, after: null },
+  { label: "Loft extension", before: null, after: null },
 ];
 
 const ConstructionSection = () => {
@@ -53,16 +55,28 @@ const ConstructionSection = () => {
             {pairs.map((pair) => (
               <div key={pair.label} className="flex shrink-0 gap-3">
                 <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
-                  <div className="flex aspect-[3/2] items-center justify-center">
-                    <span className="text-sm text-muted-foreground">Before photo</span>
+                  <div className="aspect-[3/2]">
+                    {pair.before ? (
+                      <img src={pair.before} alt={`${pair.label} — before`} className="h-full w-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="flex h-full items-center justify-center">
+                        <span className="text-sm text-muted-foreground">Before photo</span>
+                      </div>
+                    )}
                   </div>
                   <span className="absolute left-3 top-3 rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted-foreground backdrop-blur-sm">
                     Before
                   </span>
                 </div>
                 <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
-                  <div className="flex aspect-[3/2] items-center justify-center">
-                    <span className="text-sm text-muted-foreground">After photo</span>
+                  <div className="aspect-[3/2]">
+                    {pair.after ? (
+                      <img src={pair.after} alt={`${pair.label} — after`} className="h-full w-full object-cover" loading="lazy" />
+                    ) : (
+                      <div className="flex h-full items-center justify-center">
+                        <span className="text-sm text-muted-foreground">After photo</span>
+                      </div>
+                    )}
                   </div>
                   <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground">
                     After
