@@ -24,7 +24,7 @@ const ConstructionVariantHeading = () => {
       <div className="mx-auto max-w-5xl">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-            Built by 25 years of<br className="hidden md:block" /> local expertise
+            Built by a 25+ year<br className="hidden md:block" /> Cambridge construction business
           </h2>
         </FadeIn>
         <FadeIn delay={0.1}>

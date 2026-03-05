@@ -32,7 +32,7 @@ const ConstructionVariantStat = () => {
         <FadeIn delay={0.08}>
           <div className="mt-8 flex items-baseline gap-4">
             <span className="text-5xl font-semibold tracking-tight text-primary md:text-6xl">25+</span>
-            <span className="text-base font-medium text-muted-foreground md:text-lg">years building in Cambridge</span>
+            <span className="text-base font-medium text-muted-foreground md:text-lg">year Cambridge construction business</span>
           </div>
         </FadeIn>
 
