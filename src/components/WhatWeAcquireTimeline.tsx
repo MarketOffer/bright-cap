@@ -2,9 +2,9 @@ import FadeIn from "./FadeIn";
 import blockPhoto from "@/assets/cambridge-block-flats.webp";
 
 const steps = [
-  { num: "01", title: "Buy blocks at a discount", detail: "Typically 2 to 20 units" },
-  { num: "02", title: "Create 15–25% equity uplift", detail: "Through title splitting and high-spec renovation of each unit" },
-  { num: "03", title: "Generate long-term hands-off income", detail: "Let to professional tenants or supported living providers" },
+  { num: "01", title: "Acquire mispriced Cambridge blocks", detail: "Typically 2 to 20 flats in prime or emerging central locations, sourced off‑market or before wider marketing." },
+  { num: "02", title: "Unlock targeted 15–25% equity uplift", detail: "Through title splitting, planning gains where available, and high‑spec renovation of each flat." },
+  { num: "03", title: "Hold for hands‑off income", detail: "Let to professional tenants or, where economics are stronger, supported living providers, with maintenance overseen by our co‑founder's construction business." },
 ];
 
 const WhatWeAcquireTimeline = () => (
