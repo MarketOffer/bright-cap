@@ -23,7 +23,7 @@ const ConstructionSection = () => {
       <div className="mx-auto max-w-5xl">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-            In-house construction team
+            Our construction team
           </h2>
         </FadeIn>
 
