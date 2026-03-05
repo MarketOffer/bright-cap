@@ -7,12 +7,14 @@ import churchBefore from "@/assets/construction-church-before.webp";
 import churchAfter from "@/assets/construction-church-after.webp";
 import livingRoomBefore from "@/assets/construction-living-room-before.webp";
 import livingRoomAfter from "@/assets/construction-living-room-after.webp";
+import extensionBefore from "@/assets/construction-extension-before.webp";
+import extensionAfter from "@/assets/construction-extension-after.webp";
 
 const pairs = [
   { label: "Kitchen renovation", before: kitchenBefore, after: kitchenAfter },
   { label: "Church conversion", before: churchBefore, after: churchAfter },
   { label: "Living room", before: livingRoomBefore, after: livingRoomAfter },
-  { label: "Loft extension", before: null, after: null },
+  { label: "Extension", before: extensionBefore, after: extensionAfter },
 ];
 
 const ConstructionSection = () => {
