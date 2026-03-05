@@ -44,9 +44,10 @@ const ConstructionSection = () => {
         </FadeIn>
 
         {/* Parallax scroll-driven before/after strip — also draggable */}
+        {/* Mobile: 2-row stacked pairs | Desktop: single-row side-by-side */}
         <div
           ref={containerRef}
-          className="relative mt-16 h-[50vh] overflow-hidden rounded-2xl"
+          className="relative mt-16 h-[75vh] overflow-hidden rounded-2xl sm:h-[50vh]"
         >
           <motion.div
             style={{ x }}
@@ -57,33 +58,36 @@ const ConstructionSection = () => {
           >
             {pairs.map((pair) => (
               <div key={pair.label} className="flex shrink-0 gap-3">
-                <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
-                  <div className="aspect-[3/2]">
-                    {pair.before ? (
-                      <img src={pair.before} alt={`${pair.label} — before`} className="h-full w-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <span className="text-sm text-muted-foreground">Before photo</span>
-                      </div>
-                    )}
+                {/* Mobile: stack vertically | Desktop: side-by-side */}
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
+                    <div className="aspect-[3/2]">
+                      {pair.before ? (
+                        <img src={pair.before} alt={`${pair.label} — before`} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <span className="text-sm text-muted-foreground">Before photo</span>
+                        </div>
+                      )}
+                    </div>
+                    <span className="absolute left-3 top-3 rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted-foreground backdrop-blur-sm">
+                      Before
+                    </span>
                   </div>
-                  <span className="absolute left-3 top-3 rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted-foreground backdrop-blur-sm">
-                    Before
-                  </span>
-                </div>
-                <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
-                  <div className="aspect-[3/2]">
-                    {pair.after ? (
-                      <img src={pair.after} alt={`${pair.label} — after`} className="h-full w-full object-cover" loading="lazy" />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <span className="text-sm text-muted-foreground">After photo</span>
-                      </div>
-                    )}
+                  <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
+                    <div className="aspect-[3/2]">
+                      {pair.after ? (
+                        <img src={pair.after} alt={`${pair.label} — after`} className="h-full w-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <span className="text-sm text-muted-foreground">After photo</span>
+                        </div>
+                      )}
+                    </div>
+                    <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground">
+                      After
+                    </span>
                   </div>
-                  <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground">
-                    After
-                  </span>
                 </div>
                 <div className="flex w-8 shrink-0 items-end pb-4">
                   <span className="origin-bottom-left -rotate-90 whitespace-nowrap text-xs font-semibold uppercase tracking-widest text-muted-foreground">
