@@ -58,11 +58,6 @@ const ConstructionSection = () => {
           >
             {pairs.map((pair) => (
               <div key={pair.label} className="flex shrink-0 flex-col sm:flex-row sm:gap-3">
-                {/* Mobile: label above the pair */}
-                <span className="mb-2 block text-sm font-semibold uppercase tracking-widest text-muted-foreground sm:hidden">
-                  {pair.label}
-                </span>
-                {/* Mobile: stack vertically | Desktop: side-by-side */}
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
                     <div className="aspect-[3/2]">
@@ -92,12 +87,6 @@ const ConstructionSection = () => {
                       After
                     </span>
                   </div>
-                </div>
-                {/* Desktop: rotated side label */}
-                <div className="hidden w-8 shrink-0 items-end pb-4 sm:flex">
-                  <span className="origin-bottom-left -rotate-90 whitespace-nowrap text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    {pair.label}
-                  </span>
                 </div>
               </div>
             ))}
