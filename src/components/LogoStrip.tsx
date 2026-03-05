@@ -14,7 +14,7 @@ const logos = [
 const placeholders = ["BBC", "The Telegraph"];
 
 const LogoStrip = () => (
-  <section className="border-y border-border bg-muted/20 px-6 py-8 md:py-10">
+  <section className="px-6 py-10 md:py-14">
     <div className="mx-auto max-w-4xl">
       <FadeIn>
         <p className="mb-8 text-center font-sans text-sm tracking-[0.15em] uppercase text-muted-foreground/70">
@@ -24,18 +24,10 @@ const LogoStrip = () => (
       <FadeIn delay={0.1}>
         <div className="flex items-center justify-center gap-8 md:gap-12">
           {logos.map((logo) => (
-            <img
-              key={logo.alt}
-              src={logo.src}
-              alt={logo.alt}
-              className={`${logo.height} w-auto opacity-50 grayscale`}
-            />
+            <img key={logo.alt} src={logo.src} alt={logo.alt} className={`${logo.height} w-auto opacity-40 grayscale`} />
           ))}
           {placeholders.map((name) => (
-            <span
-              key={name}
-              className="font-serif text-base font-semibold tracking-tight text-muted-foreground/40 md:text-lg"
-            >
+            <span key={name} className="font-serif text-base font-semibold tracking-tight text-muted-foreground/30 md:text-lg">
               {name}
             </span>
           ))}
