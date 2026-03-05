@@ -22,7 +22,7 @@ const WhatWeAcquireTimeline = () => (
       </FadeIn>
       <FadeIn delay={0.15}>
         <p className="mt-6 max-w-2xl font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
-          We buy undervalued blocks of flats in Cambridge and turn them into high quality homes.
+          We focus on one thing: acquiring and improving residential blocks in Cambridge's science and tech core, then holding them as high‑quality long‑term rentals.
         </p>
       </FadeIn>
 
