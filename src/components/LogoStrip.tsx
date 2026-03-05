@@ -7,12 +7,12 @@ import logoBBC from "@/assets/logo-bbc.svg";
 import logoTelegraph from "@/assets/logo-telegraph.svg";
 
 const logos = [
-  { src: logoBBC, alt: "BBC", height: "h-5 md:h-6" },
-  { src: logoTelegraph, alt: "The Telegraph", height: "h-[14px] md:h-[18px]" },
-  { src: logoLandlordZone, alt: "LandlordZONE", height: "h-[14px] md:h-[18px]" },
-  { src: logoNRLA, alt: "NRLA", height: "h-5 md:h-6" },
-  { src: logoPropertyNotify, alt: "Property Notify", height: "h-[14px] md:h-[18px]" },
-  { src: logoLandlordToday, alt: "Landlord TODAY", height: "h-[14px] md:h-[18px]" },
+  { src: logoBBC, alt: "BBC", height: "h-4 md:h-5" },
+  { src: logoTelegraph, alt: "The Telegraph", height: "h-3 md:h-3.5" },
+  { src: logoLandlordZone, alt: "LandlordZONE", height: "h-3 md:h-3.5" },
+  { src: logoNRLA, alt: "NRLA", height: "h-4 md:h-5" },
+  { src: logoPropertyNotify, alt: "Property Notify", height: "h-3 md:h-3.5" },
+  { src: logoLandlordToday, alt: "Landlord TODAY", height: "h-3 md:h-3.5" },
 ];
 
 const LogoStrip = () => (
@@ -24,7 +24,7 @@ const LogoStrip = () => (
         </p>
       </FadeIn>
       <FadeIn delay={0.1}>
-        <div className="flex flex-wrap items-end justify-center gap-6 md:gap-12">
+        <div className="flex flex-wrap items-end justify-center gap-6 md:flex-nowrap md:gap-10">
           {logos.map((logo) => (
             <img
               key={logo.alt}
