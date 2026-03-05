@@ -8,11 +8,11 @@ import logoTelegraph from "@/assets/logo-telegraph.svg";
 
 const logos = [
   { src: logoBBC, alt: "BBC", height: "h-4 md:h-5" },
-  { src: logoTelegraph, alt: "The Telegraph", height: "h-3 md:h-3.5" },
-  { src: logoLandlordZone, alt: "LandlordZONE", height: "h-3 md:h-3.5" },
+  { src: logoTelegraph, alt: "The Telegraph", height: "h-4 md:h-5" },
+  { src: logoLandlordZone, alt: "LandlordZONE", height: "h-4 md:h-5" },
   { src: logoNRLA, alt: "NRLA", height: "h-4 md:h-5" },
-  { src: logoPropertyNotify, alt: "Property Notify", height: "h-3 md:h-3.5" },
-  { src: logoLandlordToday, alt: "Landlord TODAY", height: "h-3 md:h-3.5" },
+  { src: logoPropertyNotify, alt: "Property Notify", height: "h-4 md:h-5" },
+  { src: logoLandlordToday, alt: "Landlord TODAY", height: "h-4 md:h-5" },
 ];
 
 const LogoStrip = () => (
