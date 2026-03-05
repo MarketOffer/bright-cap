@@ -1,6 +1,7 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import FadeIn from "./FadeIn";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import kitchenBefore from "@/assets/construction-kitchen-before.webp";
 import kitchenAfter from "@/assets/construction-kitchen-after.webp";
 import churchBefore from "@/assets/construction-church-before.webp";
@@ -18,13 +19,15 @@ const pairs = [
 ];
 
 const ConstructionSection = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["end end", "end start"],
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    dragFree: true,
+    containScroll: false,
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
     <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
@@ -49,26 +52,25 @@ const ConstructionSection = () => {
           </p>
         </FadeIn>
 
-        {/* Parallax scroll-driven before/after strip — also draggable */}
-        {/* Mobile: 2-row stacked pairs | Desktop: single-row side-by-side */}
-        <div
-          ref={containerRef}
-          className="relative mt-10 h-[75vh] overflow-hidden rounded-2xl sm:h-[50vh]"
-        >
-          <motion.div
-            style={{ x }}
-            drag="x"
-            dragConstraints={{ left: -1600, right: 100 }}
-            dragElastic={0.15}
-            className="absolute inset-y-0 flex cursor-grab items-center gap-6 px-8 active:cursor-grabbing"
-          >
-            {pairs.map((pair) => (
-              <div key={pair.label} className="flex shrink-0 flex-col sm:flex-row sm:gap-3">
-                <div className="flex flex-col gap-3 sm:flex-row">
+        {/* Looping carousel */}
+        <div className="relative mt-10">
+          <div className="overflow-hidden rounded-2xl" ref={emblaRef}>
+            <div className="flex gap-6">
+              {pairs.map((pair) => (
+                <div
+                  key={pair.label}
+                  className="flex shrink-0 flex-col gap-3 sm:flex-row"
+                >
+                  {/* Before */}
                   <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
                     <div className="aspect-[3/2]">
                       {pair.before ? (
-                        <img src={pair.before} alt={`${pair.label} — before`} className="h-full w-full object-cover" loading="lazy" />
+                        <img
+                          src={pair.before}
+                          alt={`${pair.label} — before`}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
                       ) : (
                         <div className="flex h-full items-center justify-center">
                           <span className="text-sm text-muted-foreground">Before photo</span>
@@ -79,10 +81,16 @@ const ConstructionSection = () => {
                       Before
                     </span>
                   </div>
+                  {/* After */}
                   <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
                     <div className="aspect-[3/2]">
                       {pair.after ? (
-                        <img src={pair.after} alt={`${pair.label} — after`} className="h-full w-full object-cover" loading="lazy" />
+                        <img
+                          src={pair.after}
+                          alt={`${pair.label} — after`}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
                       ) : (
                         <div className="flex h-full items-center justify-center">
                           <span className="text-sm text-muted-foreground">After photo</span>
@@ -94,9 +102,25 @@ const ConstructionSection = () => {
                     </span>
                   </div>
                 </div>
-              </div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation arrows */}
+          <button
+            onClick={scrollPrev}
+            className="absolute -left-4 top-1/2 -translate-y-1/2 rounded-full border border-border bg-background/90 p-2 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="h-4 w-4 text-foreground" />
+          </button>
+          <button
+            onClick={scrollNext}
+            className="absolute -right-4 top-1/2 -translate-y-1/2 rounded-full border border-border bg-background/90 p-2 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted"
+            aria-label="Next"
+          >
+            <ChevronRight className="h-4 w-4 text-foreground" />
+          </button>
         </div>
       </div>
     </section>
