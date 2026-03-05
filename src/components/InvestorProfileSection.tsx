@@ -60,7 +60,7 @@ const InvestorProfileSection = () => (
               capital to put to work, who want long‑term exposure to Cambridge
               without building their own property team.
             </p>
-            <ul className="mt-8 max-w-2xl space-y-4">
+            <ul className="mt-8 max-w-3xl space-y-4">
               {bullets.map((b) => (
                 <li key={b.title} className="flex items-start gap-3">
                   <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary">
