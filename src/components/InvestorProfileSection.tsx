@@ -47,15 +47,15 @@ const InvestorProfileSection = () => (
   <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
     <div className="mx-auto max-w-5xl">
       <FadeIn>
-        <div className="relative overflow-hidden rounded-2xl border border-border p-10 md:p-14">
-          <div className="text-foreground">
+        <div className="relative overflow-hidden rounded-2xl bg-foreground p-10 md:p-14">
+          <div className="text-background">
             <NetworkSVG />
           </div>
           <div className="relative z-10">
-            <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
+            <h2 className="text-3xl font-semibold tracking-[-0.02em] text-background md:text-[2.75rem] md:leading-[1.1]">
               Who our partner investors are
             </h2>
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-background/60 md:text-lg">
               Our partner investors are exited founders and business owners with
               capital to put to work, who want long‑term exposure to Cambridge
               without building their own property team.
@@ -66,8 +66,8 @@ const InvestorProfileSection = () => (
                   <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary">
                     <Check className="h-3 w-3 text-primary-foreground" strokeWidth={3} />
                   </span>
-                  <span className="text-base leading-relaxed text-muted-foreground">
-                    <span className="font-semibold text-foreground">{b.title}</span>
+                  <span className="text-base leading-relaxed text-background/60">
+                    <span className="font-semibold text-background">{b.title}</span>
                     {" — "}{b.text}
                   </span>
                 </li>
