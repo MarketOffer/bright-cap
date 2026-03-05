@@ -23,14 +23,14 @@ const ConstructionSection = () => {
       <div className="mx-auto max-w-5xl">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-            In-house construction team
+            Our construction team
           </h2>
         </FadeIn>
 
         <FadeIn delay={0.1}>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Our renovations are delivered by a construction business within our
-            founder's group — 40+ years of Cambridge experience.
+            Our renovations are delivered by our founder's 25+ year Cambridge
+            construction business.
           </p>
         </FadeIn>
 
