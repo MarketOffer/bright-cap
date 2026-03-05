@@ -10,7 +10,17 @@ const CompareWhatWeAcquire = () => (
       <h1 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-4xl">
         "What We Acquire" — Photo Layout Comparison
       </h1>
-      <p className="mt-3 font-sans text-muted-foreground">Scroll to compare all four variants</p>
+      <p className="mt-3 font-sans text-muted-foreground">Scroll to compare all five variants</p>
+    </div>
+
+    {/* Variant E - NEW */}
+    <div className="border-b border-border">
+      <div className="mx-auto max-w-5xl px-6 pt-10">
+        <span className="inline-block rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 font-mono text-sm font-semibold text-primary">
+          E — Portrait photo aligned with timeline (NEW)
+        </span>
+      </div>
+      <WhatWeAcquireVariantPortrait />
     </div>
 
     {/* Variant A */}
