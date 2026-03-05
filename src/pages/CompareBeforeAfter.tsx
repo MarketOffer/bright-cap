@@ -1,4 +1,4 @@
-import FadeIn from "./FadeIn";
+import FadeIn from "@/components/FadeIn";
 
 /**
  * Variant A — Side-by-side grid
