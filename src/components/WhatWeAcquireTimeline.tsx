@@ -22,7 +22,7 @@ const WhatWeAcquireTimeline = () => (
       </FadeIn>
       <FadeIn delay={0.15}>
         <p className="mt-6 max-w-2xl font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
-          We focus on one thing: acquiring and improving residential blocks in Cambridge's science and tech core, then holding them as high‑quality long‑term rentals.
+          We focus on one thing: acquiring and improving residential‑led blocks across Cambridge, the UK's leading science and tech hub, then holding them as high‑quality long‑term rentals.
         </p>
       </FadeIn>
 
