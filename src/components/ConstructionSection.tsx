@@ -3,10 +3,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import FadeIn from "./FadeIn";
 import kitchenBefore from "@/assets/construction-kitchen-before.webp";
 import kitchenAfter from "@/assets/construction-kitchen-after.webp";
+import churchBefore from "@/assets/construction-church-before.webp";
+import churchAfter from "@/assets/construction-church-after.webp";
 
 const pairs = [
   { label: "Kitchen renovation", before: kitchenBefore, after: kitchenAfter },
-  { label: "Interior refurbishment", before: null, after: null },
+  { label: "Church conversion", before: churchBefore, after: churchAfter },
   { label: "Garden flat", before: null, after: null },
   { label: "Loft extension", before: null, after: null },
 ];
