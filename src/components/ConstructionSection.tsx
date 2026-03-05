@@ -1,49 +1,85 @@
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import FadeIn from "./FadeIn";
 
-const ConstructionSection = () => (
-  <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
-    <div className="mx-auto max-w-5xl">
-      <FadeIn>
-        <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-          In-house construction team
-        </h2>
-      </FadeIn>
+const pairs = [
+  { label: "Chapel conversion" },
+  { label: "Interior refurbishment" },
+  { label: "Garden flat" },
+  { label: "Loft extension" },
+];
 
-      <FadeIn delay={0.1}>
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          Our renovations are delivered by a construction business within our
-          founder's group — 40+ years of Cambridge experience.
-        </p>
-      </FadeIn>
+const ConstructionSection = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
-      <FadeIn delay={0.15}>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          A local team aligned with our long-term goals. They build to last, and
-          because they built it, ongoing maintenance is fast and efficient.
-        </p>
-      </FadeIn>
+  const x = useTransform(scrollYProgress, [0, 1], ["10%", "-60%"]);
 
-      {/* Placeholder before/after — will be replaced with chosen variant */}
-      <div className="mt-16 grid gap-4 md:grid-cols-2 md:gap-6">
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-muted">
-          <div className="flex aspect-[4/3] items-center justify-center">
-            <span className="text-sm text-muted-foreground">Before photo</span>
-          </div>
-          <span className="absolute left-4 top-4 rounded-full border border-border bg-background/90 px-3 py-1 text-xs font-semibold tracking-wide text-muted-foreground backdrop-blur-sm">
-            Before
-          </span>
-        </div>
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-muted">
-          <div className="flex aspect-[4/3] items-center justify-center">
-            <span className="text-sm text-muted-foreground">After photo</span>
-          </div>
-          <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold tracking-wide text-primary-foreground">
-            After
-          </span>
+  return (
+    <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
+      <div className="mx-auto max-w-5xl">
+        <FadeIn>
+          <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
+            In-house construction team
+          </h2>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            Our renovations are delivered by a construction business within our
+            founder's group — 40+ years of Cambridge experience.
+          </p>
+        </FadeIn>
+
+        <FadeIn delay={0.15}>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            A local team aligned with our long-term goals. They build to last, and
+            because they built it, ongoing maintenance is fast and efficient.
+          </p>
+        </FadeIn>
+
+        {/* Parallax scroll-driven before/after strip */}
+        <div
+          ref={containerRef}
+          className="relative mt-16 h-[50vh] overflow-hidden rounded-2xl"
+        >
+          <motion.div
+            style={{ x }}
+            className="absolute inset-y-0 flex items-center gap-6 px-8"
+          >
+            {pairs.map((pair) => (
+              <div key={pair.label} className="flex shrink-0 gap-3">
+                <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
+                  <div className="flex aspect-[4/3] items-center justify-center">
+                    <span className="text-sm text-muted-foreground">Before photo</span>
+                  </div>
+                  <span className="absolute left-3 top-3 rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted-foreground backdrop-blur-sm">
+                    Before
+                  </span>
+                </div>
+                <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
+                  <div className="flex aspect-[4/3] items-center justify-center">
+                    <span className="text-sm text-muted-foreground">After photo</span>
+                  </div>
+                  <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground">
+                    After
+                  </span>
+                </div>
+                <div className="flex w-8 shrink-0 items-end pb-4">
+                  <span className="origin-bottom-left -rotate-90 whitespace-nowrap text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    {pair.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default ConstructionSection;
