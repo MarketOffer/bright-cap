@@ -47,7 +47,7 @@ const ConstructionSection = () => {
         {/* Mobile: 2-row stacked pairs | Desktop: single-row side-by-side */}
         <div
           ref={containerRef}
-          className="relative mt-16 h-[75vh] overflow-hidden rounded-2xl sm:h-[50vh]"
+          className="relative mt-10 h-[75vh] overflow-hidden rounded-2xl sm:h-[50vh]"
         >
           <motion.div
             style={{ x }}
