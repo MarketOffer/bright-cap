@@ -30,7 +30,7 @@ const ConstructionVariantAccent = () => {
         <FadeIn delay={0.1}>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
             Our renovations are delivered by our founder's{" "}
-            <span className="text-primary font-semibold">25+ year Cambridge construction business</span>.
+            <span className="text-foreground font-bold">25+ year Cambridge construction business</span>.
           </p>
         </FadeIn>
         <FadeIn delay={0.15}>
