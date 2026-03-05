@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import FoundersCompare from "./pages/FoundersCompare";
 import AcquireCompare from "./pages/AcquireCompare";
+import InvestorCompare from "./pages/InvestorCompare";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
