@@ -1,21 +1,10 @@
 import FadeIn from "./FadeIn";
+import blockPhoto from "@/assets/cambridge-block-flats.webp";
 
 const steps = [
-  {
-    num: "01",
-    title: "Buy blocks at a discount",
-    detail: "Typically 2 to 20 units",
-  },
-  {
-    num: "02",
-    title: "Create 15–25% equity uplift",
-    detail: "Through title splitting and high-spec renovation of each unit",
-  },
-  {
-    num: "03",
-    title: "Generate long-term hands-off income",
-    detail: "Let to professional tenants or supported living providers",
-  },
+  { num: "01", title: "Buy blocks at a discount", detail: "Typically 2 to 20 units" },
+  { num: "02", title: "Create 15–25% equity uplift", detail: "Through title splitting and high-spec renovation of each unit" },
+  { num: "03", title: "Generate long-term hands-off income", detail: "Let to professional tenants or supported living providers" },
 ];
 
 const WhatWeAcquireTimeline = () => (
@@ -37,30 +26,33 @@ const WhatWeAcquireTimeline = () => (
         </p>
       </FadeIn>
 
-      <div className="relative mt-16">
-        {/* Vertical line */}
-        <div className="absolute left-6 top-0 bottom-0 w-px bg-border md:left-8" />
-
-        <div className="space-y-12">
-          {steps.map((step, i) => (
-            <FadeIn key={step.num} delay={0.2 + i * 0.12}>
-              <div className="relative flex gap-8 pl-16 md:pl-20">
-                {/* Number circle */}
-                <div className="absolute left-0 flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary bg-background font-mono text-sm font-bold text-primary md:h-16 md:w-16 md:text-base">
-                  {step.num}
+      <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* Timeline */}
+        <div className="relative">
+          <div className="absolute left-6 top-0 bottom-0 w-px bg-border md:left-8" />
+          <div className="space-y-12">
+            {steps.map((step, i) => (
+              <FadeIn key={step.num} delay={0.2 + i * 0.12}>
+                <div className="relative flex gap-8 pl-16 md:pl-20">
+                  <div className="absolute left-0 flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary bg-background font-mono text-sm font-bold text-primary md:h-16 md:w-16 md:text-base">
+                    {step.num}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-foreground md:text-2xl">{step.title}</h3>
+                    <p className="mt-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-base">{step.detail}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-foreground md:text-2xl">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-muted-foreground md:text-base">
-                    {step.detail}
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
+              </FadeIn>
+            ))}
+          </div>
         </div>
+
+        {/* Photo */}
+        <FadeIn delay={0.3}>
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <img src={blockPhoto} alt="Cambridge block of flats" className="h-full w-full object-cover" />
+          </div>
+        </FadeIn>
       </div>
     </div>
   </section>
