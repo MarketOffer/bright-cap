@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import LogoStrip from "@/components/LogoStrip";
 import OpportunitySection from "@/components/OpportunitySection";
 import CambridgeSection from "@/components/CambridgeVariantVideo";
 import WhatWeAcquireTimeline from "@/components/WhatWeAcquireTimeline";
