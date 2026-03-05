@@ -1,9 +1,74 @@
 import FadeIn from "@/components/FadeIn";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+
+/**
+ * Variant F — Parallax scroll-driven horizontal strip
+ * Vertical scrolling drives horizontal movement through before/after pairs.
+ */
+const VariantParallaxStrip = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], ["10%", "-60%"]);
+
+  const pairs = [
+    { label: "Chapel conversion" },
+    { label: "Interior refurbishment" },
+    { label: "Garden flat" },
+    { label: "Loft extension" },
+  ];
+
+  return (
+    <div>
+      <h3 className="mb-6 text-lg font-semibold text-foreground">
+        F — Parallax scroll-driven strip
+      </h3>
+      <p className="mb-4 text-sm text-muted-foreground">
+        Scroll down — the strip moves horizontally.
+      </p>
+
+      <div ref={containerRef} className="relative h-[50vh] overflow-hidden rounded-2xl border border-border bg-muted/30">
+        <motion.div
+          style={{ x }}
+          className="absolute inset-y-0 flex items-center gap-6 px-8"
+        >
+          {pairs.map((pair) => (
+            <div key={pair.label} className="flex shrink-0 gap-3">
+              <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
+                <div className="flex aspect-[4/3] items-center justify-center">
+                  <span className="text-sm text-muted-foreground">Before photo</span>
+                </div>
+                <span className="absolute left-3 top-3 rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-muted-foreground backdrop-blur-sm">
+                  Before
+                </span>
+              </div>
+              <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
+                <div className="flex aspect-[4/3] items-center justify-center">
+                  <span className="text-sm text-muted-foreground">After photo</span>
+                </div>
+                <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground">
+                  After
+                </span>
+              </div>
+              <div className="flex w-8 shrink-0 items-end pb-4">
+                <span className="origin-bottom-left -rotate-90 whitespace-nowrap text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {pair.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </div>
+  );
+};
 
 /**
  * Variant A — Side-by-side grid
- * Two images next to each other with subtle labels.
- */
 const VariantSideBySide = () => (
   <div>
     <h3 className="mb-6 text-lg font-semibold text-foreground">A — Side-by-side</h3>
