@@ -1,6 +1,7 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import FadeIn from "./FadeIn";
 import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import kitchenBefore from "@/assets/construction-kitchen-before.webp";
 import kitchenAfter from "@/assets/construction-kitchen-after.webp";
@@ -21,57 +22,52 @@ const pairs = [
 const ConstructionSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    dragFree: true,
-    containScroll: false,
-  });
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      dragFree: true,
+      containScroll: false,
+    },
+    [
+      AutoScroll({
+        speed: 0.8,
+        startDelay: 0,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+        stopOnFocusIn: true,
+      }),
+    ]
+  );
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  // Observe when the carousel is fully in view (bottom edge visible)
+  // Only start auto-scroll once the carousel bottom is visible
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0, rootMargin: "0px 0px 0px 0px" }
+      { threshold: 0.3 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
-  // Scroll-driven parallax: scroll the carousel forward as user scrolls the page
+  // Play/pause auto-scroll based on visibility
   useEffect(() => {
-    if (!emblaApi || !isInView) return;
+    if (!emblaApi) return;
+    const autoScroll = emblaApi.plugins()?.autoScroll;
+    if (!autoScroll) return;
 
-    let lastScrollY = window.scrollY;
-    let rafId: number;
-
-    const onScroll = () => {
-      rafId = requestAnimationFrame(() => {
-        const delta = window.scrollY - lastScrollY;
-        lastScrollY = window.scrollY;
-
-        if (delta !== 0) {
-          // Convert page scroll delta into carousel scroll
-          const engine = (emblaApi as any).internalEngine();
-          if (engine) {
-            engine.scrollBody.useSpeed(0);
-            engine.scrollTo.distance(delta * -0.5, false);
-          }
-        }
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(rafId);
-    };
+    if (isInView) {
+      (autoScroll as any).play();
+    } else {
+      (autoScroll as any).stop();
+    }
   }, [emblaApi, isInView]);
 
   return (
@@ -97,7 +93,7 @@ const ConstructionSection = () => {
           </p>
         </FadeIn>
 
-        {/* Looping carousel with scroll-driven parallax */}
+        {/* Looping carousel with auto-scroll */}
         <div className="relative mt-10" ref={sectionRef}>
           <div className="overflow-hidden rounded-2xl" ref={emblaRef}>
             <div className="flex">
