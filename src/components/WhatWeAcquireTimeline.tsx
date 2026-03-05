@@ -49,7 +49,7 @@ const WhatWeAcquireTimeline = () => (
 
         {/* Photo */}
         <FadeIn delay={0.3}>
-          <div className="overflow-hidden rounded-2xl border border-border">
+          <div className="overflow-hidden rounded-2xl border border-border max-h-[300px] md:max-h-[400px] lg:max-h-none">
             <img src={blockPhoto} alt="Cambridge block of flats" className="h-full w-full object-cover" />
           </div>
         </FadeIn>
