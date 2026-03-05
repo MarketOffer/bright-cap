@@ -55,11 +55,11 @@ const ConstructionSection = () => {
         {/* Looping carousel */}
         <div className="relative mt-10">
           <div className="overflow-hidden rounded-2xl" ref={emblaRef}>
-            <div className="flex gap-6">
+            <div className="flex">
               {pairs.map((pair) => (
                 <div
                   key={pair.label}
-                  className="flex shrink-0 flex-col gap-3 sm:flex-row"
+                  className="flex shrink-0 flex-col gap-3 pr-6 sm:flex-row"
                 >
                   {/* Before */}
                   <div className="relative w-[280px] overflow-hidden rounded-xl border border-border bg-muted md:w-[340px]">
