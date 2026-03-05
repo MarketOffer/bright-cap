@@ -43,14 +43,17 @@ const ConstructionSection = () => {
           </p>
         </FadeIn>
 
-        {/* Parallax scroll-driven before/after strip */}
+        {/* Parallax scroll-driven before/after strip — also draggable */}
         <div
           ref={containerRef}
           className="relative mt-16 h-[50vh] overflow-hidden rounded-2xl"
         >
           <motion.div
             style={{ x }}
-            className="absolute inset-y-0 flex items-center gap-6 px-8"
+            drag="x"
+            dragConstraints={{ left: -1600, right: 100 }}
+            dragElastic={0.15}
+            className="absolute inset-y-0 flex cursor-grab items-center gap-6 px-8 active:cursor-grabbing"
           >
             {pairs.map((pair) => (
               <div key={pair.label} className="flex shrink-0 gap-3">
