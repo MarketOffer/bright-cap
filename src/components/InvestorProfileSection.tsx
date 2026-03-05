@@ -3,16 +3,12 @@ import { Check } from "lucide-react";
 
 const bullets = [
   {
-    title: "Ex‑founders",
+    title: "Exited founders",
     text: "Who've sold or taken significant cash out of a business",
   },
   {
     title: "Business owners",
     text: "Generating strong profits and looking to grow outside their core industry",
-  },
-  {
-    title: "Passive investors",
-    text: "Who want to own quality Cambridge blocks, but don't want to find deals, manage builders or chase letting agents",
   },
 ];
 
