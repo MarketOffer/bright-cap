@@ -39,7 +39,7 @@ const TestimonialSection = () => (
               />
             </div>
             <p className="mt-3 text-center text-sm font-medium tracking-wide text-muted-foreground">
-              Residential Block, Cambridge
+              Award-winning Cambridge residential block — filmed by the BBC
             </p>
           </FadeIn>
         </div>
