@@ -25,7 +25,7 @@ const TestimonialSection = () => (
         </div>
         <div className="lg:col-span-2">
           <FadeIn delay={0.2}>
-            <div className="lg:h-full min-h-[300px] overflow-hidden rounded-2xl border border-border bg-muted">
+            <div className="lg:h-full min-h-[300px] max-h-[400px] md:max-h-[350px] lg:max-h-none overflow-hidden rounded-2xl border border-border bg-muted">
               <img src={cambridgeBlockImg} alt="Residential Block, Cambridge" className="h-full w-full object-cover" />
             </div>
             <p className="mt-3 text-center text-sm font-medium tracking-wide text-muted-foreground">
