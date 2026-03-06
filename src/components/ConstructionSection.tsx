@@ -81,15 +81,13 @@ const ConstructionSection = () => {
 
         <FadeIn delay={0.1}>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Our renovations are delivered by our founder's{" "}
-            <span className="text-foreground font-bold">25+ year Cambridge construction business</span>.
+            Our renovations are delivered by our founder's family-run construction and maintenance business — <span className="text-foreground font-bold">building in Cambridge for over 25 years.</span>
           </p>
         </FadeIn>
 
         <FadeIn delay={0.15}>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            A local team aligned with our long-term goals. They build to last, and
-            because they built it, ongoing maintenance is fast and efficient.
+            They build to last. And because they built it, ongoing maintenance is fast and efficient.
           </p>
         </FadeIn>
 
