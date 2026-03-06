@@ -44,7 +44,7 @@ const NetworkSVG = () => (
 );
 
 const InvestorProfileSection = () => (
-  <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
+  <section className="px-6 py-28 md:px-10 md:py-36">
     <div className="mx-auto max-w-5xl">
       <FadeIn>
         <div className="relative overflow-hidden rounded-2xl bg-foreground p-10 md:p-14">

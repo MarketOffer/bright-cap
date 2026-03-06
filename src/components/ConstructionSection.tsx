@@ -71,7 +71,7 @@ const ConstructionSection = () => {
   }, [emblaApi, isInView]);
 
   return (
-    <section className="border-t border-border px-6 py-28 md:px-10 md:py-36" style={{ backgroundColor: "rgba(163, 170, 196, 0.07)" }}>
+    <section className="px-6 py-28 md:px-10 md:py-36" style={{ backgroundColor: "rgba(163, 170, 196, 0.07)" }}>
       <div className="mx-auto max-w-5xl">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
