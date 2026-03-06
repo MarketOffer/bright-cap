@@ -159,6 +159,102 @@ const InvestCTAComparison = () => (
             </a>
           </section>
         </SectionShell>
+
+        {/* F — Stronger tint + primary border */}
+        <SectionShell
+          label="F — Stronger Tint + Green Border"
+          description="Builds on B with a stronger green tint and a Cambridge green border — more presence without going dark."
+        >
+          <section className="rounded-2xl border-2 border-primary/30 bg-primary/[0.10] px-10 py-16 md:px-14 md:py-20">
+            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl">
+              {copy.heading}
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              {copy.body}
+            </p>
+            <a
+              href="#contact"
+              className="mt-8 inline-flex items-center gap-2 rounded-sm border border-foreground/20 px-6 py-2.5 text-sm font-medium text-foreground/70 transition-colors hover:border-foreground/40 hover:text-foreground"
+            >
+              Invest With Us
+              <ArrowRight className="h-3.5 w-3.5 text-primary" />
+            </a>
+          </section>
+        </SectionShell>
+
+        {/* G — Accent bar + tint */}
+        <SectionShell
+          label="G — Left Accent Bar + Tint"
+          description="Cambridge tint background with a thick vertical green bar on the left edge — adds structure and colour punch."
+        >
+          <section className="flex overflow-hidden rounded-2xl bg-primary/[0.06]">
+            <div className="w-2 shrink-0 bg-primary md:w-3" />
+            <div className="px-10 py-16 md:px-14 md:py-20">
+              <h2 className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl">
+                {copy.heading}
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                {copy.body}
+              </p>
+              <a
+                href="#contact"
+                className="mt-8 inline-flex items-center gap-2 rounded-sm border border-foreground/20 px-6 py-2.5 text-sm font-medium text-foreground/70 transition-colors hover:border-foreground/40 hover:text-foreground"
+              >
+                Invest With Us
+                <ArrowRight className="h-3.5 w-3.5 text-primary" />
+              </a>
+            </div>
+          </section>
+        </SectionShell>
+
+        {/* H — Tint with dark heading strip */}
+        <SectionShell
+          label="H — Tint + Dark Heading Badge"
+          description="Soft green background but the heading sits in a dark pill/strip — creates contrast and a focal point."
+        >
+          <section className="rounded-2xl bg-primary/[0.06] px-10 py-16 md:px-14 md:py-20">
+            <span className="inline-block rounded-full bg-foreground px-5 py-2 text-sm font-semibold tracking-wide text-background">
+              Partner With Us
+            </span>
+            <h2 className="mt-6 text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl">
+              {copy.heading}
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              {copy.body}
+            </p>
+            <a
+              href="#contact"
+              className="mt-8 inline-flex items-center gap-2 rounded-sm border border-foreground/20 px-6 py-2.5 text-sm font-medium text-foreground/70 transition-colors hover:border-foreground/40 hover:text-foreground"
+            >
+              Invest With Us
+              <ArrowRight className="h-3.5 w-3.5 text-primary" />
+            </a>
+          </section>
+        </SectionShell>
+
+        {/* I — Full-width band */}
+        <SectionShell
+          label="I — Full-Width Cambridge Band"
+          description="Breaks out of the card — a full-width Cambridge tint band spanning edge-to-edge for maximum presence."
+        >
+          <section className="-mx-6 bg-primary/[0.06] px-6 py-16 md:-mx-10 md:px-10 md:py-20">
+            <div className="mx-auto max-w-5xl">
+              <h2 className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl">
+                {copy.heading}
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+                {copy.body}
+              </p>
+              <a
+                href="#contact"
+                className="mt-8 inline-flex items-center gap-2 rounded-sm border border-foreground/20 px-6 py-2.5 text-sm font-medium text-foreground/70 transition-colors hover:border-foreground/40 hover:text-foreground"
+              >
+                Invest With Us
+                <ArrowRight className="h-3.5 w-3.5 text-primary" />
+              </a>
+            </div>
+          </section>
+        </SectionShell>
       </div>
     </div>
   </div>
