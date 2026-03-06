@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 const InvestCTASection = () => (
   <section className="px-6 py-16 md:px-10 md:py-20">
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto max-w-5xl rounded-2xl border-2 border-primary p-10 md:p-14">
       <FadeIn>
         <div className="text-center">
           <h2 className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl">
