@@ -11,7 +11,7 @@ const TestimonialSection = () => (
         </h2>
       </FadeIn>
 
-      <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-16">
+      <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-16 lg:items-start">
         {/* Quote */}
         <div className="lg:col-span-3 flex flex-col justify-center">
           <FadeIn delay={0.1}>
@@ -31,7 +31,7 @@ const TestimonialSection = () => (
         {/* Project image */}
         <div className="lg:col-span-2">
           <FadeIn delay={0.2}>
-            <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-muted lg:aspect-[4/3]">
+            <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-border bg-muted lg:aspect-square">
               <img
                 src={cambridgeBlockImg}
                 alt="Residential Block, Cambridge"
