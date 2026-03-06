@@ -12,10 +12,11 @@ import { Checkbox } from "./ui/checkbox";
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!confirmed) return;
+    if (!confirmed || !termsAgreed) return;
     setSubmitted(true);
   };
 
