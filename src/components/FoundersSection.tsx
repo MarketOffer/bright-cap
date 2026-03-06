@@ -69,6 +69,24 @@ const FoundersSection = () => (
               ))}
             </div>
           </FadeIn>
+
+          <FadeIn delay={0.25}>
+            <div className="mt-10">
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                Selected recognition for projects led by our team
+              </p>
+              <div className="mt-4 flex items-center gap-8">
+                {["Property Investors Awards", "Property Entrepreneur", "BBC"].map((name) => (
+                  <div
+                    key={name}
+                    className="flex h-8 items-center justify-center rounded bg-muted px-4 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
+                  >
+                    {name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </div>
     </div>
