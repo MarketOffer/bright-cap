@@ -44,7 +44,7 @@ const ContactSection = () => {
           <FadeIn delay={0.2}>
             <form onSubmit={handleSubmit} className="mt-12 space-y-6">
               <div>
-                <label htmlFor="name" className="block font-sans text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                <label htmlFor="name" className="block font-sans text-xs font-semibold uppercase tracking-widest text-foreground">
                   Full name
                 </label>
                 <input
@@ -55,7 +55,7 @@ const ContactSection = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block font-sans text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                <label htmlFor="email" className="block font-sans text-xs font-semibold uppercase tracking-widest text-foreground">
                   Email address
                 </label>
                 <input
@@ -66,7 +66,7 @@ const ContactSection = () => {
                 />
               </div>
               <div>
-                <label className="block font-sans text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">
+                <label className="block font-sans text-xs font-semibold uppercase tracking-widest text-foreground mb-2">
                   Approx. investment amount
                 </label>
                 <Select required>
@@ -84,7 +84,7 @@ const ContactSection = () => {
                 </Select>
               </div>
               <div>
-                <label className="block font-sans text-xs font-medium uppercase tracking-widest text-muted-foreground mb-2">
+                <label className="block font-sans text-xs font-semibold uppercase tracking-widest text-foreground mb-2">
                   When are you looking to invest
                 </label>
                 <Select required>
