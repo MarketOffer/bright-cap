@@ -73,6 +73,17 @@ const InvestorProfileSection = () => (
                 </li>
               ))}
             </ul>
+            <div className="mt-12 border-t border-background/10 pt-10">
+              <h3 className="text-xl font-semibold tracking-[-0.02em] text-background md:text-2xl">
+                Interested in discussing becoming a partner investor?
+              </h3>
+              <a
+                href="#contact"
+                className="mt-6 inline-block rounded-sm bg-primary px-8 py-3.5 font-sans text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
+              >
+                Invest With Us
+              </a>
+            </div>
           </div>
         </div>
       </FadeIn>
