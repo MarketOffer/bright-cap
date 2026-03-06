@@ -87,7 +87,7 @@ const ConstructionSection = () => {
 
         <FadeIn delay={0.15}>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            They build to last. And because they built it, ongoing maintenance is fast and efficient.
+            They build to last and the same team maintains it — so standards stay high and issues get resolved fast.
           </p>
         </FadeIn>
 
