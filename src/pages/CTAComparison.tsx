@@ -103,47 +103,10 @@ const CTAComparison = () => (
 
       <div className="mt-16 space-y-20">
 
-        {/* ORIGINAL */}
+        {/* C — Original Ghost */}
         <VariantCard
-          label="A — Original (Current)"
-          description="Large heading + bold filled button. High visual weight — risks feeling desperate or salesy to a sophisticated audience."
-        >
-          <div className="mt-10 border-t border-background/10 pt-8">
-            <h3 className="text-xl font-semibold tracking-[-0.02em] text-background md:text-2xl">
-              Interested in discussing becoming a partner investor?
-            </h3>
-            <a
-              href="#contact"
-              className="mt-6 inline-block rounded-sm bg-primary px-8 py-3.5 font-sans text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
-            >
-              Invest With Us
-            </a>
-          </div>
-        </VariantCard>
-
-        {/* OPTION 1: Subtle text link */}
-        <VariantCard
-          label="B — Subtle Text Link"
-          description="No button at all. A quiet sentence with an underlined arrow link. Feels confident, understated — like an exclusive invitation rather than a sales pitch."
-        >
-          <div className="mt-10 border-t border-background/10 pt-8">
-            <p className="text-sm leading-relaxed text-background/50 md:text-base">
-              Interested in exploring becoming a partner investor?{" "}
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-1.5 font-medium text-background/80 underline underline-offset-4 decoration-background/30 hover:text-background hover:decoration-background/60 transition-colors"
-              >
-                Start a conversation
-                <ArrowRight className="h-3.5 w-3.5" />
-              </a>
-            </p>
-          </div>
-        </VariantCard>
-
-        {/* OPTION 2: Ghost button */}
-        <VariantCard
-          label="C — Ghost / Outline Button"
-          description="Keeps a button for discoverability but uses an outline style so it doesn't dominate. The heading is smaller and lighter."
+          label="C — Ghost / Outline Button (Original)"
+          description="Outline style with all-white text and arrow. Subtle but may lack a focal point."
         >
           <div className="mt-10 border-t border-background/10 pt-8">
             <p className="text-base font-medium text-background/70">
@@ -153,45 +116,48 @@ const CTAComparison = () => (
               href="#contact"
               className="mt-5 inline-flex items-center gap-2 rounded-sm border border-background/20 px-6 py-2.5 text-sm font-medium text-background/70 transition-colors hover:border-background/40 hover:text-background"
             >
-              Start a Conversation
+              Invest With Us
               <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
         </VariantCard>
 
-        {/* OPTION 3: Smaller muted button */}
+        {/* C1 — Green arrow */}
         <VariantCard
-          label="D — Small Muted Button"
-          description="A compact, muted-colour button that stays present without shouting. No separate heading — the question is integrated with the button."
+          label="C1 — Ghost Button, Green Arrow"
+          description="Same outline button but the arrow is accent green — adds a subtle pop of colour to draw the eye without overwhelming."
         >
-          <div className="mt-10 border-t border-background/10 pt-8 flex flex-wrap items-center gap-4">
-            <p className="text-sm text-background/50">
+          <div className="mt-10 border-t border-background/10 pt-8">
+            <p className="text-base font-medium text-background/70">
               Interested in exploring becoming a partner investor?
             </p>
             <a
               href="#contact"
-              className="inline-block rounded-sm bg-background/10 px-5 py-2 text-sm font-medium text-background/70 transition-colors hover:bg-background/15 hover:text-background"
+              className="mt-5 inline-flex items-center gap-2 rounded-sm border border-background/20 px-6 py-2.5 text-sm font-medium text-background/70 transition-colors hover:border-background/40 hover:text-background"
             >
-              Get in Touch
+              Invest With Us
+              <ArrowRight className="h-3.5 w-3.5 text-primary" />
             </a>
           </div>
         </VariantCard>
 
-        {/* OPTION 4: Inline sentence */}
+        {/* C2 — Green border */}
         <VariantCard
-          label="E — Inline Sentence (No Divider)"
-          description="The CTA is woven into the body copy as a natural continuation — no border, no heading. Maximum understatement."
+          label="C2 — Ghost Button, Green Border"
+          description="The button outline is accent green — gives the CTA more presence while keeping the text neutral."
         >
-          <p className="mt-8 text-sm leading-relaxed text-background/40 md:text-base">
-            If this sounds like you, we'd welcome{" "}
+          <div className="mt-10 border-t border-background/10 pt-8">
+            <p className="text-base font-medium text-background/70">
+              Interested in exploring becoming a partner investor?
+            </p>
             <a
               href="#contact"
-              className="font-medium text-background/60 underline underline-offset-4 decoration-background/25 hover:text-background hover:decoration-background/50 transition-colors"
+              className="mt-5 inline-flex items-center gap-2 rounded-sm border border-primary/50 px-6 py-2.5 text-sm font-medium text-background/70 transition-colors hover:border-primary hover:text-background"
             >
-              a conversation
+              Invest With Us
+              <ArrowRight className="h-3.5 w-3.5" />
             </a>
-            .
-          </p>
+          </div>
         </VariantCard>
 
       </div>
