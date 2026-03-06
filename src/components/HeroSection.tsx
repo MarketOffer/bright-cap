@@ -2,7 +2,7 @@ import FadeIn from "./FadeIn";
 import heroBg from "@/assets/hero-cambridge.webp";
 
 const HeroSection = () =>
-  <section className="flex min-h-screen flex-col pt-24 md:flex-row md:pt-0">
+  <section className="flex min-h-screen flex-col pt-20 md:flex-row md:pt-0">
     {/* Text */}
     <div className="flex flex-1 items-center px-6 py-16 md:px-16 lg:px-24">
       <div className="max-w-xl">
