@@ -99,16 +99,6 @@ const ContactSection = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <label htmlFor="goals" className="block font-sans text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                  What would you like to get out of this call?
-                </label>
-                <textarea
-                  id="goals"
-                  rows={3}
-                  className="mt-2 w-full resize-none border-b border-border bg-transparent py-3 font-sans text-base text-foreground outline-none transition-colors focus:border-primary"
-                />
-              </div>
               <div className="flex items-start gap-3 pt-2">
                 <Checkbox
                   id="confirm"
@@ -139,7 +129,11 @@ const ContactSection = () => {
               <button
                 type="submit"
                 disabled={!confirmed || !termsAgreed}
-                className="mt-4 rounded-sm bg-primary px-8 py-3.5 font-sans text-sm font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`mt-4 rounded-full px-10 py-4 font-sans text-sm font-semibold tracking-wide transition-all ${
+                  confirmed && termsAgreed
+                    ? "bg-primary text-primary-foreground hover:opacity-85"
+                    : "border-2 border-primary bg-transparent text-primary cursor-not-allowed"
+                }`}
               >
                 Book an Introductory Call
               </button>
