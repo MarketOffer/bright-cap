@@ -1,6 +1,7 @@
 import FadeIn from "./FadeIn";
 import logoBbc from "@/assets/logo-bbc.svg";
 import logoPia from "@/assets/logo-property-investor-awards.svg";
+import logoPe from "@/assets/logo-property-entrepreneur.png";
 
 const stats = [
   { number: "£5.7M", label: "Property portfolio" },
