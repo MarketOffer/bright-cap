@@ -12,9 +12,14 @@ const Footer = () => (
           </a>
         </div>
       </div>
-      <p className="mt-8 max-w-xl font-sans text-[11px] italic leading-relaxed text-muted-foreground">
-        brightcap does not provide regulated financial advice. Co-investment opportunities are available to sophisticated and high net worth investors only.
-      </p>
+      <div className="mt-8 max-w-xl space-y-2">
+        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+          brightcap does not provide regulated financial advice. Co-investment opportunities are available to sophisticated and high net worth investors only.
+        </p>
+        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+          ¹ Testimonial relates to a project delivered by our founder's construction and property business, prior to the launch of BrightCap.
+        </p>
+      </div>
     </div>
   </footer>
 );
