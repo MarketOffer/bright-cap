@@ -95,10 +95,10 @@ const CTAComparison = () => (
         ← Back to site
       </a>
       <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-        CTA Comparison
+        Ghost Button Variants
       </h1>
       <p className="mt-3 text-base text-muted-foreground">
-        Five approaches for the bottom of the investor profile card — from the current "shouty" version to more refined alternatives.
+        Three variations of the ghost/outline button — the original C, plus two with an accent green touch.
       </p>
 
       <div className="mt-16 space-y-20">
