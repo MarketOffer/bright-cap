@@ -44,12 +44,6 @@ const TestimonialSection = () => (
         </div>
       </div>
 
-      {/* Footnote */}
-      <FadeIn delay={0.25}>
-        <p className="mt-14 text-xs leading-relaxed text-muted-foreground/70">
-          ¹ Testimonial relates to a project delivered by our founder's construction and property business, prior to the launch of BrightCap.
-        </p>
-      </FadeIn>
     </div>
   </section>
 );
