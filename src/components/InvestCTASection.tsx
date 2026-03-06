@@ -2,7 +2,7 @@ import FadeIn from "./FadeIn";
 import { ArrowRight } from "lucide-react";
 
 const InvestCTASection = () => (
-  <section className="border-t border-border px-6 py-16 md:px-10 md:py-20">
+  <section className="px-6 py-16 md:px-10 md:py-20">
     <div className="mx-auto max-w-5xl">
       <FadeIn>
         <div className="rounded-2xl border-2 border-primary/30 bg-primary/[0.10] p-10 md:p-14">
