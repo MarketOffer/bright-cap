@@ -117,7 +117,20 @@ const ContactSection = () => {
                   className="mt-0.5"
                 />
                 <label htmlFor="confirm" className="font-sans text-sm leading-snug text-muted-foreground cursor-pointer">
-                  I confirm I am a High Net Worth or Sophisticated Investor
+                  I confirm I am a High Net Worth Investor
+                </label>
+              </div>
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="terms"
+                  required
+                  className="mt-0.5"
+                />
+                <label htmlFor="terms" className="font-sans text-sm leading-snug text-muted-foreground cursor-pointer">
+                  I agree to the{" "}
+                  <a href="/privacy" className="underline text-foreground hover:text-primary transition-colors">Privacy Policy</a>
+                  {" "}and{" "}
+                  <a href="/webterms" className="underline text-foreground hover:text-primary transition-colors">Web Terms</a>
                 </label>
               </div>
               <button
