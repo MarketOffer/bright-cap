@@ -3,7 +3,7 @@ import { Quote } from "lucide-react";
 import cambridgeBlockImg from "@/assets/cambridge-block-bbc.webp";
 
 const TestimonialSection = () => (
-  <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
+  <section className="px-6 py-28 md:px-10 md:py-36" style={{ backgroundColor: "rgba(163, 196, 188, 0.08)" }}>
     <div className="mx-auto max-w-6xl">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-16">
         <div className="lg:col-span-3">
