@@ -242,7 +242,7 @@ const FormComparison = () => (
       </p>
     </div>
 
-    <div className="px-6 pb-20 md:px-10 grid gap-8 md:grid-cols-2">
+    <div className="px-6 pb-20 md:px-10 grid gap-12 max-w-2xl mx-auto">
       {/* 1. Tighter spacing */}
       <VariantCard
         tag="Option A"
