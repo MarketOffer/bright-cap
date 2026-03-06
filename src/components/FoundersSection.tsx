@@ -46,14 +46,11 @@ const FoundersSection = () => (
 
           <FadeIn delay={0.15}>
             <p className="mt-6 font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
-              Founded by experienced entrepreneurs in business and property —
-              with a proven track record delivering property projects for HNW
-              investors.
+              BrightCap is led by entrepreneurs with a track record of building businesses and delivering property projects for private investors.
               <br /><br />
-              They own a group of businesses including{" "}
+              Alongside BrightCap, we own{" "}
               <span className="font-semibold text-foreground">MarketOffer</span>,
-              a nationwide social housing leasing platform, plus a Cambridge
-              construction and maintenance business.
+              a nationwide social housing leasing platform, and Sam's family construction and maintenance business has been delivering projects in Cambridge for over 25 years.
             </p>
           </FadeIn>
 
