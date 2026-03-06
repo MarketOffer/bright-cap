@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import FadeIn from "./FadeIn";
 import heroBg from "@/assets/hero-cambridge.webp";
 
