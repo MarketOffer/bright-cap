@@ -6,7 +6,7 @@ const TestimonialSection = () => (
   <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
     <div className="mx-auto max-w-6xl">
       <FadeIn>
-        <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
+        <h2 className="max-w-2xl text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
           What investors say about working with our team
         </h2>
       </FadeIn>
