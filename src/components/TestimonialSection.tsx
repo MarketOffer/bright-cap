@@ -30,8 +30,8 @@ const TestimonialSection = () => (
 
         {/* Right column: photo stretches to match left column height */}
         <div className="lg:col-span-2">
-          <FadeIn delay={0.2} className="h-full">
-            <div className="h-full min-h-[300px] overflow-hidden rounded-2xl border border-border bg-muted">
+          <FadeIn delay={0.2}>
+            <div className="lg:h-full min-h-[300px] overflow-hidden rounded-2xl border border-border bg-muted">
               <img
                 src={cambridgeBlockImg}
                 alt="Residential Block, Cambridge"
