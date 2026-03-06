@@ -21,7 +21,7 @@ const SectionShell = ({
 );
 
 const copy = {
-  heading: "Interested in investing alongside us?",
+  heading: "Interested in growing your property wealth in the AI era?",
   body: "If you're looking to grow your wealth through property in one of the world's few cities built to thrive in the AI era — without building your own property team — we'd love to talk.",
 };
 
