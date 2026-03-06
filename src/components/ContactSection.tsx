@@ -20,7 +20,7 @@ const ContactSection = () => {
   const totalSteps = 3;
 
   return (
-    <section id="contact" className="px-6 py-28 md:px-10 md:py-36">
+    <section id="contact" className="px-6 pt-10 pb-28 md:px-10 md:pt-14 md:pb-36">
       <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.10)] md:p-14">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
