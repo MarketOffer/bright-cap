@@ -21,8 +21,8 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="px-6 py-28 md:px-10 md:py-36">
-      <div className="mx-auto max-w-2xl">
+    <section id="contact" className="px-6 py-28 md:px-10 md:py-36" style={{ backgroundColor: "rgba(163, 196, 188, 0.10)" }}>
+      <div className="mx-auto max-w-2xl rounded-2xl bg-background p-8 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.12)] md:p-14">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
             Book a partner investor call
