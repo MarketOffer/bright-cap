@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import brightcapLogo from "@/assets/brightcap_logo.svg";
 
 const navLinks = [
-  { label: "Opportunity", href: "#opportunity" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "About", href: "#about" },
+  { label: "The Opportunity", href: "#opportunity" },
+  { label: "What We Acquire", href: "#what-we-acquire" },
+  { label: "The Founders", href: "#founders" },
 ];
 
 const Navbar = () => {
