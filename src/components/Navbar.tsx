@@ -5,17 +5,25 @@ const navLinks = [
   { label: "Opportunity", href: "#opportunity" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "About", href: "#about" },
-  
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [heroCtaVisible, setHeroCtaVisible] = useState(true);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      setHeroCtaVisible((e as CustomEvent).detail);
+    };
+    window.addEventListener("hero-cta-visibility", handler);
+    return () => window.removeEventListener("hero-cta-visibility", handler);
   }, []);
 
   return (
@@ -48,16 +56,28 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="flex flex-col gap-1.5 md:hidden"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "translate-y-[4px] rotate-45" : ""}`} />
-          <span className={`block h-px w-6 bg-foreground transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
-          <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
-        </button>
+        {/* Mobile: CTA + hamburger */}
+        <div className="flex items-center gap-3 md:hidden">
+          {/* Slide-in CTA when hero button scrolls away */}
+          <a
+            href="#contact"
+            className={`rounded-sm bg-primary px-4 py-1.5 text-xs font-semibold tracking-wide text-primary-foreground transition-all duration-300 ${
+              heroCtaVisible ? "pointer-events-none translate-y-1 opacity-0" : "translate-y-0 opacity-100"
+            }`}
+          >
+            Invest With Us
+          </a>
+
+          <button
+            className="flex flex-col gap-1.5"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "translate-y-[4px] rotate-45" : ""}`} />
+            <span className={`block h-px w-6 bg-foreground transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
+            <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
