@@ -1,5 +1,6 @@
 import FadeIn from "./FadeIn";
 import { Quote } from "lucide-react";
+import cambridgeBlockImg from "@/assets/cambridge-block-bbc.webp";
 
 const TestimonialSection = () => (
   <section className="border-t border-border px-6 py-28 md:px-10 md:py-36">
@@ -32,7 +33,7 @@ const TestimonialSection = () => (
           <FadeIn delay={0.2}>
             <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-border bg-muted">
               <img
-                src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=750&fit=crop"
+                src={cambridgeBlockImg}
                 alt="Residential Block, Cambridge"
                 className="h-full w-full object-cover"
               />
