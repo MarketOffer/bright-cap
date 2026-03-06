@@ -53,7 +53,7 @@ const InvestorProfileSection = () => (
           </div>
           <div className="relative z-10">
             <h2 className="text-3xl font-semibold tracking-[-0.02em] text-background md:text-[2.75rem] md:leading-[1.1]">
-              Who our partner investors are
+              Who invests with us
             </h2>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-background/60 md:text-lg">
               Our partner investors are exited founders and business owners with
