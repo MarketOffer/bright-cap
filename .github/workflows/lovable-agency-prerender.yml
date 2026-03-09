@@ -1,0 +1,74 @@
+name: Lovable Agency Prerender
+
+on:
+  workflow_dispatch:
+  # uncomment if the website renders dynamic content e.g. via lovable cloud/supabase
+  # schedule:
+  #   - cron: '0 */6 * * *'  # Every 6 hours
+  push:
+    branches: [main]
+    paths: ['src/**', 'public/**', 'index.html', 'lovable-agency-prerender.js']
+
+concurrency:
+  group: prerender
+  cancel-in-progress: true
+
+jobs:
+  prerender:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.3.9" }
+      - run: bun install
+      - uses: actions/cache@v4
+        id: pw-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package.json') }}
+      - run: bunx playwright install chromium
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+      - uses: actions/cache@v4
+        id: apt-cache
+        with:
+          path: ~/pw-apt
+          key: pw-apt-${{ runner.os }}
+      - name: Install Playwright system deps + build
+        run: |
+          (
+            if [ -d ~/pw-apt ] && [ "$(ls ~/pw-apt/*.deb 2>/dev/null)" ]; then
+              sudo dpkg -i ~/pw-apt/*.deb 2>/dev/null || true
+            else
+              bunx playwright install-deps chromium
+              mkdir -p ~/pw-apt && cp /var/cache/apt/archives/*.deb ~/pw-apt/ || true
+            fi
+          ) &
+          bun run build
+          wait
+      - run: node lovable-agency-prerender.js
+      - name: Deploy
+        if: github.ref == 'refs/heads/main'
+        run: |
+          MSG=$(git log -1 --pretty=%s)
+          cd dist && git init
+          git config user.name "lovable-agency"
+          git config user.email "ben@steadybow.co.uk"
+          git remote add origin https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+          git fetch origin lovable-agency-prerender:lovable-agency-prerender 2>/dev/null && git reset --soft lovable-agency-prerender || true
+          git add -A
+          git commit -m "[PRERENDER] $MSG" || exit 0
+          git push --force origin HEAD:lovable-agency-prerender
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist/ }
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        id: deploy
+        uses: actions/deploy-pages@v4
