@@ -5,11 +5,12 @@ import FadeIn from "./FadeIn";
 const CalBookingSection = () => {
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({ namespace: "partner-investor-call" });
+      const cal = await getCalApi({ namespace: "partner-investor-call" } as any);
       cal("ui", {
+        theme: "light",
         cssVarsPerTheme: { light: { "cal-brand": "#3DC9A8" }, dark: { "cal-brand": "#3DC9A8" } },
-        hideEventTypeDetails: false,
-        layout: "week_view",
+        hideEventTypeDetails: true,
+        layout: "month_view",
       });
     })();
   }, []);
@@ -32,7 +33,7 @@ const CalBookingSection = () => {
               calLink="team/brightcap/partner-investor-call"
               calOrigin="https://cal.eu"
               style={{ width: "100%", height: "100%", overflow: "scroll" }}
-              config={{ layout: "week_view", useSlotsViewOnSmallScreen: "true" }}
+              config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" }}
             />
           </div>
         </FadeIn>
