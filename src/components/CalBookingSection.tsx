@@ -1,8 +1,6 @@
-import Cal from "@calcom/embed-react";
 import FadeIn from "./FadeIn";
 
 const CalBookingSection = () => {
-
   return (
     <section id="book" className="px-6 pt-10 pb-10 md:px-10 md:pt-14 md:pb-14">
       <div className="mx-auto max-w-4xl">
@@ -16,13 +14,12 @@ const CalBookingSection = () => {
                 A 30-minute call to understand your goals, walk you through our Cambridge block strategy, and explore whether there's a genuine fit.
               </p>
             </div>
-            <div className="border-t border-border" style={{ minHeight: 600 }}>
-              <Cal
-                namespace="partner-investor-call"
-                calLink="team/brightcap/partner-investor-call"
-                calOrigin="https://cal.eu"
-                style={{ width: "100%", height: "100%", overflow: "scroll" }}
-                config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" }}
+            <div className="border-t border-border">
+              <iframe
+                src="https://cal.eu/team/brightcap/partner-investor-call?layout=month_view&theme=light"
+                style={{ width: "100%", height: 700, border: "none" }}
+                title="Book a partner investor call"
+                loading="lazy"
               />
             </div>
             <div className="px-6 pb-6 md:px-10 md:pb-8 pt-4 border-t border-border text-center">
