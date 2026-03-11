@@ -7,7 +7,7 @@ const CalBookingSection = () => {
     (async function () {
       const cal = await getCalApi({ namespace: "partner-investor-call" });
       cal("ui", {
-        cssVarsPerTheme: { light: { "cal-brand": "#3DC9A8" } },
+        cssVarsPerTheme: { light: { "cal-brand": "#3DC9A8" }, dark: { "cal-brand": "#3DC9A8" } },
         hideEventTypeDetails: true,
         layout: "month_view",
       });
