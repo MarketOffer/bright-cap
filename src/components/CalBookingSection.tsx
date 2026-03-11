@@ -56,8 +56,7 @@ const CalBookingSection = () => {
         <FadeIn delay={0.15}>
           <div
             id="my-cal-inline-partner-investor-call"
-            className="mt-10 w-full [&>iframe]:!h-auto [&>iframe]:!min-h-[680px]"
-            style={{ overflow: "visible" }}
+            className="mt-10 w-full cal-embed-container"
           />
         </FadeIn>
       </div>
