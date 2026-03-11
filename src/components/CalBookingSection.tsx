@@ -37,6 +37,19 @@ const CalBookingSection = () => {
                 config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" }}
               />
             </div>
+            <div className="px-6 pb-6 md:px-10 md:pb-8 pt-4 border-t border-border text-center">
+              <p className="text-sm text-muted-foreground mb-3">
+                Calendar not loading? Book directly instead.
+              </p>
+              <a
+                href="https://cal.eu/team/brightcap/partner-investor-call"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Book on Cal.com →
+              </a>
+            </div>
           </div>
         </FadeIn>
       </div>
