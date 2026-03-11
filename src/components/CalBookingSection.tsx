@@ -1,19 +1,7 @@
-import { useEffect } from "react";
-import Cal, { getCalApi } from "@calcom/embed-react";
+import Cal from "@calcom/embed-react";
 import FadeIn from "./FadeIn";
 
 const CalBookingSection = () => {
-  useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({ namespace: "partner-investor-call", origin: "https://cal.eu" } as any);
-      cal("ui", {
-        theme: "light",
-        cssVarsPerTheme: { light: { "cal-brand": "#3DC9A8" }, dark: { "cal-brand": "#3DC9A8" } },
-        hideEventTypeDetails: true,
-        layout: "month_view",
-      });
-    })();
-  }, []);
 
   return (
     <section id="book" className="px-6 pt-10 pb-10 md:px-10 md:pt-14 md:pb-14">
