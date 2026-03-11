@@ -162,11 +162,13 @@
 
 /* Cal.com embed – let the iframe auto-size without clipping */
 .cal-embed-container {
-  overflow: visible;
-  min-height: 680px;
+  overflow: visible !important;
+  position: relative;
 }
 
+.cal-embed-container > div,
 .cal-embed-container iframe {
   overflow: visible !important;
-  min-height: 680px;
+  height: auto !important;
+  min-height: 680px !important;
 }
