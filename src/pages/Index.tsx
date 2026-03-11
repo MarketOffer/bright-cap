@@ -26,6 +26,7 @@ const Index = () => (
     <FoundersSection />
     <TestimonialSection />
     <InvestCTASection />
+    <CalBookingSection />
     <ContactSection />
     <Footer />
   </>
