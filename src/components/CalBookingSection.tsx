@@ -5,7 +5,7 @@ import FadeIn from "./FadeIn";
 const CalBookingSection = () => {
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({ namespace: "partner-investor-call" } as any);
+      const cal = await getCalApi({ namespace: "partner-investor-call", origin: "https://cal.eu" } as any);
       cal("ui", {
         theme: "light",
         cssVarsPerTheme: { light: { "cal-brand": "#3DC9A8" }, dark: { "cal-brand": "#3DC9A8" } },
