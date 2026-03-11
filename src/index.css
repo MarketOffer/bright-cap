@@ -159,23 +159,3 @@
     letter-spacing: -0.02em;
   }
 }
-
-/* Cal.com embed – force enough vertical room on mobile and keep iframe filling container */
-.cal-embed-container {
-  position: relative;
-  overflow: hidden;
-  height: calc(100dvh + 900px);
-}
-
-@media (min-width: 768px) {
-  .cal-embed-container {
-    height: 1100px;
-  }
-}
-
-.cal-embed-container iframe,
-.cal-embed-container > div {
-  width: 100% !important;
-  height: 100% !important;
-  border: 0;
-}
