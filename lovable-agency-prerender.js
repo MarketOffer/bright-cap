@@ -20,7 +20,8 @@ await new PlaywrightCrawler({
       await page.route("**/*", (route) => {
         const type = route.request().resourceType();
         const url = route.request().url();
-        if (["image", "font", "media", "stylesheet", "ping", "websocket", "manifest", "other"].includes(type)) return route.abort();
+        if (["image", "font", "media", "stylesheet", "ping", "websocket", "manifest", "other"].includes(type))
+          return route.abort();
         if (type === "script" && !url.startsWith("http://localhost:4174")) return route.abort();
         return route.continue();
       });
@@ -32,6 +33,10 @@ await new PlaywrightCrawler({
     if (pathname.includes(".")) return;
 
     await page.waitForLoadState("networkidle").catch(() => {});
+
+    await page.evaluate(() => {
+      document.querySelectorAll('script[src*="cal.eu"]').forEach((el) => el.remove());
+    });
 
     console.log(`  ✓ ${pathname}`);
 
@@ -51,7 +56,11 @@ await new PlaywrightCrawler({
       strategy: "all",
       globs: ["http://localhost:4174/**"],
       transformRequestFunction: (req) => {
-        try { return new URL(req.url).pathname.includes(".") ? false : req; } catch { return false; }
+        try {
+          return new URL(req.url).pathname.includes(".") ? false : req;
+        } catch {
+          return false;
+        }
       },
     });
   },
