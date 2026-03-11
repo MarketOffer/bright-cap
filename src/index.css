@@ -160,15 +160,20 @@
   }
 }
 
-/* Cal.com embed – let the iframe auto-size without clipping */
+/* Cal.com embed – mobile-safe sizing without blocking Cal's own resize logic */
 .cal-embed-container {
-  overflow: visible !important;
   position: relative;
+  overflow: visible;
+  min-height: clamp(960px, 160vh, 1400px);
 }
 
-.cal-embed-container > div,
+@media (min-width: 768px) {
+  .cal-embed-container {
+    min-height: 900px;
+  }
+}
+
 .cal-embed-container iframe {
-  overflow: visible !important;
-  height: auto !important;
-  min-height: 680px !important;
+  width: 100%;
+  border: 0;
 }
