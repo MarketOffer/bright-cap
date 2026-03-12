@@ -79,7 +79,7 @@ const FoundersSection = () => (
           <FadeIn delay={0.25}>
             <div className="mt-10">
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Selected recognition for projects led by our team
+                Selected recognition for projects delivered by our founders
               </p>
               <div className="mt-4 flex items-center gap-8">
                 <img src={logoPia} alt="Property Investors Awards" className="h-8 brightness-0 opacity-[0.35]" />
