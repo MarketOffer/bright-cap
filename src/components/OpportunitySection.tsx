@@ -20,7 +20,7 @@ const OpportunitySection = () => (
       </FadeIn>
       <FadeIn delay={0.3}>
         <p className="mt-8 font-sans text-base leading-relaxed text-foreground md:text-lg">
-          The market hasn't priced this in yet. We've built our strategy around it.
+          The market hasn't priced this in yet. We've built our strategy around this shift.
         </p>
       </FadeIn>
     </div>
