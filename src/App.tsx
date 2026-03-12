@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import CTAComparison from "./pages/CTAComparison";
 import FormComparison from "./pages/FormComparison";
+import BookingComparison from "./pages/BookingComparison";
 
 import NotFound from "./pages/NotFound";
 
