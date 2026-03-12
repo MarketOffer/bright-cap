@@ -38,7 +38,7 @@ const CalBookingSection = () => {
       config: { layout: "column_view", useSlotsViewOnSmallScreen: "true" },
       calLink: "team/brightcap/partner-investor-call",
     });
-    Cal.ns["partner-investor-call"]("ui", { hideEventTypeDetails: true, layout: "month_view" });
+    Cal.ns["partner-investor-call"]("ui", { hideEventTypeDetails: true, layout: "column_view" });
   }, []);
 
   return (
