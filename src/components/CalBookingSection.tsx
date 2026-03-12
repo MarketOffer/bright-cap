@@ -46,7 +46,7 @@ const CalBookingSection = () => {
 
   return (
     <section className="px-6 py-20 md:px-10 md:py-28">
-      <div className="mx-auto max-w-[800px]">
+      <div className="mx-auto max-w-[850px]">
         <FadeIn>
           <div className="rounded-2xl border border-border bg-card p-8 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.10)] md:p-14">
             <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary">
