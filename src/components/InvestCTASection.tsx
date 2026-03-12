@@ -15,7 +15,7 @@ const InvestCTASection = () => (
             building your own property team — we'd love to talk.
           </p>
           <a
-            href="#contact"
+            href="#invest"
             className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-2.5 text-sm font-medium text-foreground shadow-sm transition-colors hover:border-primary/40"
           >
             Invest With Us
