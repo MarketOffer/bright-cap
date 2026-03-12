@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import CTAComparison from "./pages/CTAComparison";
 import FormComparison from "./pages/FormComparison";
 import BookingComparison from "./pages/BookingComparison";
+import HeadlineComparison from "./pages/HeadlineComparison";
 
 import NotFound from "./pages/NotFound";
 
