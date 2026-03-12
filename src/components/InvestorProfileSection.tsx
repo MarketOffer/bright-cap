@@ -8,7 +8,7 @@ const bullets = [
   },
   {
     title: "Business owners",
-    text: "Generating strong profits and looking to grow outside their core industry",
+    text: "With established, cash-generating companies allocating capital outside their core industry",
   },
 ];
 
