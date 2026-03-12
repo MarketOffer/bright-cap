@@ -61,7 +61,7 @@ const CalBookingSection = () => {
                 Cambridge block strategy, and find out whether there's a genuine fit.
               </p>
               <p className="mx-auto mt-3 max-w-2xl text-base font-semibold leading-relaxed text-muted-foreground md:text-lg">
-                Pick a time that works for you below.
+                Pick a date and time that suits you below.
               </p>
             </div>
             <div
