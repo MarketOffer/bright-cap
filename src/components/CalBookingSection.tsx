@@ -46,7 +46,7 @@ const CalBookingSection = () => {
 
   return (
     <section className="px-6 py-20 md:px-10 md:py-28">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-2xl">
         <FadeIn>
           <div className="rounded-2xl border border-border bg-card p-8 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.10)] md:p-14">
             <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary">
@@ -55,11 +55,11 @@ const CalBookingSection = () => {
             <h2 className="mt-4 text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
               Book an Investor Discovery Call
             </h2>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p className="mt-6 font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
               A no-obligation call to discuss your investment goals, explore our
               Cambridge block strategy, and find out whether there's a genuine fit.
             </p>
-            <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p className="mt-4 font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
               Pick a time that works for you below.
             </p>
             <div
