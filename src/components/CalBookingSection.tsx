@@ -43,9 +43,9 @@ const CalBookingSection = () => {
 
   return (
     <section className="px-6 py-20 md:px-10 md:py-28">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-2xl">
         <FadeIn>
-          <div className="rounded-3xl border border-border/40 bg-muted/20 px-8 py-14 md:px-14 md:py-20">
+          <div className="rounded-2xl border border-border bg-card px-8 py-14 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.10)] md:px-14 md:py-20">
             <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
               Book an Investor Discovery Call
             </h2>
