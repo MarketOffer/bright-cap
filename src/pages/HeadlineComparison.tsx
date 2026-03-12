@@ -47,15 +47,15 @@ const HeadlineComparison = () => (
       </p>
 
       <div className="mt-16 space-y-20">
-        <VariantCard label="A — Original">
+        <VariantCard label="A — Imperative">
           <HeroPreview
-            headline={<>Investing in real estate for <span className="whitespace-nowrap">the AI era</span></>}
+            headline={<>Invest in property for <span className="whitespace-nowrap">the AI era</span></>}
           />
         </VariantCard>
 
-        <VariantCard label="B — City-focused">
+        <VariantCard label="B — Gerund">
           <HeroPreview
-            headline={<>Property investment in cities that will thrive in <span className="whitespace-nowrap">the AI era</span></>}
+            headline={<>Investing in property for <span className="whitespace-nowrap">the AI era</span></>}
           />
         </VariantCard>
       </div>
