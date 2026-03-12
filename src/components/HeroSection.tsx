@@ -27,7 +27,7 @@ const HeroSection = () => {
         <div className="max-w-xl">
           <FadeIn>
             <h1 className="text-[2.5rem] font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-5xl md:text-[3.25rem] lg:text-[4rem] xl:text-[4.5rem]">
-              Investing in real estate for <span className="whitespace-nowrap">the AI era</span>
+              Investing in property for <span className="whitespace-nowrap">the AI era</span>
             </h1>
           </FadeIn>
           <FadeIn delay={0.15}>

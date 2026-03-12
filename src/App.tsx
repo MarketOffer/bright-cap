@@ -4,11 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import CTAComparison from "./pages/CTAComparison";
-import FormComparison from "./pages/FormComparison";
-import BookingComparison from "./pages/BookingComparison";
-import HeadlineComparison from "./pages/HeadlineComparison";
-
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,12 +16,6 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/cta-comparison" element={<CTAComparison />} />
-          <Route path="/form-comparison" element={<FormComparison />} />
-          <Route path="/booking-comparison" element={<BookingComparison />} />
-          <Route path="/headline-comparison" element={<HeadlineComparison />} />
-          
-          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
