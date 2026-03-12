@@ -60,13 +60,40 @@ const CalBookingSection = () => {
                 A no-obligation call to discuss your investment goals, explore our
                 Cambridge block strategy, and find out whether there's a genuine fit.
               </p>
-              <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              <p className="mx-auto mt-3 max-w-2xl text-base font-semibold leading-relaxed text-foreground md:text-lg">
                 Pick a time that works for you below.
               </p>
+              {/* Hand-drawn curved arrow pointing down */}
+              <svg
+                className="mx-auto mt-3 text-primary"
+                width="40"
+                height="48"
+                viewBox="0 0 40 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 4 C10 8, 8 20, 14 30 C18 36, 20 38, 20 42"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  fill="none"
+                  strokeDasharray="0"
+                  style={{ strokeLinejoin: "round" }}
+                />
+                <path
+                  d="M14 38 L20 46 L26 38"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
             </div>
             <div
               id="my-cal-inline-partner-investor-call"
-              className="mt-6"
+              className="mt-4"
               style={{ width: "100%", minHeight: "400px", overflow: "visible" }}
             />
           </div>
