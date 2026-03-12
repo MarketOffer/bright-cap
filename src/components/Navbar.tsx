@@ -60,7 +60,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3 md:hidden">
           {/* Slide-in CTA when hero button scrolls away */}
           <a
-            href="#contact"
+            href="#invest"
             className={`rounded-sm bg-primary px-4 py-1.5 text-xs font-semibold tracking-wide text-primary-foreground transition-all duration-300 ${
               heroCtaVisible ? "pointer-events-none translate-y-1 opacity-0" : "translate-y-0 opacity-100"
             }`}
