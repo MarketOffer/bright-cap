@@ -5,7 +5,7 @@ import logoPe from "@/assets/logo-property-entrepreneur.png";
 
 const stats = [
   { number: "£5.7M", label: "Property portfolio" },
-  { number: "34", label: "Years combined experience" },
+  { number: "34", label: "Years experience" },
   { number: "20+", label: "UK & Global property and business awards" },
 ];
 
