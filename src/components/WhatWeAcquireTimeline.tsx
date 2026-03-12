@@ -2,7 +2,7 @@ import FadeIn from "./FadeIn";
 import blockPhoto from "@/assets/cambridge-block-flats.webp";
 
 const steps = [
-  { num: "01", title: "Acquire undervalued blocks", detail: "Typically 2 to 20 units." },
+  { num: "01", title: "Acquire blocks with uplift potential", detail: "Typically 2 to 20 units." },
   { num: "02", title: "Create 15–25% equity uplift", detail: "Through title splitting and high‑spec renovation of each unit." },
   { num: "03", title: "Generate long‑term hands‑off income", detail: "Let to professional tenants or supported living providers." },
 ];
