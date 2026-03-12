@@ -13,16 +13,16 @@ const Footer = () => (
         </div>
       </div>
       <div className="mt-8 max-w-xl space-y-3">
-        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+        <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
           BrightCap does not provide regulated financial or investment advice. This website is for information purposes only and does not constitute an offer to invest.
         </p>
-        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+        <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
           From time to time, opportunities to invest in property projects originated by our team may be discussed privately with suitable investors and will be subject to separate documentation.
         </p>
-        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+        <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
           Property investments involve risk and the value of investments can go down as well as up. Past performance is not a reliable indicator of future results.
         </p>
-        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+        <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
           BrightCap is a trading name of Real Marketplace Ltd, a company registered in England and Wales (Company No. 14456959). Registered Office: The Offices, 53 King Street, Manchester, England, M2 4LQ.
         </p>
         <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
