@@ -66,8 +66,8 @@ const CalBookingSection = () => {
             </div>
             <div
               id="my-cal-inline-partner-investor-call"
-              className="mt-10"
-              style={{ width: "100%", minHeight: "600px", overflow: "visible" }}
+              className="mt-6"
+              style={{ width: "100%", minHeight: "400px", overflow: "visible" }}
             />
           </div>
         </FadeIn>
