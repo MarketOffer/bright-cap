@@ -59,7 +59,10 @@ const FoundersSection = () => (
 
           {/* Stat callouts */}
           <FadeIn delay={0.2}>
-            <div className="mt-10 grid grid-cols-3 gap-6">
+            <p className="mt-10 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              Combined founder experience
+            </p>
+            <div className="mt-4 grid grid-cols-3 gap-6">
               {stats.map((stat) => (
                 <div key={stat.label} className="border-t border-border pt-4">
                   <p className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
