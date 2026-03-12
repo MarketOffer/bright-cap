@@ -60,7 +60,7 @@ const CalBookingSection = () => {
                 A no-obligation call to discuss your investment goals, explore our
                 Cambridge block strategy, and find out whether there's a genuine fit.
               </p>
-              <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              <p className="mx-auto mt-3 max-w-2xl text-base font-semibold leading-relaxed text-muted-foreground md:text-lg">
                 Pick a time that works for you below.
               </p>
             </div>
