@@ -10,7 +10,7 @@ import FoundersSection from "@/components/FoundersSection";
 import TestimonialSection from "@/components/TestimonialSection";
 import InvestCTASection from "@/components/InvestCTASection";
 import CalBookingSection from "@/components/CalBookingSection";
-import ContactSection from "@/components/ContactSection";
+
 import Footer from "@/components/Footer";
 
 const Index = () => (
@@ -27,7 +27,7 @@ const Index = () => (
     <TestimonialSection />
     <InvestCTASection />
     <CalBookingSection />
-    <ContactSection />
+    
     <Footer />
   </>
 );
