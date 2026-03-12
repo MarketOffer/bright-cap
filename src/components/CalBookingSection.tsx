@@ -56,12 +56,16 @@ const CalBookingSection = () => {
             <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
               Pick a time that works for you below.
             </p>
-            <div
-              id="my-cal-inline-partner-investor-call"
-              className="mt-10"
-              style={{ width: "100%", minHeight: "600px", overflow: "visible" }}
-            />
           </div>
+        </FadeIn>
+      </div>
+      <div className="mx-auto max-w-5xl">
+        <FadeIn delay={0.15}>
+          <div
+            id="my-cal-inline-partner-investor-call"
+            className="mt-10"
+            style={{ width: "100%", minHeight: "600px", overflow: "visible" }}
+          />
         </FadeIn>
       </div>
     </section>
