@@ -17,6 +17,9 @@ const Footer = () => (
           brightcap does not provide regulated financial advice. Co-investment opportunities are available to sophisticated and high net worth investors only.
         </p>
         <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
+          ¹ Sources: ONS UK House Price Index, WIPO Global Innovation Index, Cambridge Ahead / CBR, Complete University Guide.
+        </p>
+        <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
           ¹ Testimonial relates to a project delivered by our founder's construction and property business, prior to the launch of BrightCap.
         </p>
       </div>
