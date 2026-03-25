@@ -19,7 +19,7 @@ const TestimonialSection = () => (
                 "I was looking to grow my wealth through property investment but didn't have the expertise or time to handle it myself. Sam and his team made the entire process seamless, managing everything from start to finish. Their professionalism and expertise have exceeded my expectations – an effortless investment experience with a great return!"
               </blockquote>
               <p className="mt-8 text-base font-semibold text-foreground">Mr. Tomlinson</p>
-              <p className="text-sm text-muted-foreground"><p className="text-sm text-muted-foreground">Business Owner<sup>2</sup></p></p>
+              <p className="text-sm text-muted-foreground">Business Owner & Private Investor<sup>2</sup></p>
             </div>
           </FadeIn>
         </div>
