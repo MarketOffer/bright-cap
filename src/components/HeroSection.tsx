@@ -32,7 +32,7 @@ const HeroSection = () => {
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="mt-8 max-w-md font-sans text-base leading-relaxed text-muted-foreground md:text-[1.0625rem]">
-              We acquire residential property in cities at the centre of the AI transformation and occasionally partner with experienced business owners as investors.
+              We acquire residential blocks in cities at the centre of the AI transformation — either directly or through joint-ventures with investors.
             </p>
           </FadeIn>
           <FadeIn delay={0.3}>
