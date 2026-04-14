@@ -2,6 +2,7 @@ import FadeIn from "./FadeIn";
 import logoBbc from "@/assets/logo-bbc.svg";
 import logoPia from "@/assets/logo-property-investor-awards.svg";
 import logoPe from "@/assets/logo-property-entrepreneur.png";
+import andyPhoto from "@/assets/andy-fidler.webp";
 
 const stats = [
   { number: "£6.2M", label: "Property portfolio" },
@@ -10,7 +11,7 @@ const stats = [
 ];
 
 const founders = [
-  { name: "Andy Fidler", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop&crop=face" },
+  { name: "Andy Fidler", img: andyPhoto },
   { name: "Sam Carter", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&h=750&fit=crop&crop=face" },
 ];
 
