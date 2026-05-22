@@ -56,7 +56,7 @@ const CambridgeSection = () => (
                 {stat.detail}
               </p>
               {stat.source && (
-                <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/50">
+                <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/70">
                   {stat.source}
                 </p>
               )}

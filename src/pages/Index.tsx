@@ -21,18 +21,19 @@ const Index = () => (
       <meta property="og:url" content="https://cambridge-capital-flow.lovable.app/" />
     </Helmet>
     <Navbar />
-    <HeroSection />
-    <LogoStrip />
-    <OpportunitySection />
-    <CambridgeSection />
-    <WhatWeAcquireTimeline />
-    <ConstructionSection />
-    <InvestorProfileSection />
-    <FoundersSection />
-    <TestimonialSection />
-    <InvestCTASection />
-    <CalBookingSection />
-    
+    <main>
+      <HeroSection />
+      <LogoStrip />
+      <OpportunitySection />
+      <CambridgeSection />
+      <WhatWeAcquireTimeline />
+      <ConstructionSection />
+      <InvestorProfileSection />
+      <FoundersSection />
+      <TestimonialSection />
+      <InvestCTASection />
+      <CalBookingSection />
+    </main>
     <Footer />
   </>
 );
