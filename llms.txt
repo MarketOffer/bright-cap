@@ -2,6 +2,11 @@
 
 > brightcap acquires residential blocks in Cambridge in selective partnership with sophisticated co-investors.
 
+## Pages
+
+- [Home](/): brightcap's Cambridge property co-investment thesis, founders, process, and partner-investor call booking.
+- [Contact](/contactus): Full contact details — phone, email, registered office.
+
 ## About brightcap
 
 brightcap is a property co-investment platform focused exclusively on Cambridge, UK. We acquire residential blocks in one of the world's most resilient property markets — a city built to thrive in the AI era.
