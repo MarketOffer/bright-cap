@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import LogoStrip from "@/components/LogoStrip";
@@ -15,6 +16,10 @@ import Footer from "@/components/Footer";
 
 const Index = () => (
   <>
+    <Helmet>
+      <link rel="canonical" href="https://cambridge-capital-flow.lovable.app/" />
+      <meta property="og:url" content="https://cambridge-capital-flow.lovable.app/" />
+    </Helmet>
     <Navbar />
     <HeroSection />
     <LogoStrip />
