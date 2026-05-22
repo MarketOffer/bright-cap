@@ -37,7 +37,7 @@ const CambridgeVariantPhotoFirst = () => (
               <span className="text-base font-semibold leading-snug tracking-wide text-foreground md:text-lg">{stat.label}</span>
               <span className="mt-4 text-5xl font-semibold tracking-tight text-primary md:text-6xl">{stat.highlight}</span>
               <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground">{stat.detail}</p>
-              {stat.source && <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/50">{stat.source}</p>}
+              {stat.source && <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/70">{stat.source}</p>}
             </div>
           </FadeIn>
         ))}

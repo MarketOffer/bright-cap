@@ -51,6 +51,10 @@ const HeroSection = () => {
         <img
           src={heroBg}
           alt="Cambridge cityscape"
+          width={1600}
+          height={1200}
+          fetchPriority="high"
+          decoding="async"
           className="h-full w-full object-cover md:absolute md:inset-0"
         />
       </div>
