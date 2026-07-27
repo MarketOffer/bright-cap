@@ -5,7 +5,10 @@
 ## Pages
 
 - [Home](/): brightcap's Cambridge property co-investment thesis, founders, process, and partner-investor call booking.
-- [Contact](/contactus): Full contact details — phone, email, registered office.
+- [Contact](/contact): Full contact details — phone, email, registered office.
+- [Privacy Notice](/privacy): How BrightCap collects and uses personal data.
+- [Website Terms](/terms): Terms that apply to use of brightcap.capital.
+- [Cookies Notice](/cookies): Cookies, local storage and the embedded scheduler.
 
 ## About brightcap
 
