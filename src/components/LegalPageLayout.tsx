@@ -32,6 +32,8 @@ const LegalPageLayout = ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonical} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
       </Helmet>
       <Navbar />
       <main className="px-6 pb-24 pt-32 md:px-10 md:pt-40">

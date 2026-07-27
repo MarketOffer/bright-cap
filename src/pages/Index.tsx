@@ -17,8 +17,23 @@ import Footer from "@/components/Footer";
 const Index = () => (
   <>
     <Helmet>
+      <title>BrightCap | Cambridge Residential Property Partnerships</title>
+      <meta
+        name="description"
+        content="BrightCap, a trading name of RM Incorporations Ltd, acquires and operates residential blocks in Cambridge through group companies and selected joint ventures."
+      />
       <link rel="canonical" href="https://brightcap.capital/" />
+      <meta property="og:title" content="BrightCap | Cambridge Residential Property Partnerships" />
+      <meta
+        property="og:description"
+        content="BrightCap, a trading name of RM Incorporations Ltd, acquires and operates residential blocks in Cambridge through group companies and selected joint ventures."
+      />
       <meta property="og:url" content="https://brightcap.capital/" />
+      <meta name="twitter:title" content="BrightCap | Cambridge Residential Property Partnerships" />
+      <meta
+        name="twitter:description"
+        content="BrightCap, a trading name of RM Incorporations Ltd, acquires and operates residential blocks in Cambridge through group companies and selected joint ventures."
+      />
     </Helmet>
     <Navbar />
     <main>
