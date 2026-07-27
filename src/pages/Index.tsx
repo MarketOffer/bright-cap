@@ -29,6 +29,11 @@ const Index = () => (
         content="BrightCap, a trading name of RM Incorporations Ltd, acquires and operates residential blocks in Cambridge through group companies and selected joint ventures."
       />
       <meta property="og:url" content="https://brightcap.capital/" />
+      <meta name="twitter:title" content="BrightCap | Cambridge Residential Property Partnerships" />
+      <meta
+        name="twitter:description"
+        content="BrightCap, a trading name of RM Incorporations Ltd, acquires and operates residential blocks in Cambridge through group companies and selected joint ventures."
+      />
     </Helmet>
     <Navbar />
     <main>

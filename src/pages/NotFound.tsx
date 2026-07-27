@@ -18,6 +18,11 @@ const NotFound = () => {
           content="The page you're looking for doesn't exist. Return to the BrightCap homepage."
         />
         <meta name="robots" content="noindex, follow" />
+        <meta name="twitter:title" content="Page not found (404) | BrightCap" />
+        <meta
+          name="twitter:description"
+          content="The page you're looking for doesn't exist. Return to the BrightCap homepage."
+        />
         <meta property="og:title" content="Page not found (404) | BrightCap" />
         <meta
           property="og:description"
