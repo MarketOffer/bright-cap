@@ -3,8 +3,14 @@ import FadeIn from "./FadeIn";
 import cambridgeVideo from "@/assets/cambridge-video.mp4";
 import cambridgePoster from "@/assets/hero-cambridge.jpg";
 
-const stats = [
-  { label: "Global Science & Tech", highlight: "No.1", detail: "Cluster in world — three years running", source: "WIPO 2022–2024" },
+const stats: { label: string; highlight: string; detail: string; source?: string; sourceUrl?: string }[] = [
+  {
+    label: "Science & Tech",
+    highlight: "No.1",
+    detail: "Most innovation-intensive cluster in Europe — No.2 globally",
+    source: "WIPO 2025",
+    sourceUrl: "https://www.wipo.int/en/web/global-innovation-index/2025/innovation-clusters",
+  },
   { label: "World-Class Talent", highlight: "No.1", detail: "UK university" },
   { label: "Deep Tech Ecosystem", highlight: "5,300+", detail: "Science & tech firms incl. Google, Apple, ARM, AstraZeneca" },
   { label: "High Capital Growth", highlight: "50%", detail: "Over last 10 years" },
@@ -94,7 +100,22 @@ const CambridgeVariantVideo = () => {
               <span className="text-base font-semibold leading-snug tracking-wide text-foreground md:text-lg">{stat.label}</span>
               <span className="mt-4 text-5xl font-semibold tracking-tight text-primary md:text-6xl">{stat.highlight}</span>
               <p className="mt-4 font-sans text-sm leading-relaxed text-muted-foreground">{stat.detail}</p>
-              {stat.source && <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/70">{stat.source}</p>}
+              {stat.source && (
+                <p className="mt-1 font-sans text-[0.65rem] text-muted-foreground/70">
+                  {stat.sourceUrl ? (
+                    <a
+                      href={stat.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-2 transition-colors hover:text-primary"
+                    >
+                      {stat.source}
+                    </a>
+                  ) : (
+                    stat.source
+                  )}
+                </p>
+              )}
             </div>
           </FadeIn>
         ))}
