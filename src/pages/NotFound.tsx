@@ -9,7 +9,7 @@ const NotFound = () => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
-  const canonical = `https://cambridge-capital-flow.lovable.app${location.pathname}`;
+  const canonical = `https://brightcap.capital${location.pathname}`;
 
   return (
     <>
