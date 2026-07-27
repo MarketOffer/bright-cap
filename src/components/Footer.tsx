@@ -59,7 +59,7 @@ const Footer = () => (
           {company.legalDisclosure}
         </p>
         <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
-          <sup>1</sup> Sources: ONS UK House Price Index, WIPO Global Innovation Index, Cambridge Ahead / CBR, Complete University Guide.
+          <sup>1</sup> Sources: ONS UK House Price Index, WIPO Global Innovation Index 2025, Cambridge Ahead / CBR, Complete University Guide.
         </p>
         <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
           <sup>2</sup> Testimonial relates to a project delivered by our founder's construction and property business prior to the launch of BrightCap.
