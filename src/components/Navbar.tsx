@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import brightcapLogo from "@/assets/brightcap_logo.svg";
 
 const navLinks = [
@@ -8,9 +9,13 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const to = (hash: string) => (isHome ? hash : `/${hash}`);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [heroCtaVisible, setHeroCtaVisible] = useState(true);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
