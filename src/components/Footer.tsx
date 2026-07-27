@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import brightcapLogo from "@/assets/brightcap_logo.svg";
 import { company, currentYear } from "@/config/company";
 
@@ -5,18 +6,23 @@ const Footer = () => (
   <footer className="border-t border-border px-6 py-12 md:px-10">
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
-        <img src={brightcapLogo} alt="brightcap" className="h-4" />
+        <Link to="/">
+          <img src={brightcapLogo} alt="brightcap" className="h-4" />
+        </Link>
 
         <div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
           {/* Terms & Policies */}
           <div className="space-y-2">
             <h4 className="font-sans text-xs font-semibold text-foreground">Terms &amp; Policies</h4>
-            <a href="#" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+            <Link to="/privacy" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
               Privacy Policy
-            </a>
-            <a href="#" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+            </Link>
+            <Link to="/terms" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
               Web Terms
-            </a>
+            </Link>
+            <Link to="/cookies" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+              Cookies
+            </Link>
           </div>
 
           {/* Contact Us */}
@@ -28,10 +34,9 @@ const Footer = () => (
             <a href={`mailto:${company.email}`} className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
               {company.email}
             </a>
-            <a href="/contactus" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
-
+            <Link to="/contact" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
               Full Contact Details
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -42,13 +47,13 @@ const Footer = () => (
 
       <div className="mt-8 max-w-xl space-y-3">
         <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
-          BrightCap does not provide regulated financial or investment advice. This website is for information purposes only and does not constitute an offer to invest.
+          BrightCap does not provide regulated financial or investment advice. This public website provides general information about our business and strategy. It is not a personal recommendation or an offer to participate in a specific investment.
         </p>
         <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
-          From time to time, opportunities to invest in property projects originated by our team may be discussed privately with suitable investors and will be subject to separate documentation.
+          Any specific opportunity will be communicated separately only to an eligible recipient and will be subject to its own information, due diligence and definitive legal documentation issued by the relevant property-specific company.
         </p>
         <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
-          Property investments involve risk and the value of investments can go down as well as up. Past performance is not a reliable indicator of future results.
+          Property investment is illiquid and involves risk. Capital and returns are not guaranteed, and an investor may receive back less than they invest. Past performance is not a reliable indicator of future results.
         </p>
         <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
           {company.legalDisclosure}
@@ -60,6 +65,7 @@ const Footer = () => (
           <sup>2</sup> Testimonial relates to a project delivered by our founder's construction and property business prior to the launch of BrightCap.
         </p>
       </div>
+
     </div>
   </footer>
 );
