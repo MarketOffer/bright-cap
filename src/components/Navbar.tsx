@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import brightcapLogo from "@/assets/brightcap_logo.svg";
 
 const navLinks = [
@@ -8,9 +9,13 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const to = (hash: string) => (isHome ? hash : `/${hash}`);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [heroCtaVisible, setHeroCtaVisible] = useState(true);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -33,7 +38,7 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center justify-between px-6 py-5 md:px-16 lg:px-24">
-        <a href="#">
+        <a href={isHome ? "#" : "/"}>
           <img src={brightcapLogo} alt="brightcap" className="h-6" />
         </a>
 
@@ -42,14 +47,14 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <a
               key={link.href}
-              href={link.href}
+              href={to(link.href)}
               className="text-sm tracking-[0.02em] text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
               {link.label}
             </a>
           ))}
           <a
-            href="#invest"
+            href={to("#invest")}
             className="rounded-sm bg-primary px-6 py-2.5 text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
           >
             Invest With Us
@@ -60,7 +65,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3 md:hidden">
           {/* Slide-in CTA when hero button scrolls away */}
           <a
-            href="#invest"
+            href={to("#invest")}
             className={`rounded-sm bg-primary px-4 py-1.5 text-xs font-semibold tracking-wide text-primary-foreground transition-all duration-300 ${
               heroCtaVisible ? "pointer-events-none translate-y-1 opacity-0" : "translate-y-0 opacity-100"
             }`}
@@ -86,7 +91,7 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <a
               key={link.href}
-              href={link.href}
+              href={to(link.href)}
               onClick={() => setMobileOpen(false)}
               className="block py-3 text-sm tracking-[0.02em] text-muted-foreground"
             >
@@ -94,7 +99,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="#invest"
+            href={to("#invest")}
             onClick={() => setMobileOpen(false)}
             className="mt-3 inline-block rounded-sm bg-primary px-6 py-2.5 text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
           >
