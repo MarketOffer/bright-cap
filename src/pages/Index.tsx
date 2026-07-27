@@ -17,8 +17,8 @@ import Footer from "@/components/Footer";
 const Index = () => (
   <>
     <Helmet>
-      <link rel="canonical" href="https://cambridge-capital-flow.lovable.app/" />
-      <meta property="og:url" content="https://cambridge-capital-flow.lovable.app/" />
+      <link rel="canonical" href="https://brightcap.capital/" />
+      <meta property="og:url" content="https://brightcap.capital/" />
     </Helmet>
     <Navbar />
     <main>

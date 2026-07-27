@@ -39,4 +39,4 @@ Allow: /
 User-agent: cohere-ai
 Allow: /
 
-Sitemap: https://cambridge-capital-flow.lovable.app/sitemap.xml
+Sitemap: https://brightcap.capital/sitemap.xml
