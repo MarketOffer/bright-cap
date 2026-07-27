@@ -1,4 +1,5 @@
 import brightcapLogo from "@/assets/brightcap_logo.svg";
+import { company, currentYear } from "@/config/company";
 
 const Footer = () => (
   <footer className="border-t border-border px-6 py-12 md:px-10">
@@ -21,13 +22,14 @@ const Footer = () => (
           {/* Contact Us */}
           <div className="space-y-2">
             <h4 className="font-sans text-xs font-semibold text-foreground">Contact Us</h4>
-            <a href="tel:08000862278" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
-              0800 086 2278
+            <a href={company.telephoneHref} className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+              {company.telephone}
             </a>
-            <a href="mailto:support@brightcap.capital" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
-              support@brightcap.capital
+            <a href={`mailto:${company.email}`} className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+              {company.email}
             </a>
             <a href="/contactus" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+
               Full Contact Details
             </a>
           </div>
@@ -35,7 +37,7 @@ const Footer = () => (
       </div>
 
       <div className="mt-6">
-        <span className="font-sans text-xs text-muted-foreground">© 2025 brightcap</span>
+        <span className="font-sans text-xs text-muted-foreground">© {currentYear} BrightCap</span>
       </div>
 
       <div className="mt-8 max-w-xl space-y-3">
@@ -49,7 +51,7 @@ const Footer = () => (
           Property investments involve risk and the value of investments can go down as well as up. Past performance is not a reliable indicator of future results.
         </p>
         <p className="font-sans text-[11px] leading-relaxed text-muted-foreground">
-          BrightCap is a trading name of Real Marketplace Ltd, a company registered in England and Wales (Company No. 14456959). Registered Office: The Offices, 53 King Street, Manchester, England, M2 4LQ.
+          {company.legalDisclosure}
         </p>
         <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
           <sup>1</sup> Sources: ONS UK House Price Index, WIPO Global Innovation Index, Cambridge Ahead / CBR, Complete University Guide.

@@ -53,10 +53,10 @@ const FoundersSection = () => (
             <p className="mt-6 font-sans text-base leading-relaxed text-muted-foreground md:text-lg">
               BrightCap is led by entrepreneurs with a track record of building businesses and delivering property projects for private investors.
               <br /><br />
-              Alongside BrightCap, we own{" "}
-              <span className="font-semibold text-foreground">MarketOffer</span>,
-              a nationwide social housing leasing platform, and Sam's family construction and maintenance business has been delivering projects in Cambridge for over 25 years.
+              Alongside BrightCap, our founders also own{" "}
+              <span className="font-semibold text-foreground">MarketOffer</span>, a nationwide social housing leasing platform, while Sam's family construction and maintenance business has been delivering projects in Cambridge for over 25 years.
             </p>
+
           </FadeIn>
 
           {/* Stat callouts */}
