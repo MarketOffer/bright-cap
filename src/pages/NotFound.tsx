@@ -9,24 +9,20 @@ const NotFound = () => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
-  const canonical = `https://brightcap.capital${location.pathname}`;
-
   return (
     <>
       <Helmet>
         <title>Page not found (404) | BrightCap</title>
         <meta
           name="description"
-          content="The page you're looking for doesn't exist. Return to the BrightCap homepage to explore Cambridge property co-investment opportunities."
+          content="The page you're looking for doesn't exist. Return to the BrightCap homepage."
         />
         <meta name="robots" content="noindex, follow" />
-        <link rel="canonical" href={canonical} />
         <meta property="og:title" content="Page not found (404) | BrightCap" />
         <meta
           property="og:description"
           content="The page you're looking for doesn't exist. Return to the BrightCap homepage."
         />
-        <meta property="og:url" content={canonical} />
       </Helmet>
       <div className="flex min-h-screen items-center justify-center bg-muted">
         <div className="text-center">
