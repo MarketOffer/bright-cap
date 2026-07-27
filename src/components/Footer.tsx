@@ -22,13 +22,14 @@ const Footer = () => (
           {/* Contact Us */}
           <div className="space-y-2">
             <h4 className="font-sans text-xs font-semibold text-foreground">Contact Us</h4>
-            <a href="tel:08000862278" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
-              0800 086 2278
+            <a href={company.telephoneHref} className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+              {company.telephone}
             </a>
-            <a href="mailto:support@brightcap.capital" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
-              support@brightcap.capital
+            <a href={`mailto:${company.email}`} className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+              {company.email}
             </a>
             <a href="/contactus" className="block font-sans text-xs text-muted-foreground transition-colors hover:text-foreground">
+
               Full Contact Details
             </a>
           </div>
