@@ -1,4 +1,5 @@
 import brightcapLogo from "@/assets/brightcap_logo.svg";
+import { company, currentYear } from "@/config/company";
 
 const Footer = () => (
   <footer className="border-t border-border px-6 py-12 md:px-10">
