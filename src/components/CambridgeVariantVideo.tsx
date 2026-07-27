@@ -4,7 +4,13 @@ import cambridgeVideo from "@/assets/cambridge-video.mp4";
 import cambridgePoster from "@/assets/hero-cambridge.jpg";
 
 const stats = [
-  { label: "Global Science & Tech", highlight: "No.1", detail: "Cluster in world — three years running", source: "WIPO 2022–2024" },
+  {
+    label: "Science & Tech",
+    highlight: "No.1",
+    detail: "Most innovation-intensive cluster in Europe — No.2 globally",
+    source: "WIPO 2025",
+    sourceUrl: "https://www.wipo.int/en/web/global-innovation-index/2025/innovation-clusters",
+  },
   { label: "World-Class Talent", highlight: "No.1", detail: "UK university" },
   { label: "Deep Tech Ecosystem", highlight: "5,300+", detail: "Science & tech firms incl. Google, Apple, ARM, AstraZeneca" },
   { label: "High Capital Growth", highlight: "50%", detail: "Over last 10 years" },
