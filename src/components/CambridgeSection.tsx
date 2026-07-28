@@ -19,8 +19,8 @@ const stats = [
   },
   {
     label: "High Capital Growth",
-    highlight: "50%",
-    detail: "Over last 10 years",
+    highlight: "100%",
+    detail: "Over last 20 years",
   },
   {
     label: "High Employment Growth",
