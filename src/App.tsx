@@ -8,6 +8,8 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
+import Investors from "./pages/Investors";
+import InvestorEligibility from "./pages/InvestorEligibility";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
