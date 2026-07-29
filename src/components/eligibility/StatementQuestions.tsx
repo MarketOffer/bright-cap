@@ -48,8 +48,27 @@ const StatementQuestions = ({
   const specs = CONDITIONS[kind];
   const set = (key: string, value: unknown) => onAnswers({ ...answers, [key]: value });
 
+  /**
+   * Display-only derivation. When every condition is answered No the individual
+   * No selections are shown as cleared and the "None of these apply to me" box is
+   * shown as ticked — the underlying answers remain "no" and are persisted as such.
+   */
+  const allNo =
+    specs.length > 0 && specs.every((spec) => (answers[spec.letter] as Answer) === "no");
+  const anyYes = specs.some((spec) => (answers[spec.letter] as Answer) === "yes");
+
+  const clearConditions = () => {
+    const next = { ...answers };
+    specs.forEach((spec) => {
+      delete next[spec.letter];
+    });
+    next.none = false;
+    onAnswers(next);
+  };
+
   const conditionBlock = (blockId: string) =>
     definition.blocks.find((block) => block.id === blockId);
+
 
   return (
     <section
