@@ -94,7 +94,6 @@ const InvestorEligibility = () => {
       kind && !current.includes(kind) ? [...current, kind] : current,
     );
     setKind(alternative);
-    setNoneApply(false);
     setAnswers({});
     setDeclarations({});
     setSignatureTyped("");
@@ -371,7 +370,6 @@ const InvestorEligibility = () => {
                             checked={kind === route.kind}
                             onChange={() => {
                               setKind(route.kind);
-                              setNoneApply(false);
                             }}
                             className="mt-1.5 h-4 w-4 accent-primary"
                           />
