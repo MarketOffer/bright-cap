@@ -330,10 +330,47 @@ Deno.serve(async (req) => {
 
     console.log("eligibility submission accepted", { kinds, statements: statementIds.length });
 
-    return new Response(JSON.stringify({ ok: true, statementIds }), {
+    // ---- Slice 4: gated document delivery (feature-flagged, OFF by default) --
+    // With the flag off this block is a no-op and Slice 3 behaviour is unchanged.
+    let delivery: { issued: boolean; emailed: boolean } = { issued: false, emailed: false };
+    try {
+      if (await flagEnabled(supabase)) {
+        const issued = await issueAccessToken(supabase, {
+          contactId,
+          statementId: statementIds[0],
+        });
+        if (issued.ok && issued.token) {
+          const { data: document } = await supabase
+            .from("documents")
+            .select("promoter_entity_name, promoter_company_number")
+            .eq("slug", issued.documentSlug!)
+            .maybeSingle();
+          const sent = await sendAccessEmail({
+            to: email,
+            fullName,
+            link: `${SITE_ORIGIN}/investors/summary?t=${issued.token}`,
+            expiresAt: issued.expiresAt!,
+            promoterName: document?.promoter_entity_name ?? "the promoter",
+            promoterNumber: document?.promoter_company_number ?? "",
+          });
+          delivery = { issued: true, emailed: sent.sent };
+          console.log("access token issued", { tokenId: issued.tokenId, emailed: sent.sent });
+        } else {
+          console.log("access token not issued", { reason: issued.reason });
+        }
+      }
+    } catch (deliveryError) {
+      // Delivery failure must never invalidate a valid certification.
+      console.error("access delivery failed", {
+        message: deliveryError instanceof Error ? deliveryError.message : "unknown error",
+      });
+    }
+
+    return new Response(JSON.stringify({ ok: true, statementIds, delivery }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
+
   } catch (error) {
     console.error("eligibility submission failed", {
       message: error instanceof Error ? error.message : "unknown error",
