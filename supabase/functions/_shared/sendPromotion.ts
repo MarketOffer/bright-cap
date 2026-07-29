@@ -255,7 +255,9 @@ export interface PromotionParams {
     text: string;
     html?: string;
     fullName?: string;
+    emailType: EmailType | string;
   };
+
 }
 
 export interface PromotionResult {
