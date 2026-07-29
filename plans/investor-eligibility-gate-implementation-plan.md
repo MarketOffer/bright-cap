@@ -460,6 +460,8 @@ Deviations from the gate as written, and why:
 | **Slice 2 test gate (statement components)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
 | **Slice 3 test gate (3.1–3.26)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
 | **Slice 4 test gate (4.1–4.17)** | Dev | **Green — 29 Jul 2026; flag stays OFF pending 4.18** | 2026-07-29 |
+| **Slice 5 test gate (5.1–5.10)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
+| **Slice 5 — staff accounts to provision** | Directors | Open (public sign-up disabled; roles granted server-side) | |
 | **Slice 4 item 4.18 — SHA confirmation before the flag flips** | Solicitor | Open | |
 | Backend region UK/EU confirmed | Dev | **Closed — EU, eu-west-1 (Ireland)** | 2026-07-29 |
 | Brief item 2 — public copy remediated and signed off | Solicitor | Open | |
