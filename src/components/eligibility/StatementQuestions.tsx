@@ -245,7 +245,7 @@ const StatementQuestions = ({
           </p>
         )}
 
-        <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-statutory">
+        <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-statutory">
 
           <input
             type="checkbox"
