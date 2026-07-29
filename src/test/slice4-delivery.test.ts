@@ -140,9 +140,9 @@ describe("4.17 feature flag", () => {
   it("is created off and gates issue and redemption", () => {
     const migrations = read(
       "supabase/migrations/" +
-        require("node:fs")
-          .readdirSync("supabase/migrations")
-          .filter((f: string) => read(`supabase/migrations/${f}`).includes("feature_flags"))[0],
+        readdirSync("supabase/migrations").filter((f: string) =>
+          read(`supabase/migrations/${f}`).includes("feature_flags"),
+        )[0],
     );
     expect(migrations).toMatch(/'gated_summary_delivery',\s*\n?\s*false/);
     expect(shared).toContain("if (!(await flagEnabled(supabase))) return { ok: false, reason: \"flag_off\" };");
