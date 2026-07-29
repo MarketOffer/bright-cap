@@ -279,10 +279,9 @@ describe("Slice 3 — statement snapshot drift guard", () => {
   });
 
   it("3.24 the rendered snapshot matches the Slice 2 fixture", () => {
-    const fixture = readFileSync(
-      "src/test/fixtures/FPO_SCH5_PT1_SI2024-301.html",
-      "utf8",
-    );
-    expect(renderStatementSnapshot("FPO_SCH5_PT1_SI2024-301")).toBe(fixture.trim());
+    const hnw = readFileSync("src/test/fixtures/hnw-statement.html", "utf8");
+    const scsi = readFileSync("src/test/fixtures/scsi-statement.html", "utf8");
+    expect(renderStatementSnapshot("hnw").trim()).toBe(hnw.trim());
+    expect(renderStatementSnapshot("scsi").trim()).toBe(scsi.trim());
   });
 });
