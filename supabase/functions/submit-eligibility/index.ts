@@ -263,16 +263,56 @@ Deno.serve(async (req) => {
     if (!versionRow) reasons.add(REASONS.PRIVACY_NOT_ACKNOWLEDGED);
   }
 
-  // ---- statement selection ------------------------------------------------
-  if (body?.noneApply === true) reasons.add(REASONS.NONE_APPLY_SELECTED);
-  if (kinds.length === 0 && body?.noneApply !== true) reasons.add(REASONS.NO_KIND_SELECTED);
+  // ---- route selection (patch v2.1) ---------------------------------------
+  // Declaring "none of these conditions apply to me" on a route is a formal
+  // declaration, not a rejection. The first time it happens we offer the other
+  // route once; the second time there is nothing left to offer.
+  const noneApply = body?.noneApply === true;
+  const declinedThisTime: StatementKind | null = noneApply ? kind : null;
+
+  if (noneApply && !kind) reasons.add(REASONS.NO_KIND_SELECTED);
+  if (!noneApply && !kind) reasons.add(REASONS.NO_KIND_SELECTED);
+
+  if (noneApply && kind && reasons.size === 0) {
+    const alternative = OTHER_KIND[kind];
+    if (declinedKinds.includes(alternative)) {
+      await writeAttempt(
+        "rejected",
+        [REASONS.BOTH_ROUTES_DECLINED],
+        kind,
+      );
+      console.log("eligibility both routes declined", { attemptGroupId });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          reasons: [REASONS.BOTH_ROUTES_DECLINED],
+          attemptGroupId,
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    await writeAttempt("route_declined", [REASONS.NONE_APPLY_SELECTED], kind);
+    console.log("eligibility route declined", { attemptGroupId });
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        routeDeclined: kind,
+        offerAlternative: alternative,
+        declinedKinds: [...declinedKinds, kind],
+        attemptGroupId,
+      }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  }
 
   const perKind: Record<string, KindResult> = {};
-  for (const kind of kinds) {
-    const result = validateKind(kind, body?.answers?.[kind]);
+  for (const k of kinds) {
+    const result = validateKind(k, body?.answers?.[k]);
     result.reasons.forEach((r) => reasons.add(r));
-    perKind[kind] = result;
+    perKind[k] = result;
   }
+
 
   // ---- declarations + signature ------------------------------------------
   const declarations = body?.declarations ?? {};
