@@ -303,6 +303,36 @@ try {
   check("4.13", denied === 40 && limited > 0, `${denied}/40 denied, ${limited} rate-limited`);
 } finally {
   await setFlag(false);
+
+  // Remove scratch data so the gate leaves no residue in the live database.
+  try {
+    const { data: scratchContacts } = await db
+      .from("contacts")
+      .select("id")
+      .like("email", "s4-%@example.test");
+    const ids = (scratchContacts ?? []).map((c: { id: string }) => c.id);
+    if (ids.length) {
+      await db.from("promotion_communications").delete().in("contact_id", ids);
+      await db.from("access_tokens").delete().in("contact_id", ids);
+      await db.from("investor_statement_financials").delete().in("statement_id", []);
+      await db.from("investor_statements").delete().in("contact_id", ids);
+      await db.from("contacts").delete().in("id", ids);
+    }
+    await db.from("documents").delete().like("slug", "scratch-s4-%");
+    const { data: files } = await db.storage.from("investor-documents").list(run);
+    if (files?.length) {
+      await db.storage
+        .from("investor-documents")
+        .remove(files.map((f: { name: string }) => `${run}/${f.name}`));
+    }
+    await db
+      .from("certification_attempts")
+      .delete()
+      .in("outcome", ["token_rejected", "reissue_request"]);
+  } catch (cleanupError) {
+    console.log("cleanup warning", cleanupError);
+  }
+
   const { data: flag } = await db
     .from("feature_flags")
     .select("enabled")
