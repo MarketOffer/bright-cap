@@ -287,6 +287,27 @@ Rate-limit by IP and email. Never log tokens, signatures or financial figures.
 
 **Exit criteria:** all green; Slice 1 test 1.6 and Slice 2 tests 2.8/2.9 signed off.
 
+### Slice 3 log — complete (build and test gate)
+
+Database tests 3.1–3.15: **all pass**, run as a single rolled-back transaction against the live schema.
+
+Application tests 3.16–3.28: **all pass**, automated in `src/test/slice3-eligibility.test.ts` (22 assertions) against the deployed `submit-eligibility` function using the publishable key only.
+
+Deviations and decisions:
+
+| Item | Decision |
+|---|---|
+| 3.9 rounding | `net_assets_band` is banded to **£50,000** steps, not £100,000. £100,000 steps cannot express the statutory £250,000 threshold or the brief's own £350,000 example. Income remains £10,000 steps. Client field step and server validation match. |
+| 3.24 | Verified as a drift guard: the edge function's copies of `statementDefinitions.ts` and `renderStatementSnapshot.ts` must match `src/legal/statements/` byte-for-byte (bar the Deno import specifier), and the rendered output must match the Slice 2 fixtures. Stored snapshots are 2,395 bytes (HNW) and 2,755 bytes (SCSI). |
+| Rate limiting | Split into per-email (5 / 15 min) and per-IP (60 / 15 min). A single shared 10 / 15 min counter locked out office and mobile-NAT users. |
+| 3.27 | Function logs carry outcome codes and statement kinds only — no signature, email, financial figure or token. |
+| 3.28 | Dependency scan clean. Security scan returns five "RLS enabled, no policy" warnings on the compliance tables; these are the intended deny-all posture (service role only, no end-user auth exists) and are recorded in security memory. |
+
+Test data created during the gate was deleted afterwards; the delete rule on `investor_statements` was disabled and re-enabled around the cleanup.
+
+**Still outstanding before Slice 3 goes live to real users:** Slice 1 test 1.6, Slice 2 tests 2.8/2.9 (transcription sign-off and the declaration-tick deviation), and Slice 0b public copy remediation (blocked on Andy's approval).
+
+
 ---
 
 ## Slice 4 — Document delivery *(feature-flagged; blocked by brief item 1)*
