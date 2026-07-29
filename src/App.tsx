@@ -28,6 +28,8 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/investors" element={<Investors />} />
+          <Route path="/investors/eligibility" element={<InvestorEligibility />} />
           {/* Legacy path — permanent client-side redirect */}
           <Route path="/contactus" element={<Navigate to="/contact" replace />} />
 
