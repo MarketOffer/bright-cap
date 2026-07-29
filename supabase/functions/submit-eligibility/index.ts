@@ -234,7 +234,8 @@ Deno.serve(async (req) => {
       .from("certification_attempts")
       .select("id", { count: "exact", head: true })
       .gte("created_at", since)
-      .eq("outcome", "rejected") // submission attempts only, not token/re-issue events
+      // submission attempts only, not token/re-issue events
+      .in("outcome", ["rejected", "route_declined"])
       .eq(column, value);
     return count ?? 0;
   };
@@ -268,7 +269,6 @@ Deno.serve(async (req) => {
   // declaration, not a rejection. The first time it happens we offer the other
   // route once; the second time there is nothing left to offer.
   const noneApply = body?.noneApply === true;
-  const declinedThisTime: StatementKind | null = noneApply ? kind : null;
 
   if (noneApply && !kind) reasons.add(REASONS.NO_KIND_SELECTED);
   if (!noneApply && !kind) reasons.add(REASONS.NO_KIND_SELECTED);
@@ -400,6 +400,7 @@ Deno.serve(async (req) => {
           qualifying_criteria: result.criteria,
           declarations: declarations?.[kind] ?? {},
           statement_snapshot: renderStatementSnapshot(version),
+          attempt_group_id: attemptGroupId,
           ip_address: ip,
           user_agent: userAgent,
         })
