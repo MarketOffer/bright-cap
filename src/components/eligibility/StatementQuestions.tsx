@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { MoneyInput } from "@/components/eligibility/MoneyInput";
 import {
   CURRENT_STATEMENT_VERSION,
   getStatement,
@@ -194,42 +195,40 @@ const StatementQuestions = ({
                           </div>
                         );
                       }
-                      const numeric =
-                        detail.kind === "money10k" ||
-                        detail.kind === "money100k" ||
-                        detail.kind === "integer";
+                      const money =
+                        detail.kind === "money10k" || detail.kind === "money100k";
+                      const numeric = money || detail.kind === "integer";
                       return (
                         <div key={key} className="space-y-1.5">
                           <Label htmlFor={inputId} className={labelClass}>
                             {label}
                           </Label>
-                          <Input
-                            id={inputId}
-                            type={numeric ? "number" : "text"}
-                            inputMode={numeric ? "numeric" : "text"}
-                            step={
-                              detail.kind === "money10k"
-                                ? 10000
-                                : detail.kind === "money100k"
-                                  ? 100000
-                                  : 1
-                            }
-                            /* A signed financial declaration must not be nudged by a
-                               stray scroll or spinner click. Both are suppressed. */
-                            onWheel={(event) => (event.target as HTMLInputElement).blur()}
-                            className={
-                              numeric
-                                ? "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                : undefined
-                            }
-                            maxLength={numeric ? undefined : 200}
-                            value={(answers[key] as string | number) ?? ""}
-                            onChange={(event) =>
-                              set(key, numeric ? event.target.value : event.target.value.slice(0, 200))
-                            }
-                          />
+                          {money ? (
+                            <MoneyInput
+                              id={inputId}
+                              step={detail.kind === "money10k" ? 10000 : 100000}
+                              value={String((answers[key] as string | number) ?? "")}
+                              onChange={(next) => set(key, next)}
+                            />
+                          ) : (
+                            <Input
+                              id={inputId}
+                              type={numeric ? "number" : "text"}
+                              inputMode={numeric ? "numeric" : "text"}
+                              onWheel={(event) => (event.target as HTMLInputElement).blur()}
+                              maxLength={numeric ? undefined : 200}
+                              value={(answers[key] as string | number) ?? ""}
+                              onChange={(event) =>
+                                set(
+                                  key,
+                                  numeric ? event.target.value : event.target.value.slice(0, 200),
+                                )
+                              }
+                            />
+                          )}
                         </div>
                       );
+
                     })}
                   </div>
                 )}
