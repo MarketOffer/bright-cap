@@ -284,9 +284,16 @@ const InvestorEligibility = () => {
                 {step === 0 && (
                   <div className="space-y-6">
                     <div className="space-y-1.5">
-                      <Label htmlFor="fullName">Full name</Label>
+                      <Label htmlFor="fullName">
+                        Full name
+                        <span aria-hidden="true" className="text-primary">
+                          {" *"}
+                        </span>
+                      </Label>
                       <Input
                         id="fullName"
+                        required
+                        aria-required="true"
                         maxLength={120}
                         value={contact.fullName}
                         onChange={(event) =>
@@ -295,9 +302,16 @@ const InvestorEligibility = () => {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">
+                        Email
+                        <span aria-hidden="true" className="text-primary">
+                          {" *"}
+                        </span>
+                      </Label>
                       <Input
                         id="email"
+                        required
+                        aria-required="true"
                         type="email"
                         maxLength={255}
                         value={contact.email}
@@ -307,7 +321,7 @@ const InvestorEligibility = () => {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="phone">Phone (optional)</Label>
+                      <Label htmlFor="phone">Phone</Label>
                       <Input
                         id="phone"
                         type="tel"
@@ -318,6 +332,9 @@ const InvestorEligibility = () => {
                         }
                       />
                     </div>
+                    <p className="font-sans text-sm text-muted-foreground">
+                      <span aria-hidden="true" className="text-primary">*</span> Required.
+                    </p>
                   </div>
                 )}
 
@@ -403,9 +420,16 @@ const InvestorEligibility = () => {
                           step. Sign below to complete your statement.
                         </p>
                         <div className="space-y-1.5">
-                          <Label htmlFor="signature">Signature — type your full name</Label>
+                          <Label htmlFor="signature">
+                            Signature — type your full name
+                            <span aria-hidden="true" className="text-primary">
+                          {" *"}
+                        </span>
+                          </Label>
                           <Input
                             id="signature"
+                            required
+                            aria-required="true"
                             maxLength={120}
                             value={signatureTyped}
                             onChange={(event) => setSignatureTyped(event.target.value)}
