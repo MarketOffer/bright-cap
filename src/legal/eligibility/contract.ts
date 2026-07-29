@@ -34,7 +34,9 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "money10k",
         keys: ["A_income"],
-        labels: ["Income, to the nearest £10,000"],
+        labels: [
+          "Please specify your income (as defined above) to the nearest £10,000 in the last financial year",
+        ],
       },
     },
     {
@@ -43,10 +45,13 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "money100k",
         keys: ["B_net_assets"],
-        labels: ["Net assets, to the nearest £50,000"],
+        labels: [
+          "Please specify your net assets (as defined above) to the nearest £100,000 in the last financial year",
+        ],
       },
     },
   ],
+
   scsi: [
     {
       letter: "A",
@@ -149,6 +154,11 @@ export const REASON_MESSAGES: Record<string, string> = {
   all_conditions_no:
     "You answered No to every condition, so no statement can be made.",
   missing_detail: "A required detail is missing for a condition you answered Yes to.",
+  figure_below_threshold:
+    "The figure you entered is below the threshold stated in the condition you answered Yes to. A statement cannot declare both.",
+  figure_not_rounded:
+    "Please enter the figure rounded as the statement requires — income to the nearest £10,000, net assets to the nearest £100,000.",
+
   contradiction:
     "You answered Yes to a condition and also selected “None of these apply to me”.",
   unanswered_condition: "Every condition must be answered No or Yes.",
