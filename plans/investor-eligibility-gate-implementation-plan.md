@@ -21,7 +21,7 @@ Everything else in the brief is followed as written.
 These do not stop the build, but they gate the **release** of the gated Summary:
 
 - **Item 1 (SHA — no further-funding obligation).** Slice 4 ships behind a feature flag; the flag is not turned on until this is confirmed in writing.
-- **Item 2 (public page copy).** Slice 1 removes the offending figures from the live site. This is the earliest possible slice because the breach is live now.
+- **Item 2 (public page copy).** **Slice 0b** removes the offending figures from the live site. Blocked pending Andy's written confirmation; no existing public copy is edited before then.
 - **Item 3 (promoting entity).** Determines whether the art 48(5A) block is static or per-document. Slice 4 stores it per-document either way, so the answer can arrive late.
 - **Item 4 (transcription sign-off).** Slice 2 ships the statement component; sign-off must land before Slice 3 goes live to real users.
 
@@ -31,7 +31,8 @@ These do not stop the build, but they gate the **release** of the gated Summary:
 
 ```text
 Slice 0  Backend foundation + contacts + CI test harness
-Slice 1  Public credentials page + remedial copy fix        (no backend dependency)
+Slice 0b Public copy remediation (existing site)              [blocked — awaiting approval]
+Slice 1  Public credentials page /investors (new build only)  (no backend dependency)
 Slice 2  Locked statement components (render only, no submit)
 Slice 3  Eligibility form + submission pipeline + rejection paths
 Slice 4  Documents, tokens, private bucket, watermarked delivery   [flagged]
