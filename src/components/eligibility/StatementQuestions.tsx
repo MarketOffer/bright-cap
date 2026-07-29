@@ -92,98 +92,133 @@ const StatementQuestions = ({
       </header>
 
       <div className="space-y-8">
-        {specs.map((spec) => {
+        {specs.map((spec, specIndex) => {
           const block = conditionBlock(spec.blockId);
           if (!block || block.type !== "condition") return null;
           const value = (answers[spec.letter] as Answer) ?? null;
           const detail = spec.detailField;
 
+          /**
+           * Prescribed connectors ("AND/OR", "OR") sit between the conditions and
+           * are load-bearing: they tell the reader Yes to either or both is
+           * permitted. They come from the frozen definitions, never from here.
+           */
+          const previousBlockId = specIndex > 0 ? specs[specIndex - 1].blockId : null;
+          const previousIndex = previousBlockId
+            ? definition.blocks.findIndex((candidate) => candidate.id === previousBlockId)
+            : -1;
+          const thisIndex = definition.blocks.findIndex(
+            (candidate) => candidate.id === spec.blockId,
+          );
+          const connector =
+            previousIndex >= 0
+              ? definition.blocks
+                  .slice(previousIndex + 1, thisIndex)
+                  .find((candidate) => candidate.type === "connector")
+              : undefined;
+
           return (
-            <fieldset key={spec.letter} className="space-y-3">
-              <legend className="font-sans leading-relaxed text-foreground">
-                {block.letter} {renderSegments(block.segments)}
-              </legend>
+            <div key={spec.letter} className="space-y-8">
+              {connector && connector.type === "connector" && (
+                <p className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+                  {connector.value}
+                </p>
+              )}
+              <fieldset className="space-y-3">
+                <legend className="font-sans leading-relaxed text-foreground">
+                  {block.letter} {renderSegments(block.segments)}
+                </legend>
 
-              <div className="flex gap-6 pt-1">
-                {(["no", "yes"] as const).map((option) => (
-                  <label
-                    key={option}
-                    className="flex cursor-pointer items-center gap-2 font-sans text-sm text-foreground"
-                  >
-                    <input
-                      type="radio"
-                      name={`${kind}-${spec.letter}`}
-                      value={option}
-                      checked={!allNo && value === option}
-                      onChange={() => set(spec.letter, option)}
-                      className="h-4 w-4 accent-primary"
-                    />
-                    {option === "no" ? "No" : "Yes"}
-                  </label>
-                ))}
-              </div>
+                <div className="flex gap-6 pt-1">
+                  {(["no", "yes"] as const).map((option) => (
+                    <label
+                      key={option}
+                      className="flex cursor-pointer items-center gap-2 font-sans text-sm text-foreground"
+                    >
+                      <input
+                        type="radio"
+                        name={`${kind}-${spec.letter}`}
+                        value={option}
+                        checked={!allNo && value === option}
+                        onChange={() => set(spec.letter, option)}
+                        className="h-4 w-4 accent-primary"
+                      />
+                      {option === "no" ? "No" : "Yes"}
+                    </label>
+                  ))}
+                </div>
 
-              {value === "yes" && detail && (
-                <div className="space-y-3 border-l-2 border-primary pl-4">
-                  {detail.keys.map((key, index) => {
-                    const label = detail.labels[index];
-                    const inputId = `${kind}-${key}`;
-                    if (key === "B_jurisdiction") {
+                {value === "yes" && detail && (
+                  <div className="space-y-3 border-l-2 border-primary pl-4">
+                    {detail.keys.map((key, index) => {
+                      const label = detail.labels[index];
+                      const inputId = `${kind}-${key}`;
+                      if (key === "B_jurisdiction") {
+                        return (
+                          <div key={key} className="space-y-1.5">
+                            <Label htmlFor={inputId} className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
+                              {label}
+                            </Label>
+                            <select
+                              id={inputId}
+                              value={(answers[key] as string) ?? ""}
+                              onChange={(event) => set(key, event.target.value)}
+                              className="h-10 w-full border border-input bg-background px-3 font-sans text-sm text-foreground"
+                            >
+                              <option value="">Select…</option>
+                              {JURISDICTIONS.map((jurisdiction) => (
+                                <option key={jurisdiction} value={jurisdiction}>
+                                  {jurisdiction}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        );
+                      }
+                      const numeric =
+                        detail.kind === "money10k" ||
+                        detail.kind === "money100k" ||
+                        detail.kind === "integer";
                       return (
                         <div key={key} className="space-y-1.5">
-                          <Label htmlFor={inputId} className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
+                          <Label htmlFor={inputId} className="font-sans text-xs normal-case tracking-normal text-muted-foreground">
                             {label}
                           </Label>
-                          <select
+                          <Input
                             id={inputId}
-                            value={(answers[key] as string) ?? ""}
-                            onChange={(event) => set(key, event.target.value)}
-                            className="h-10 w-full border border-input bg-background px-3 font-sans text-sm text-foreground"
-                          >
-                            <option value="">Select…</option>
-                            {JURISDICTIONS.map((jurisdiction) => (
-                              <option key={jurisdiction} value={jurisdiction}>
-                                {jurisdiction}
-                              </option>
-                            ))}
-                          </select>
+                            type={numeric ? "number" : "text"}
+                            inputMode={numeric ? "numeric" : "text"}
+                            step={
+                              detail.kind === "money10k"
+                                ? 10000
+                                : detail.kind === "money100k"
+                                  ? 100000
+                                  : 1
+                            }
+                            /* A signed financial declaration must not be nudged by a
+                               stray scroll or spinner click. Both are suppressed. */
+                            onWheel={(event) => (event.target as HTMLInputElement).blur()}
+                            className={
+                              numeric
+                                ? "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                : undefined
+                            }
+                            maxLength={numeric ? undefined : 200}
+                            value={(answers[key] as string | number) ?? ""}
+                            onChange={(event) =>
+                              set(key, numeric ? event.target.value : event.target.value.slice(0, 200))
+                            }
+                          />
                         </div>
                       );
-                    }
-                    const numeric =
-                      detail.kind === "money10k" ||
-                      detail.kind === "money100k" ||
-                      detail.kind === "integer";
-                    return (
-                      <div key={key} className="space-y-1.5">
-                        <Label htmlFor={inputId} className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
-                          {label}
-                        </Label>
-                        <Input
-                          id={inputId}
-                          type={numeric ? "number" : "text"}
-                          inputMode={numeric ? "numeric" : "text"}
-                          step={
-                            detail.kind === "money10k"
-                              ? 10000
-                              : detail.kind === "money100k"
-                                ? 50000
-                                : 1
-                          }
-                          maxLength={numeric ? undefined : 200}
-                          value={(answers[key] as string | number) ?? ""}
-                          onChange={(event) =>
-                            set(key, numeric ? event.target.value : event.target.value.slice(0, 200))
-                          }
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </fieldset>
+                    })}
+                  </div>
+                )}
+              </fieldset>
+            </div>
           );
         })}
+
 
         <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-foreground">
           <input
