@@ -147,7 +147,7 @@ const StatementQuestions = ({
                   {(["no", "yes"] as const).map((option) => (
                     <label
                       key={option}
-                      className="flex cursor-pointer items-center gap-2 font-sans text-sm text-foreground"
+                      className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory"
                     >
                       <input
                         type="radio"
