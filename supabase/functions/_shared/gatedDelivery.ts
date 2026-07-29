@@ -226,7 +226,7 @@ export async function sendAccessEmail(
     promoterNumber: string;
     ip?: string | null;
     userAgent?: string | null;
-    /** Topic for the single Make endpoint / Resend tag. */
+    /** Topic for the single Make endpoint / provider tag. */
     emailType?: EmailType | string;
   },
 ): Promise<{ sent: boolean; reason?: string }> {
