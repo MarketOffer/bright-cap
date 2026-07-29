@@ -6,6 +6,14 @@ import {
   type StatementKind,
 } from "../_shared/statementDefinitions.ts";
 import { renderStatementSnapshot } from "../_shared/renderStatementSnapshot.ts";
+import {
+  flagEnabled,
+  issueAccessToken,
+  sendAccessEmail,
+} from "../_shared/gatedDelivery.ts";
+
+const SITE_ORIGIN = Deno.env.get("SITE_ORIGIN") ?? "https://brightcap.capital";
+
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
