@@ -184,6 +184,22 @@ This slice has no backend dependency.
 
 **Exit criteria:** 2.1–2.7 green. 2.8 and 2.9 must land before Slice 3 goes live to real users.
 
+### Slice 2 result — 29 July 2026
+
+| # | Result |
+|---|---|
+| 2.1 | Pass — `renderStatementSnapshot()` output byte-exact vs `src/test/fixtures/{hnw,scsi}-statement.html` |
+| 2.2 | Pass — bold runs asserted exactly; a stripped `<strong>` fails the suite |
+| 2.3 | Pass — `£1 million` carries no `<strong>`/`<u>` |
+| 2.4 | Pass — both `NOT` occurrences underlined, one each in conditions A and B |
+| 2.5 | Pass — no `input`/`textarea`/`select`/`label` inside either statement subtree |
+| 2.6 | Pass — line-by-line text diff vs brief §2 transcription, zero differences |
+| 2.7 | Pass — no `170,000`, `430,000`, `1.6m` anywhere in the snapshots |
+| 2.8 | Open — solicitor sign-off vs the SI images |
+| 2.9 | Open — declaration-tick deviation. Ticks are **not** implemented in Slice 2 (render only); they arrive with the form in Slice 3 and remain gated on this sign-off |
+
+Delivered: `src/legal/statements/statementDefinitions.ts` (frozen, version-keyed), `src/legal/statements/renderStatementSnapshot.ts`, `src/components/statements/{PrescribedStatement,HNWStatement,SCSIStatement}.tsx`, `src/test/slice2-statements.test.tsx` + committed fixtures.
+
 ---
 
 ## Slice 3 — Eligibility form and submission pipeline
