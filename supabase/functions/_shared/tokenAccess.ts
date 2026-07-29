@@ -52,11 +52,11 @@ export async function recordTokenFailure(
   userAgent: string | null,
   code: string,
 ) {
-  // Recorded under its own outcome so token guessing cannot poison the
-  // submission rate limiter in `submit-eligibility`.
-  await supabase.from("certification_attempts").insert({
-    outcome: "token_rejected",
-    reason_codes: [code],
+  // Logged in its own table so link guessing cannot poison the submission
+  // rate limiter in `submit-eligibility`, which reads certification_attempts.
+  await supabase.from("access_attempts").insert({
+    kind: "token_lookup",
+    reason_code: code,
     ip_address: ip,
     user_agent: userAgent,
   });
@@ -69,12 +69,12 @@ export async function guessLimitExceeded(
   if (!ip) return false;
   const since = new Date(Date.now() - GUESS_WINDOW_MS).toISOString();
   const { count } = await supabase
-    .from("certification_attempts")
+    .from("access_attempts")
     .select("id", { count: "exact", head: true })
     .gte("created_at", since)
     .eq("ip_address", ip)
-    .eq("outcome", "token_rejected")
-    .contains("reason_codes", ["token_invalid"]);
+    .eq("kind", "token_lookup")
+    .eq("reason_code", "token_invalid");
   const exceeded = (count ?? 0) >= GUESS_LIMIT;
   if (exceeded) {
     // Alert: sustained token enumeration from a single address.

@@ -46,17 +46,16 @@ Deno.serve(async (req) => {
   const since = new Date(Date.now() - 15 * 60 * 1000).toISOString();
   if (ip) {
     const { count } = await supabase
-      .from("certification_attempts")
+      .from("access_attempts")
       .select("id", { count: "exact", head: true })
       .gte("created_at", since)
       .eq("ip_address", ip)
-      .eq("outcome", "reissue_request")
-      .contains("reason_codes", ["reissue_request"]);
+      .eq("kind", "reissue_request");
     if ((count ?? 0) >= 10) return jsonResponse(GENERIC, 200);
   }
-  await supabase.from("certification_attempts").insert({
-    outcome: "reissue_request",
-    reason_codes: ["reissue_request"],
+  await supabase.from("access_attempts").insert({
+    kind: "reissue_request",
+    reason_code: "requested",
     ip_address: ip,
     user_agent: userAgent,
   });
