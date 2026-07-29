@@ -262,11 +262,12 @@ const StatementQuestions = ({
                 checked={allNo || answers.none === true}
                 onChange={(event) => {
                   if (event.target.checked) {
-                    set("none", true);
+                    /* Selecting "none apply" wipes any answers or figures given for A and B. */
+                    clearConditions(true);
                     return;
                   }
                   if (allNo) {
-                    clearConditions();
+                    clearConditions(false);
                     return;
                   }
                   set("none", false);
