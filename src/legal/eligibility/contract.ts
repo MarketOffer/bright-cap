@@ -115,22 +115,28 @@ export const ROUTE_OPTIONS: {
   kind: StatementKind;
   title: string;
   body: string;
+  bullets?: string[];
   note?: string;
 }[] = [
   {
     kind: "hnw",
     title: "Based on my income or assets",
     body:
-      "You confirm that, in the last financial year, you had an annual income of £100,000 or more, or net assets of £250,000 or more (excluding your home, pensions and certain insurance benefits). This route asks you to state the figure, rounded.",
+      "In the last financial year you had an annual income of £100,000 or more, or net assets of £250,000 or more (excluding your home, pensions and certain insurance benefits)",
   },
   {
     kind: "scsi",
     title: "Based on my investment or business experience",
-    body:
-      "You confirm one or more of the following about the last two years: you were a director of a company turning over at least £1 million, you made two or more investments in unlisted companies, you were a member of a business angels network, or you worked in private equity or in financing small and medium enterprises.",
-    note: "This route does not ask about your income or your assets.",
+    body: "In the last two years you:",
+    bullets: [
+      "were a director of a company turning over at least £1 million",
+      "made two or more investments in unlisted companies",
+      "were a member of a business angels network",
+      "worked in private equity or in financing small and medium enterprises",
+    ],
   },
 ];
+
 
 export const declarationIds = (kind: StatementKind): string[] =>
   getStatement(CURRENT_STATEMENT_VERSION[kind])
