@@ -164,7 +164,9 @@ export type Database = {
       certification_attempts: {
         Row: {
           answers: Json | null
+          attempt_group_id: string | null
           created_at: string
+          declined_kind: Database["public"]["Enums"]["statement_kind"] | null
           email: string | null
           full_name: string | null
           id: string
@@ -176,7 +178,9 @@ export type Database = {
         }
         Insert: {
           answers?: Json | null
+          attempt_group_id?: string | null
           created_at?: string
+          declined_kind?: Database["public"]["Enums"]["statement_kind"] | null
           email?: string | null
           full_name?: string | null
           id?: string
@@ -188,7 +192,9 @@ export type Database = {
         }
         Update: {
           answers?: Json | null
+          attempt_group_id?: string | null
           created_at?: string
+          declined_kind?: Database["public"]["Enums"]["statement_kind"] | null
           email?: string | null
           full_name?: string | null
           id?: string
@@ -349,6 +355,7 @@ export type Database = {
       investor_statements: {
         Row: {
           answers: Json
+          attempt_group_id: string | null
           contact_id: string
           created_at: string
           declarations: Json
@@ -369,6 +376,7 @@ export type Database = {
         }
         Insert: {
           answers: Json
+          attempt_group_id?: string | null
           contact_id: string
           created_at?: string
           declarations: Json
@@ -389,6 +397,7 @@ export type Database = {
         }
         Update: {
           answers?: Json
+          attempt_group_id?: string | null
           contact_id?: string
           created_at?: string
           declarations?: Json
