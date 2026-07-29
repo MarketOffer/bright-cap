@@ -13,7 +13,7 @@
 // existing statement, and the link never pre-fills prior answers: the statement
 // must be answered afresh.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-import { dispatchEmail } from "../_shared/sendPromotion.ts";
+import { dispatchEmail, EMAIL_TYPES } from "../_shared/sendPromotion.ts";
 
 const SITE_ORIGIN = Deno.env.get("SITE_ORIGIN") ?? "https://brightcap.capital";
 const PROMPT_FLAG = "recertification_prompts";
@@ -164,6 +164,7 @@ Deno.serve(async (req) => {
       subject: "Your BrightCap investor certification is due for renewal",
       text: promptText(row.full_name, row.expires_at),
       fullName: row.full_name,
+      emailType: EMAIL_TYPES.RECERTIFICATION_DUE,
     });
 
     if (result.sent) {

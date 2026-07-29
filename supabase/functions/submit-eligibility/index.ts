@@ -366,6 +366,7 @@ Deno.serve(async (req) => {
             expiresAt: issued.expiresAt!,
             promoterName: document?.promoter_entity_name ?? "the promoter",
             promoterNumber: document?.promoter_company_number ?? "",
+            emailType: EMAIL_TYPES.SIGNUP_JV_SUMMARY,
           });
           delivery = { issued: true, emailed: sent.sent };
           console.log("access token issued", { tokenId: issued.tokenId, emailed: sent.sent });
