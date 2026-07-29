@@ -37,6 +37,8 @@ const REASONS = {
   NONE_APPLY_SELECTED: "none_apply_selected",
   ALL_CONDITIONS_NO: "all_conditions_no",
   MISSING_DETAIL: "missing_detail",
+  FIGURE_BELOW_THRESHOLD: "figure_below_threshold",
+  FIGURE_NOT_ROUNDED: "figure_not_rounded",
   CONTRADICTION: "contradiction",
   UNANSWERED_CONDITION: "unanswered_condition",
   NO_KIND_SELECTED: "no_kind_selected",
@@ -109,16 +111,37 @@ function validateKind(kind: StatementKind, raw: any): KindResult {
   };
 
   if (kind === "hnw") {
+    // A figure that contradicts the condition it accompanies makes the statement
+    // self-defeating (art 48(2)): completing it must indicate the condition is met.
+    // Rounding follows the prescribed wording exactly — £10,000 for income,
+    // £100,000 for net assets. Never silently round a signed declaration.
+    const checkFigure = (
+      raw: unknown,
+      threshold: number,
+      rounding: number,
+    ): number | null => {
+      const v = num(raw);
+      if (v === null || v <= 0) {
+        reasons.push(REASONS.MISSING_DETAIL);
+        return null;
+      }
+      let ok = true;
+      if (v % rounding !== 0) {
+        reasons.push(REASONS.FIGURE_NOT_ROUNDED);
+        ok = false;
+      }
+      if (v < threshold) {
+        reasons.push(REASONS.FIGURE_BELOW_THRESHOLD);
+        ok = false;
+      }
+      return ok ? Math.trunc(v) : null;
+    };
+
     if (criteria.includes("A")) {
-      const v = num(answers.A_income);
-      if (v === null || v <= 0 || v % 10000 !== 0) reasons.push(REASONS.MISSING_DETAIL);
-      else income_band = Math.trunc(v);
+      income_band = checkFigure(answers.A_income, 100000, 10000);
     }
     if (criteria.includes("B")) {
-      const v = num(answers.B_net_assets);
-      // Banded to £50,000 steps so the statutory £250,000 threshold is expressible.
-      if (v === null || v <= 0 || v % 50000 !== 0) reasons.push(REASONS.MISSING_DETAIL);
-      else net_assets_band = Math.trunc(v);
+      net_assets_band = checkFigure(answers.B_net_assets, 250000, 100000);
     }
   } else {
     if (criteria.includes("A")) requireText(answers.A_organisation);
