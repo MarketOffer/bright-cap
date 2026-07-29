@@ -133,6 +133,8 @@ export async function dispatchEmail(params: {
     to: [params.to],
     subject: params.subject,
     text: params.text,
+    html,
+
   };
   if (replyTo) body.reply_to = replyTo;
 
