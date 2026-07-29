@@ -58,14 +58,19 @@ const StatementQuestions = ({
     specs.length > 0 && specs.every((spec) => (answers[spec.letter] as Answer) === "no");
   const anyYes = specs.some((spec) => (answers[spec.letter] as Answer) === "yes");
 
-  const clearConditions = () => {
+  /** Removes every condition answer and its supporting detail figures. */
+  const clearConditions = (none: boolean) => {
     const next = { ...answers };
     specs.forEach((spec) => {
       delete next[spec.letter];
+      spec.detailField?.keys.forEach((key) => {
+        delete next[key];
+      });
     });
-    next.none = false;
+    next.none = none;
     onAnswers(next);
   };
+
 
   const conditionBlock = (blockId: string) =>
     definition.blocks.find((block) => block.id === blockId);
