@@ -200,7 +200,7 @@ const StatementQuestions = ({
                         detail.kind === "integer";
                       return (
                         <div key={key} className="space-y-1.5">
-                          <Label htmlFor={inputId} className="font-sans text-xs normal-case tracking-normal text-muted-foreground">
+                          <Label htmlFor={inputId} className={labelClass}>
                             {label}
                           </Label>
                           <Input
