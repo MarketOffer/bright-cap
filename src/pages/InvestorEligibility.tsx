@@ -362,6 +362,15 @@ const InvestorEligibility = () => {
                             <span className="block leading-relaxed text-secondary">
                               {route.body}
                             </span>
+                            {route.bullets && (
+                              <span className="block">
+                                <ul className="list-disc space-y-1 pl-5 leading-relaxed text-secondary">
+                                  {route.bullets.map((bullet) => (
+                                    <li key={bullet}>{bullet}</li>
+                                  ))}
+                                </ul>
+                              </span>
+                            )}
                             {route.note && (
                               <span className="block leading-relaxed text-secondary">
                                 {route.note}
