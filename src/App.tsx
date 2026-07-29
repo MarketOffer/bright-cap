@@ -8,6 +8,8 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
+import Investors from "./pages/Investors";
+import InvestorEligibility from "./pages/InvestorEligibility";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/investors" element={<Investors />} />
+          <Route path="/investors/eligibility" element={<InvestorEligibility />} />
           {/* Legacy path — permanent client-side redirect */}
           <Route path="/contactus" element={<Navigate to="/contact" replace />} />
 

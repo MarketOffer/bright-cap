@@ -21,7 +21,7 @@ Everything else in the brief is followed as written.
 These do not stop the build, but they gate the **release** of the gated Summary:
 
 - **Item 1 (SHA — no further-funding obligation).** Slice 4 ships behind a feature flag; the flag is not turned on until this is confirmed in writing.
-- **Item 2 (public page copy).** Slice 1 removes the offending figures from the live site. This is the earliest possible slice because the breach is live now.
+- **Item 2 (public page copy).** **Slice 0b** removes the offending figures from the live site. Blocked pending Andy's written confirmation; no existing public copy is edited before then.
 - **Item 3 (promoting entity).** Determines whether the art 48(5A) block is static or per-document. Slice 4 stores it per-document either way, so the answer can arrive late.
 - **Item 4 (transcription sign-off).** Slice 2 ships the statement component; sign-off must land before Slice 3 goes live to real users.
 
@@ -31,7 +31,8 @@ These do not stop the build, but they gate the **release** of the gated Summary:
 
 ```text
 Slice 0  Backend foundation + contacts + CI test harness
-Slice 1  Public credentials page + remedial copy fix        (no backend dependency)
+Slice 0b Public copy remediation (existing site)              [blocked — awaiting approval]
+Slice 1  Public credentials page /investors (new build only)  (no backend dependency)
 Slice 2  Locked statement components (render only, no submit)
 Slice 3  Eligibility form + submission pipeline + rejection paths
 Slice 4  Documents, tokens, private bucket, watermarked delivery   [flagged]
@@ -89,32 +90,68 @@ Region: **EU — AWS eu-west-1 (Ireland)**, confirmed 29 Jul 2026. Satisfies bri
 
 ---
 
-## Slice 1 — Public page and remedial copy fix
+## Slice 0b — Public copy remediation (moved out of Slice 1)
 
-**Goal:** the site stops carrying ungated deal specifics (brief §10 item 2), and a credentials-only page exists with a CTA to the form.
+**Status: blocked — awaiting Andy's confirmation.** Nothing on the existing public site is to be edited until that confirmation lands. Tracked as a Slice 0 phase because it is a remediation of the current live site, not new build, and it is not a dependency of any later slice.
 
-This slice has no backend dependency and can run in parallel with Slice 0.
+**Goal:** the site stops carrying ungated deal specifics (brief §10 item 2).
+
+### Build (on approval)
+
+1. **Remove from all public routes and from the pre-rendered HTML**: "equity uplift targeting 15–25%", "100% capital growth over the last 20 years", "£250k to £3m+", and any testimonial referencing returns. Sweep `src/`, `index.html`, `public/llms.txt`, `public/sitemap.xml` and the prerender output — the noscript fallback carries the same copy and is equally a communication.
+2. Put the Lovable preview URL behind access control, or `noindex` + password it. Two public copies of the same breach is two breaches.
+3. Re-run the prerender pipeline so the static HTML matches.
+
+### Test gate 0b
+
+| # | Test | Expected |
+|---|---|---|
+| 0b.1 | `rg` for each offending phrase across `src/`, `public/`, `index.html`, `dist/` | Zero hits |
+| 0b.2 | `curl` live + preview origins, grep the same phrases | Zero hits after publish |
+| 0b.3 | Preview origin unauthenticated fetch | Blocked or gated |
+| 0b.4 | Existing route suite (`/`, `/privacy`, `/terms`, `/cookies`, `/contact`, 404) | Unchanged, canonicals intact |
+
+**Exit criteria:** Andy's written approval recorded, then 0b.1–0b.4 green.
+
+---
+
+## Slice 1 — Public credentials page (new build only)
+
+**Goal:** a credentials-only `/investors` page exists with a neutral CTA to the eligibility form. **No existing copy is touched** — remediation of current copy is Slice 0b.
+
+This slice has no backend dependency.
 
 ### Build
 
-1. **Remove from all public routes and from the pre-rendered HTML**: "equity uplift targeting 15–25%", "100% capital growth over the last 20 years", "£250k to £3m+", and any testimonial referencing returns. Sweep `src/`, `index.html`, `public/llms.txt`, `public/sitemap.xml` and the prerender output — the noscript fallback carries the same copy and is equally a communication.
-2. Build `/investors` — credentials, track record framed without return figures, strategy, team. No deal specifics, no numbers, no targets.
-3. Neutral CTA: "Check your investor eligibility" → `/investors/eligibility`.
-4. Put the Lovable preview URL behind access control, or `noindex` + password it. Two public copies of the same breach is two breaches.
-5. Re-run the prerender pipeline so the static HTML matches.
+1. Build `/investors` — credentials, track record framed without return figures, strategy, team. No deal specifics, no numbers, no targets.
+2. Neutral CTA: "Check your investor eligibility" → `/investors/eligibility`.
+3. Placeholder `/investors/eligibility` route (`noindex`) so the CTA never 404s before Slice 3 ships.
+4. No links added from existing nav/footer/home copy until Andy approves — `/investors` is reachable by direct URL in the interim.
 
 ### Test gate 1
 
 | # | Test | Expected |
 |---|---|---|
-| 1.1 | `rg` for each offending phrase across `src/`, `public/`, `index.html`, `dist/` | Zero hits |
-| 1.2 | `curl` live + preview origins, grep the same phrases | Zero hits after publish |
-| 1.3 | Playwright: `/investors` renders, CTA routes correctly, no numeric return claims in the DOM | Pass |
-| 1.4 | Preview origin unauthenticated fetch | Blocked or gated |
-| 1.5 | Existing route suite (`/`, `/privacy`, `/terms`, `/cookies`, `/contact`, 404) | Unchanged, canonicals intact |
+| 1.1 | Playwright: `/investors` renders, CTA routes to `/investors/eligibility` | Pass |
+| 1.2 | No numeric return claims or deal specifics in the `/investors` DOM | Pass |
+| 1.3 | Existing routes (`/`, `/privacy`, `/terms`, `/cookies`, `/contact`, 404) unchanged | Pass |
+| 1.4 | `git diff` touches no existing copy files | Pass |
+| 1.5 | `bunx vitest run` + production build | Pass |
 | 1.6 | Solicitor sign-off on `/investors` copy | Recorded in the log |
 
 **Exit criteria:** 1.1–1.5 green. 1.6 may trail but must land before Slice 3 goes live.
+
+### Slice 1 result — 29 July 2026
+
+| # | Result |
+|---|---|
+| 1.1 | Pass — `/investors` renders; CTA navigates to `/investors/eligibility` |
+| 1.2 | Pass — no figures, targets or deal specifics in page copy |
+| 1.3 | Pass — existing routes untouched |
+| 1.4 | Pass — only `src/App.tsx` routing lines changed; no existing copy edited |
+| 1.5 | Pass — vitest and production build clean |
+| 1.6 | Open — pending solicitor sign-off |
+
 
 ---
 
