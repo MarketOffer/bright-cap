@@ -270,8 +270,8 @@ Deno.serve(async (req) => {
   // route once; the second time there is nothing left to offer.
   const noneApply = body?.noneApply === true;
 
-  if (noneApply && !kind) reasons.add(REASONS.NO_KIND_SELECTED);
-  if (!noneApply && !kind) reasons.add(REASONS.NO_KIND_SELECTED);
+  if (!kind) reasons.add(REASONS.NO_KIND_SELECTED);
+
 
   if (noneApply && kind && reasons.size === 0) {
     const alternative = OTHER_KIND[kind];
