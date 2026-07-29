@@ -1,6 +1,8 @@
 # Allow all crawlers including AI
 User-agent: *
 Allow: /
+# Gated, token-only investor material — never index
+Disallow: /investors/summary
 
 # Explicitly allow AI crawlers
 User-agent: GPTBot
