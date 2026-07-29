@@ -11,6 +11,9 @@ import Contact from "./pages/Contact";
 import Investors from "./pages/Investors";
 import InvestorEligibility from "./pages/InvestorEligibility";
 import InvestorSummary from "./pages/InvestorSummary";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminInvestors from "./pages/admin/AdminInvestors";
+import AdminStatement from "./pages/admin/AdminStatement";
 
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
@@ -36,6 +39,12 @@ const App = () => (
 
               sitemap.xml, llms.txt and the prerender pipeline. */}
           <Route path="/investors/summary" element={<InvestorSummary />} />
+
+          {/* Staff-only compliance register. Noindex; access enforced server-side. */}
+          <Route path="/admin" element={<Navigate to="/admin/investors" replace />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/investors" element={<AdminInvestors />} />
+          <Route path="/admin/investors/:statementId" element={<AdminStatement />} />
 
           {/* Legacy path — permanent client-side redirect */}
           <Route path="/contactus" element={<Navigate to="/contact" replace />} />

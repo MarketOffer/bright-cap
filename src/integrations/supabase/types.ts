@@ -122,6 +122,45 @@ export type Database = {
           },
         ]
       }
+      admin_access_log: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_user_id: string
+          created_at: string
+          detail: Json
+          id: string
+          ip_address: unknown
+          subject_id: string | null
+          subject_type: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_user_id: string
+          created_at?: string
+          detail?: Json
+          id?: string
+          ip_address?: unknown
+          subject_id?: string | null
+          subject_type?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_user_id?: string
+          created_at?: string
+          detail?: Json
+          id?: string
+          ip_address?: unknown
+          subject_id?: string | null
+          subject_type?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       certification_attempts: {
         Row: {
           answers: Json | null
@@ -497,6 +536,27 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       v_contact_certification: {
@@ -522,8 +582,16 @@ export type Database = {
           statement_id: string
         }[]
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "admin" | "compliance"
       statement_kind: "hnw" | "scsi"
     }
     CompositeTypes: {
@@ -652,6 +720,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "compliance"],
       statement_kind: ["hnw", "scsi"],
     },
   },
