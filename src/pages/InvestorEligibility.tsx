@@ -324,57 +324,71 @@ const InvestorEligibility = () => {
                 {step === 1 && (
                   <fieldset className="space-y-4">
                     <legend className="font-sans leading-relaxed text-foreground">
-                      Which statement or statements would you like to make? You may select both.
+                      There are two independent bases on which you can certify. Either one, on its
+                      own, is sufficient. Please choose the one that applies to you.
                     </legend>
-                    {(["hnw", "scsi"] as StatementKind[]).map((kind) => (
-                      <label
-                        key={kind}
-                        className="flex cursor-pointer items-start gap-3 border border-border p-4 font-sans text-foreground"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={kinds.includes(kind)}
-                          onChange={() => toggleKind(kind)}
-                          className="mt-1 h-4 w-4 accent-primary"
-                        />
-                        {KIND_LABEL[kind]}
-                      </label>
-                    ))}
+                    {ROUTE_OPTIONS.filter((route) => !declinedKinds.includes(route.kind)).map(
+                      (route) => (
+                        <label
+                          key={route.kind}
+                          className="flex cursor-pointer items-start gap-3 border border-border p-4 font-sans text-foreground"
+                        >
+                          <input
+                            type="radio"
+                            name="basis"
+                            checked={kind === route.kind}
+                            onChange={() => {
+                              setKind(route.kind);
+                              setNoneApply(false);
+                            }}
+                            className="mt-1.5 h-4 w-4 accent-primary"
+                          />
+                          <span className="space-y-2">
+                            <span className="block font-medium">{route.title}</span>
+                            <span className="block leading-relaxed text-secondary">
+                              {route.body}
+                            </span>
+                            {route.note && (
+                              <span className="block leading-relaxed text-secondary">
+                                {route.note}
+                              </span>
+                            )}
+                          </span>
+                        </label>
+                      ),
+                    )}
+                    <p className="font-sans text-sm leading-relaxed text-muted-foreground">
+                      You are asked to complete one statement only. If the basis you choose turns
+                      out not to apply to you, you will be able to consider the other one.
+                    </p>
+                  </fieldset>
+                )}
+
+                {step === 2 && kind && (
+                  <div className="space-y-8">
+                    <StatementQuestions
+                      kind={kind}
+                      answers={answers[kind] ?? {}}
+                      onAnswers={(next) => setAnswers({ ...answers, [kind]: next })}
+                      declarations={declarations[kind] ?? {}}
+                      onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
+                    />
                     <label className="flex cursor-pointer items-start gap-3 border border-border p-4 font-sans text-foreground">
                       <input
                         type="checkbox"
                         checked={noneApply}
-                        onChange={(event) => {
-                          setNoneApply(event.target.checked);
-                          if (event.target.checked) setKinds([]);
-                        }}
+                        onChange={(event) => setNoneApply(event.target.checked)}
                         className="mt-1 h-4 w-4 accent-primary"
                       />
-                      Neither of these applies to me, or I am not sure.
+                      <span className="leading-relaxed">
+                        None of the conditions in the {KIND_LABEL[kind].toLowerCase()} statement
+                        apply to me. This is a formal declaration and cannot be changed once
+                        submitted.
+                      </span>
                     </label>
-                  </fieldset>
+                  </div>
                 )}
 
-                {step === 2 &&
-                  (noneApply ? (
-                    <p className="font-sans leading-relaxed text-secondary">
-                      You have indicated that neither statement applies. Continue to submit and we
-                      will record that we cannot send you investment information.
-                    </p>
-                  ) : (
-                    <div className="space-y-10">
-                      {kinds.map((kind) => (
-                        <StatementQuestions
-                          key={kind}
-                          kind={kind}
-                          answers={answers[kind] ?? {}}
-                          onAnswers={(next) => setAnswers({ ...answers, [kind]: next })}
-                          declarations={declarations[kind] ?? {}}
-                          onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
-                        />
-                      ))}
-                    </div>
-                  ))}
 
                 {step === 3 && (
                   <div className="space-y-6">
