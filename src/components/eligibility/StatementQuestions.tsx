@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { MoneyInput } from "@/components/eligibility/MoneyInput";
 import {
   CURRENT_STATEMENT_VERSION,
   getStatement,
