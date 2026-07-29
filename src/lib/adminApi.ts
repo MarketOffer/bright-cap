@@ -35,6 +35,15 @@ export interface StatementDetail {
     sent_at: string;
   }>;
   gate: { allowed: boolean; statement_id: string | null; reason: string } | null;
+  /** Declined routes and rejections recorded in the same certification episode. */
+  attempts: Array<{
+    id: string;
+    outcome: string;
+    reason_codes: string[];
+    declined_kind: "hnw" | "scsi" | null;
+    created_at: string;
+  }>;
+
   statement: {
     id: string;
     statementKind: "hnw" | "scsi";

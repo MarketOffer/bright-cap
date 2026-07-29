@@ -193,6 +193,16 @@ async function statementDetail(
     supabase.rpc("fn_can_promote", { p_contact_id: statement.contact_id }),
   ]);
 
+  // Patch v2.1: a statement may be preceded by a declined route in the same
+  // episode. The reviewer sees the whole trail, not just the successful part.
+  const { data: attempts } = statement.attempt_group_id
+    ? await supabase
+        .from("certification_attempts")
+        .select("id, outcome, reason_codes, declined_kind, created_at")
+        .eq("attempt_group_id", statement.attempt_group_id)
+        .order("created_at", { ascending: true })
+    : { data: [] };
+
   await logAdminAccess(supabase, {
     actorUserId: actor.userId,
     actorEmail: actor.email,
@@ -209,6 +219,7 @@ async function statementDetail(
     contact,
     communications: comms ?? [],
     gate: Array.isArray(gate) ? gate[0] ?? null : gate ?? null,
+    attempts: attempts ?? [],
     statement: {
       id: statement.id,
       statementKind: statement.statement_kind,

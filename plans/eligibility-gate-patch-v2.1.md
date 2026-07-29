@@ -55,3 +55,13 @@ If an investor wants to complete the second statement voluntarily, or re-certifi
 ---
 
 *One consequence for the data model: v2 assumed every stored statement is a valid one. Failed attempts now need somewhere to live that doesn't weaken that assumption — worth thinking through before build rather than after.*
+
+---
+
+## Implementation status — complete
+
+- **Data**: `certification_attempts.attempt_group_id` / `declined_kind` (+ `route_declined` outcome), `investor_statements.attempt_group_id`.
+- **Server** (`submit-eligibility`): exactly one route per submission (multi-kind payloads are `invalid_payload`); declaring "none apply" records a `route_declined` attempt and returns the alternative once; declining both returns a terminal 422 `both_routes_declined`.
+- **Frontend**: neutral basis screen precedes any statutory wording; single statement rendered; declined route is removed from selection and cannot be revisited; "Back" is locked past the basis step once a route has been declined.
+- **Admin**: statement detail shows the full certification episode (declined route plus rejections) linked by `attempt_group_id`.
+- **Tests**: 63/63 passing, including the inverted two-kind test and the decline/offer/terminal sequence.

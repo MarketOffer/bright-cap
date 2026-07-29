@@ -46,7 +46,15 @@ const REASONS = {
   PRIVACY_NOT_ACKNOWLEDGED: "privacy_not_acknowledged",
   INVALID_PAYLOAD: "invalid_payload",
   RATE_LIMITED: "rate_limited",
+  BOTH_ROUTES_DECLINED: "both_routes_declined",
 } as const;
+
+/** Patch v2.1: an investor completes exactly one statement, never both. */
+const OTHER_KIND: Record<StatementKind, StatementKind> = { hnw: "scsi", scsi: "hnw" };
+const isKind = (v: unknown): v is StatementKind => v === "hnw" || v === "scsi";
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 
 const str = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 const isAnswer = (v: unknown): v is "yes" | "no" => v === "yes" || v === "no";
@@ -159,29 +167,63 @@ Deno.serve(async (req) => {
   const fullName = str(contact.fullName);
   const email = str(contact.email).toLowerCase();
   const phone = str(contact.phone) || null;
-  const kindsRaw: string[] = Array.isArray(body?.kinds) ? body.kinds : [];
-  const kinds = kindsRaw.filter((k): k is StatementKind => k === "hnw" || k === "scsi");
+
+  // Patch v2.1: a submission carries exactly one route. Legacy `kinds` arrays are
+  // still read, but anything other than a single valid kind is an invalid payload.
+  const kindsRaw: unknown[] = Array.isArray(body?.kinds)
+    ? body.kinds
+    : body?.kind !== undefined
+      ? [body.kind]
+      : [];
+  const kind: StatementKind | null =
+    kindsRaw.length === 1 && isKind(kindsRaw[0]) ? kindsRaw[0] : null;
+  const kinds: StatementKind[] = kind ? [kind] : [];
+
+  const declinedRaw: unknown[] = Array.isArray(body?.declinedKinds) ? body.declinedKinds : [];
+  const declinedKinds = [...new Set(declinedRaw.filter(isKind))];
+  const attemptGroupId = UUID_RE.test(str(body?.attemptGroupId))
+    ? str(body?.attemptGroupId)
+    : crypto.randomUUID();
 
   const reasons = new Set<string>();
   if (!body || typeof body !== "object") reasons.add(REASONS.INVALID_PAYLOAD);
+  // More than one kind, an unknown kind, or more declines than routes exist.
+  if (kindsRaw.length > 1 || (kindsRaw.length === 1 && !kind)) {
+    reasons.add(REASONS.INVALID_PAYLOAD);
+  }
+  if (declinedKinds.length > 1) reasons.add(REASONS.INVALID_PAYLOAD);
+  // "The first statement can't be revised": a route already declared as
+  // not-applicable may never be re-submitted with answers.
+  if (kind && declinedKinds.includes(kind)) reasons.add(REASONS.INVALID_PAYLOAD);
 
-  const recordAttempt = async (codes: string[], status: number) => {
+  const writeAttempt = async (
+    outcome: "rejected" | "route_declined",
+    codes: string[],
+    declinedKind: StatementKind | null,
+  ) => {
     await supabase.from("certification_attempts").insert({
       email: email || null,
       full_name: fullName || null,
-      outcome: "rejected",
+      outcome,
       reason_codes: codes,
       requested_kinds: kinds,
       answers: body?.answers ?? null,
+      attempt_group_id: attemptGroupId,
+      declined_kind: declinedKind,
       ip_address: ip,
       user_agent: userAgent,
     });
+  };
+
+  const recordAttempt = async (codes: string[], status: number) => {
+    await writeAttempt("rejected", codes, null);
     console.log("eligibility submission rejected", { codes, status });
-    return new Response(JSON.stringify({ ok: false, reasons: codes }), {
+    return new Response(JSON.stringify({ ok: false, reasons: codes, attemptGroupId }), {
       status,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   };
+
 
   // ---- rate limiting (15 minute window) -----------------------------------
   // Per email is tight; per IP is deliberately looser so shared/NAT addresses
@@ -192,7 +234,8 @@ Deno.serve(async (req) => {
       .from("certification_attempts")
       .select("id", { count: "exact", head: true })
       .gte("created_at", since)
-      .eq("outcome", "rejected") // submission attempts only, not token/re-issue events
+      // submission attempts only, not token/re-issue events
+      .in("outcome", ["rejected", "route_declined"])
       .eq(column, value);
     return count ?? 0;
   };
@@ -221,16 +264,56 @@ Deno.serve(async (req) => {
     if (!versionRow) reasons.add(REASONS.PRIVACY_NOT_ACKNOWLEDGED);
   }
 
-  // ---- statement selection ------------------------------------------------
-  if (body?.noneApply === true) reasons.add(REASONS.NONE_APPLY_SELECTED);
-  if (kinds.length === 0 && body?.noneApply !== true) reasons.add(REASONS.NO_KIND_SELECTED);
+  // ---- route selection (patch v2.1) ---------------------------------------
+  // Declaring "none of these conditions apply to me" on a route is a formal
+  // declaration, not a rejection. The first time it happens we offer the other
+  // route once; the second time there is nothing left to offer.
+  const noneApply = body?.noneApply === true;
+
+  if (!kind) reasons.add(REASONS.NO_KIND_SELECTED);
+
+
+  if (noneApply && kind && reasons.size === 0) {
+    const alternative = OTHER_KIND[kind];
+    if (declinedKinds.includes(alternative)) {
+      await writeAttempt(
+        "rejected",
+        [REASONS.BOTH_ROUTES_DECLINED],
+        kind,
+      );
+      console.log("eligibility both routes declined", { attemptGroupId });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          reasons: [REASONS.BOTH_ROUTES_DECLINED],
+          attemptGroupId,
+        }),
+        { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+
+      );
+    }
+
+    await writeAttempt("route_declined", [REASONS.NONE_APPLY_SELECTED], kind);
+    console.log("eligibility route declined", { attemptGroupId });
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        routeDeclined: kind,
+        offerAlternative: alternative,
+        declinedKinds: [...declinedKinds, kind],
+        attemptGroupId,
+      }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  }
 
   const perKind: Record<string, KindResult> = {};
-  for (const kind of kinds) {
-    const result = validateKind(kind, body?.answers?.[kind]);
+  for (const k of kinds) {
+    const result = validateKind(k, body?.answers?.[k]);
     result.reasons.forEach((r) => reasons.add(r));
-    perKind[kind] = result;
+    perKind[k] = result;
   }
+
 
   // ---- declarations + signature ------------------------------------------
   const declarations = body?.declarations ?? {};
@@ -318,6 +401,7 @@ Deno.serve(async (req) => {
           qualifying_criteria: result.criteria,
           declarations: declarations?.[kind] ?? {},
           statement_snapshot: renderStatementSnapshot(version),
+          attempt_group_id: attemptGroupId,
           ip_address: ip,
           user_agent: userAgent,
         })
