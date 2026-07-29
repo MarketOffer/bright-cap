@@ -22,7 +22,12 @@ export interface ConditionSpec {
     kind: DetailKind;
     /** payload key(s) written into `answers[kind]` */
     keys: string[];
+    /**
+     * Field labels. Where `statutory[i]` is true the label is the prescribed
+     * follow-up wording from SI 2024/301 and MUST NOT be reworded or shortened.
+     */
     labels: string[];
+    statutory: boolean[];
   };
 }
 
@@ -35,8 +40,9 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
         kind: "money10k",
         keys: ["A_income"],
         labels: [
-          "Please specify your income (as defined above) to the nearest £10,000 in the last financial year",
+          "If yes, please specify your income (as defined above) to the nearest £10,000 in the last financial year",
         ],
+        statutory: [true],
       },
     },
     {
@@ -46,8 +52,9 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
         kind: "money100k",
         keys: ["B_net_assets"],
         labels: [
-          "Please specify your net assets (as defined above) to the nearest £100,000 in the last financial year",
+          "If yes, please specify your net assets (as defined above) to the nearest £100,000 in the last financial year",
         ],
+        statutory: [true],
       },
     },
   ],
@@ -59,7 +66,8 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "text",
         keys: ["A_organisation"],
-        labels: ["Name of the business or organisation"],
+        labels: ["If yes, what is/was the name of the business/organisation?"],
+        statutory: [true],
       },
     },
     {
@@ -68,7 +76,12 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "company",
         keys: ["B_company_name", "B_company_number", "B_jurisdiction"],
-        labels: ["Company name", "Companies House number (or equivalent)", "Jurisdiction"],
+        labels: [
+          "If yes, what is/was the name of the company, and its Companies House number (or international equivalent)?",
+          "Companies House number (or international equivalent)",
+          "Jurisdiction",
+        ],
+        statutory: [true, false, false],
       },
     },
     {
@@ -77,7 +90,10 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "integer",
         keys: ["C_investment_count"],
-        labels: ["Number of investments in unlisted companies"],
+        labels: [
+          "If yes, how many investments in unlisted companies have you made in the last two years?",
+        ],
+        statutory: [true],
       },
     },
     {
@@ -86,11 +102,13 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "text",
         keys: ["D_network_name"],
-        labels: ["Name of the network or syndicate"],
+        labels: ["If yes, what is the name of the network or syndicate?"],
+        statutory: [true],
       },
     },
   ],
 };
+
 
 export const JURISDICTIONS = [
   "United Kingdom",
