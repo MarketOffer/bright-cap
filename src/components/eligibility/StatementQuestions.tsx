@@ -133,14 +133,15 @@ const StatementQuestions = ({
           return (
             <div key={spec.letter} className="space-y-8">
               {connector && connector.type === "connector" && (
-                <p className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+                <p className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
                   {connector.value}
                 </p>
               )}
               <fieldset className="space-y-3">
-                <legend className="font-sans leading-relaxed text-foreground">
+                <legend className="font-sans leading-relaxed text-statutory">
                   {block.letter} {renderSegments(block.segments)}
                 </legend>
+
 
                 <div className="flex gap-6 pt-1">
                   {(["no", "yes"] as const).map((option) => (
