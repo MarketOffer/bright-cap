@@ -31,34 +31,53 @@ export interface DispatchResult {
 /**
  * Raw provider call. Internal to the send path — do not call from anywhere
  * that constitutes a financial promotion; use `sendPromotion` for those.
+ *
+ * Routed through the Lovable connector gateway. NOTE: the linked connection is
+ * currently MarketOffer's, so the sending domain is a MarketOffer-verified
+ * domain until a brightcap.capital sender is verified — tracked as a Slice 0
+ * blocking item.
  */
+const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+
 export async function dispatchEmail(params: {
   to: string;
   subject: string;
   text: string;
 }): Promise<DispatchResult> {
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  if (!apiKey) return { sent: false, reason: "no_email_provider" };
+  const lovableKey = Deno.env.get("LOVABLE_API_KEY");
+  const connectionKey = Deno.env.get("RESEND_API_KEY");
+  if (!lovableKey || !connectionKey) {
+    return { sent: false, reason: "no_email_provider" };
+  }
 
   const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
-    "BrightCap <noreply@brightcap.capital>";
+    "BrightCap <support@marketoffer.co.uk>";
+  const replyTo = Deno.env.get("ACCESS_EMAIL_REPLY_TO") ?? null;
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const body: Record<string, unknown> = {
+    from,
+    to: [params.to],
+    subject: params.subject,
+    text: params.text,
+  };
+  if (replyTo) body.reply_to = replyTo;
+
+  const response = await fetch(`${GATEWAY_URL}/emails`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${lovableKey}`,
+      "X-Connection-Api-Key": connectionKey,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      from,
-      to: [params.to],
-      subject: params.subject,
-      text: params.text,
-    }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
-    console.error("email dispatch failed", { status: response.status });
+    const detail = await response.text().catch(() => "");
+    console.error("email dispatch failed", {
+      status: response.status,
+      detail: detail.slice(0, 300),
+    });
     return { sent: false, reason: "provider_error" };
   }
 
