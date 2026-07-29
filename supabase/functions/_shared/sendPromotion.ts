@@ -76,6 +76,52 @@ function textToHtml(text: string): string {
   return `<div style="font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#171717;">${paragraphs}</div>`;
 }
 
+/**
+ * Email type / topic. ONE Make endpoint serves every outbound mail, so this is
+ * the discriminator the scenario branches on — in particular, whether to attach
+ * the JV Investor Summary.
+ */
+export const EMAIL_TYPES = {
+  /** Initial certification signup — the Summary IS attached. */
+  SIGNUP_JV_SUMMARY: "signup_jv_summary",
+  /** Self-service re-issue of an expired/lost access link. No attachment. */
+  ACCESS_LINK_REISSUE: "access_link_reissue",
+  /** Neutral operational nudge, 30 days before expiry. No attachment. */
+  RECERTIFICATION_DUE: "recertification_due",
+} as const;
+
+export type EmailType = typeof EMAIL_TYPES[keyof typeof EMAIL_TYPES];
+
+/** Email types that carry the JV Investor Summary PDF. */
+const TYPES_WITH_SUMMARY: readonly string[] = [EMAIL_TYPES.SIGNUP_JV_SUMMARY];
+
+/** Filename shown to the recipient. */
+export const SUMMARY_FILENAME =
+  "BrightCap - JV Investor Summary - Cambridge Block.pdf";
+
+/**
+ * Loads the Summary PDF that ships alongside the edge functions and returns it
+ * base64-encoded for the Resend `attachments` array. Only called on the Resend
+ * path — the Make webhook pulls the same file from Google Drive itself.
+ */
+export async function loadSummaryAttachment(): Promise<
+  { filename: string; content: string } | null
+> {
+  try {
+    const url = new URL("./documents/jv-investor-summary.pdf", import.meta.url);
+    const bytes = await Deno.readFile(url);
+    let binary = "";
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+    }
+    return { filename: SUMMARY_FILENAME, content: btoa(binary) };
+  } catch (error) {
+    console.error("summary attachment unavailable", { error: String(error) });
+    return null;
+  }
+}
+
 export async function dispatchEmail(params: {
   to: string;
   subject: string;
@@ -83,14 +129,20 @@ export async function dispatchEmail(params: {
   /** Optional pre-built HTML body. Falls back to HTML derived from `text`. */
   html?: string;
   fullName?: string;
+  /** Topic discriminator for the single Make endpoint. */
+  emailType: EmailType | string;
 }): Promise<DispatchResult> {
   const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
     "BrightCap <support@marketoffer.co.uk>";
   const replyTo = Deno.env.get("ACCESS_EMAIL_REPLY_TO") ?? null;
   const { first, last } = splitName(params.fullName);
   const html = params.html ?? textToHtml(params.text);
+  const attachSummary = TYPES_WITH_SUMMARY.includes(params.emailType);
 
   const payload = {
+    email_type: params.emailType,
+    attach_summary: attachSummary,
+    attachment_filename: attachSummary ? SUMMARY_FILENAME : null,
     first_name: first,
     last_name: last,
     email: params.to,
@@ -101,6 +153,7 @@ export async function dispatchEmail(params: {
     reply_to: replyTo,
     sent_at: new Date().toISOString(),
   };
+
 
 
   const response = await fetch(WEBHOOK_URL, {
