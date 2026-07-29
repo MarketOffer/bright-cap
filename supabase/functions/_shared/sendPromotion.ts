@@ -76,6 +76,74 @@ function textToHtml(text: string): string {
   return `<div style="font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#171717;">${paragraphs}</div>`;
 }
 
+/**
+ * Email type / topic. ONE Make endpoint serves every outbound mail, so this is
+ * the discriminator the scenario branches on — in particular, whether to attach
+ * the JV Investor Summary.
+ */
+export const EMAIL_TYPES = {
+  /** Initial certification signup — the Summary IS attached. */
+  SIGNUP_JV_SUMMARY: "signup_jv_summary",
+  /** Self-service re-issue of an expired/lost access link. No attachment. */
+  ACCESS_LINK_REISSUE: "access_link_reissue",
+  /** Neutral operational nudge, 30 days before expiry. No attachment. */
+  RECERTIFICATION_DUE: "recertification_due",
+} as const;
+
+export type EmailType = typeof EMAIL_TYPES[keyof typeof EMAIL_TYPES];
+
+/** Email types that carry the JV Investor Summary PDF. */
+const TYPES_WITH_SUMMARY: readonly string[] = [EMAIL_TYPES.SIGNUP_JV_SUMMARY];
+
+/** Filename shown to the recipient. */
+export const SUMMARY_FILENAME =
+  "BrightCap - JV Investor Summary - Cambridge Block.pdf";
+
+/** Object key of the Summary inside the private `investor-documents` bucket. */
+export const SUMMARY_OBJECT_PATH = "jv-investor-summary.pdf";
+
+/**
+ * Fetches the Summary PDF from the private `investor-documents` bucket and
+ * returns it base64-encoded for the Resend `attachments` array.
+ *
+ * It lives in Storage rather than beside the function source because a 5.5 MB
+ * file inside supabase/functions/ pushes every function over the ~5 MB deploy
+ * cap. The repo copy of record is assets/documents/jv-investor-summary.pdf.
+ *
+ * Only used on the Resend path — the Make scenario pulls its own copy from
+ * Google Drive.
+ */
+export async function loadSummaryAttachment(): Promise<
+  { filename: string; content: string } | null
+> {
+  try {
+    const base = Deno.env.get("SUPABASE_URL");
+    const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!base || !key) return null;
+
+    const response = await fetch(
+      `${base}/storage/v1/object/investor-documents/${SUMMARY_OBJECT_PATH}`,
+      { headers: { Authorization: `Bearer ${key}`, apikey: key } },
+    );
+    if (!response.ok) {
+      console.error("summary attachment fetch failed", { status: response.status });
+      return null;
+    }
+
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    let binary = "";
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+    }
+    return { filename: SUMMARY_FILENAME, content: btoa(binary) };
+  } catch (error) {
+    console.error("summary attachment unavailable", { error: String(error) });
+    return null;
+  }
+}
+
+
 export async function dispatchEmail(params: {
   to: string;
   subject: string;
@@ -83,14 +151,20 @@ export async function dispatchEmail(params: {
   /** Optional pre-built HTML body. Falls back to HTML derived from `text`. */
   html?: string;
   fullName?: string;
+  /** Topic discriminator for the single Make endpoint. */
+  emailType: EmailType | string;
 }): Promise<DispatchResult> {
   const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
     "BrightCap <support@marketoffer.co.uk>";
   const replyTo = Deno.env.get("ACCESS_EMAIL_REPLY_TO") ?? null;
   const { first, last } = splitName(params.fullName);
   const html = params.html ?? textToHtml(params.text);
+  const attachSummary = TYPES_WITH_SUMMARY.includes(params.emailType);
 
   const payload = {
+    email_type: params.emailType,
+    attach_summary: attachSummary,
+    attachment_filename: attachSummary ? SUMMARY_FILENAME : null,
     first_name: first,
     last_name: last,
     email: params.to,
@@ -101,6 +175,7 @@ export async function dispatchEmail(params: {
     reply_to: replyTo,
     sent_at: new Date().toISOString(),
   };
+
 
 
   const response = await fetch(WEBHOOK_URL, {
@@ -134,9 +209,26 @@ export async function dispatchEmail(params: {
     subject: params.subject,
     text: params.text,
     html,
-
+    tags: [{ name: "email_type", value: params.emailType }],
   };
   if (replyTo) body.reply_to = replyTo;
+
+  // Initial signup carries the JV Investor Summary as a real attachment.
+  if (attachSummary) {
+    const attachment = await loadSummaryAttachment();
+    if (attachment) {
+      body.attachments = [
+        {
+          filename: attachment.filename,
+          content: attachment.content,
+          content_type: "application/pdf",
+        },
+      ];
+    } else {
+      return { sent: false, reason: "attachment_unavailable" };
+    }
+  }
+
 
   const response = await fetch(`${GATEWAY_URL}/emails`, {
     method: "POST",
@@ -185,7 +277,9 @@ export interface PromotionParams {
     text: string;
     html?: string;
     fullName?: string;
+    emailType: EmailType | string;
   };
+
 }
 
 export interface PromotionResult {

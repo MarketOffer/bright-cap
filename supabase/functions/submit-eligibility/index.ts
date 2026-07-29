@@ -11,6 +11,7 @@ import {
   issueAccessToken,
   sendAccessEmail,
 } from "../_shared/gatedDelivery.ts";
+import { EMAIL_TYPES } from "../_shared/sendPromotion.ts";
 
 const SITE_ORIGIN = Deno.env.get("SITE_ORIGIN") ?? "https://brightcap.capital";
 
@@ -366,6 +367,7 @@ Deno.serve(async (req) => {
             expiresAt: issued.expiresAt!,
             promoterName: document?.promoter_entity_name ?? "the promoter",
             promoterNumber: document?.promoter_company_number ?? "",
+            emailType: EMAIL_TYPES.SIGNUP_JV_SUMMARY,
           });
           delivery = { issued: true, emailed: sent.sent };
           console.log("access token issued", { tokenId: issued.tokenId, emailed: sent.sent });

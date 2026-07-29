@@ -8,7 +8,7 @@
 
 // deno-lint-ignore-file no-explicit-any
 import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
-import { sendPromotion } from "./sendPromotion.ts";
+import { EMAIL_TYPES, type EmailType, sendPromotion } from "./sendPromotion.ts";
 
 export const GATED_FLAG = "gated_summary_delivery";
 export const TOKEN_TTL_DAYS = 14;
@@ -226,6 +226,8 @@ export async function sendAccessEmail(
     promoterNumber: string;
     ip?: string | null;
     userAgent?: string | null;
+    /** Topic for the single Make endpoint / provider tag. */
+    emailType?: EmailType | string;
   },
 ): Promise<{ sent: boolean; reason?: string }> {
   const expiry = new Date(params.expiresAt).toUTCString();
@@ -257,6 +259,7 @@ export async function sendAccessEmail(
       subject: "Your BrightCap access link",
       text,
       fullName: params.fullName,
+      emailType: params.emailType ?? EMAIL_TYPES.ACCESS_LINK_REISSUE,
     },
   });
 

@@ -69,7 +69,7 @@ describe("6.6 direct provider calls are banned outside the send path", () => {
   });
 
   it("the access-link email is routed through sendPromotion", () => {
-    expect(gated).toContain('import { sendPromotion } from "./sendPromotion.ts"');
+    expect(gated).toContain('from "./sendPromotion.ts"');
     expect(gated).toContain("await sendPromotion(supabase, {");
   });
 });
