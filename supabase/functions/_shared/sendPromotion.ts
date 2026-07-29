@@ -99,17 +99,38 @@ const TYPES_WITH_SUMMARY: readonly string[] = [EMAIL_TYPES.SIGNUP_JV_SUMMARY];
 export const SUMMARY_FILENAME =
   "BrightCap - JV Investor Summary - Cambridge Block.pdf";
 
+/** Object key of the Summary inside the private `investor-documents` bucket. */
+export const SUMMARY_OBJECT_PATH = "jv-investor-summary.pdf";
+
 /**
- * Loads the Summary PDF that ships alongside the edge functions and returns it
- * base64-encoded for the Resend `attachments` array. Only called on the Resend
- * path — the Make webhook pulls the same file from Google Drive itself.
+ * Fetches the Summary PDF from the private `investor-documents` bucket and
+ * returns it base64-encoded for the Resend `attachments` array.
+ *
+ * It lives in Storage rather than beside the function source because a 5.5 MB
+ * file inside supabase/functions/ pushes every function over the ~5 MB deploy
+ * cap. The repo copy of record is assets/documents/jv-investor-summary.pdf.
+ *
+ * Only used on the Resend path — the Make scenario pulls its own copy from
+ * Google Drive.
  */
 export async function loadSummaryAttachment(): Promise<
   { filename: string; content: string } | null
 > {
   try {
-    const url = new URL("./documents/jv-investor-summary.pdf", import.meta.url);
-    const bytes = await Deno.readFile(url);
+    const base = Deno.env.get("SUPABASE_URL");
+    const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!base || !key) return null;
+
+    const response = await fetch(
+      `${base}/storage/v1/object/investor-documents/${SUMMARY_OBJECT_PATH}`,
+      { headers: { Authorization: `Bearer ${key}`, apikey: key } },
+    );
+    if (!response.ok) {
+      console.error("summary attachment fetch failed", { status: response.status });
+      return null;
+    }
+
+    const bytes = new Uint8Array(await response.arrayBuffer());
     let binary = "";
     const chunk = 0x8000;
     for (let i = 0; i < bytes.length; i += chunk) {
@@ -121,6 +142,7 @@ export async function loadSummaryAttachment(): Promise<
     return null;
   }
 }
+
 
 export async function dispatchEmail(params: {
   to: string;
