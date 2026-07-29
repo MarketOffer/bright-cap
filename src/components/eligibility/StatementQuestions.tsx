@@ -114,7 +114,7 @@ const StatementQuestions = ({
                       type="radio"
                       name={`${kind}-${spec.letter}`}
                       value={option}
-                      checked={value === option}
+                      checked={!allNo && value === option}
                       onChange={() => set(spec.letter, option)}
                       className="h-4 w-4 accent-primary"
                     />
