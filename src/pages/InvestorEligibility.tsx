@@ -75,6 +75,20 @@ const InvestorEligibility = () => {
    */
   const routeLocked = declinedKinds.length > 0;
 
+  /**
+   * If no condition is answered Yes, there is nothing to certify: the investor can
+   * only leave. Nothing is persisted in that case.
+   */
+  const currentAnswers = kind ? (answers[kind] ?? {}) : {};
+  const anyYes = kind
+    ? CONDITIONS[kind].some((spec) => (currentAnswers[spec.letter] as Answer) === "yes")
+    : false;
+  const allNo = kind
+    ? CONDITIONS[kind].every((spec) => (currentAnswers[spec.letter] as Answer) === "no")
+    : false;
+  const cancelOnly = Boolean(kind) && (noneApply || allNo);
+
+
   const startAlternative = (alternative: StatementKind) => {
     setDeclinedKinds((current) =>
       kind && !current.includes(kind) ? [...current, kind] : current,
