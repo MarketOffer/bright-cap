@@ -11,6 +11,7 @@ import {
   issueAccessToken,
   sendAccessEmail,
 } from "../_shared/gatedDelivery.ts";
+import { EMAIL_TYPES } from "../_shared/sendPromotion.ts";
 
 const SITE_ORIGIN = Deno.env.get("SITE_ORIGIN") ?? "https://brightcap.capital";
 
