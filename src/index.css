@@ -164,3 +164,9 @@
     letter-spacing: -0.02em;
   }
 }
+@layer utilities {
+  /* Review marker for prescribed statutory wording (SI 2024/301). */
+  .text-statutory {
+    color: hsl(var(--statutory));
+  }
+}
