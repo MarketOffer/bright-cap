@@ -188,15 +188,26 @@ const StatementQuestions = ({
         <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-foreground">
           <input
             type="checkbox"
-            checked={answers.none === true}
-            onChange={(event) => set("none", event.target.checked)}
+            checked={allNo || answers.none === true}
+            onChange={(event) => {
+              if (event.target.checked) {
+                set("none", true);
+                return;
+              }
+              if (allNo) {
+                clearConditions();
+                return;
+              }
+              set("none", false);
+            }}
             className="mt-1 h-4 w-4 accent-primary"
           />
           None of these apply to me.
         </label>
       </div>
 
-      <div className="space-y-4 border-t border-border pt-6">
+      <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
+
         {declarationIds(kind).map((id) => {
           const block = definition.blocks.find((candidate) => candidate.id === id);
           if (!block || block.type !== "declaration") return null;
