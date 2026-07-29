@@ -69,6 +69,18 @@ const StatementQuestions = ({
   const conditionBlock = (blockId: string) =>
     definition.blocks.find((block) => block.id === blockId);
 
+  /**
+   * The final "None of these apply to me" condition (C for HNW, E for SCSI) and the
+   * prescribed connector that precedes it, both taken from the frozen definitions.
+   */
+  const noneBlockIndex = definition.blocks.findIndex(
+    (block) => block.type === "condition" && !specs.some((s) => s.blockId === block.id),
+  );
+  const noneBlock = noneBlockIndex >= 0 ? definition.blocks[noneBlockIndex] : undefined;
+  const noneConnector = definition.blocks
+    .slice(0, noneBlockIndex >= 0 ? noneBlockIndex : 0)
+    .reverse()
+    .find((block) => block.type === "connector");
 
   return (
     <section
@@ -76,7 +88,7 @@ const StatementQuestions = ({
       aria-label={definition.title}
     >
       <header className="space-y-3">
-        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
           {definition.title}
         </h3>
         {definition.blocks
@@ -84,12 +96,13 @@ const StatementQuestions = ({
           .map((block) => (
             <p
               key={block.id}
-              className="font-sans text-sm leading-relaxed text-secondary"
+              className="font-sans text-sm leading-relaxed text-statutory"
             >
               {renderSegments(block.segments)}
             </p>
           ))}
       </header>
+
 
       <div className="space-y-8">
         {specs.map((spec, specIndex) => {
