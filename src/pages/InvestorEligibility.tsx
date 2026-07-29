@@ -408,19 +408,6 @@ const InvestorEligibility = () => {
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
                     />
-                    <label className="flex cursor-pointer items-start gap-3 border border-border p-4 font-sans text-foreground">
-                      <input
-                        type="checkbox"
-                        checked={noneApply}
-                        onChange={(event) => setNoneApply(event.target.checked)}
-                        className="mt-1 h-4 w-4 accent-primary"
-                      />
-                      <span className="leading-relaxed">
-                        None of the conditions in the {KIND_LABEL[kind].toLowerCase()} statement
-                        apply to me. This is a formal declaration and cannot be changed once
-                        submitted.
-                      </span>
-                    </label>
                   </div>
                 )}
 
