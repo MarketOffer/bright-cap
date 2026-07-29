@@ -332,9 +332,6 @@ const InvestorEligibility = () => {
                         }
                       />
                     </div>
-                    <p className="font-sans text-sm text-muted-foreground">
-                      <span aria-hidden="true" className="text-primary">*</span> Required.
-                    </p>
                   </div>
                 )}
 
