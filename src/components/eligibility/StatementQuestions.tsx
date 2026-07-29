@@ -239,11 +239,13 @@ const StatementQuestions = ({
         })}
 
         {/* Prescribed connector preceding the "None of these apply to me" condition. */}
-        <p className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
-          OR
-        </p>
+        {noneConnector && noneConnector.type === "connector" && (
+          <p className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
+            {noneConnector.value}
+          </p>
+        )}
 
-        <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-foreground">
+        <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-statutory">
 
           <input
             type="checkbox"
@@ -261,7 +263,11 @@ const StatementQuestions = ({
             }}
             className="mt-1 h-4 w-4 accent-primary"
           />
-          None of these apply to me.
+          <span>
+            {noneBlock && noneBlock.type === "condition"
+              ? `${noneBlock.letter} ${noneBlock.segments.map((s) => s.value).join("")}`
+              : "None of these apply to me."}
+          </span>
         </label>
       </div>
 
@@ -273,8 +279,9 @@ const StatementQuestions = ({
           return (
             <label
               key={id}
-              className="flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-foreground"
+              className="flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-statutory"
             >
+
               <Checkbox
                 checked={declarations[id]?.accepted === true}
                 onCheckedChange={(checked) => onDeclaration(id, checked === true)}
