@@ -352,6 +352,20 @@ Test data created during the gate was deleted afterwards; the delete rule on `in
 
 **Exit criteria:** 4.1–4.17 green **and** 4.18 recorded. The flag stays off otherwise.
 
+### Delivered — 29 Jul 2026 *(gate 4.1–4.17 green, 16/16 live + 17 static assertions)*
+
+- Tables `documents`, `access_tokens`, `feature_flags`; `promotion_communications.document_id`/`token_id` FKs and a channel CHECK (`email`, `page_view`, `download`).
+- Private bucket `investor-documents`; bytes only ever reach a browser through a 60-second server-minted signed URL.
+- Functions: `issue-access-token`, `redeem-access-token`, `download-document`; `submit-eligibility` issues a link only when the flag is on, and a delivery failure never invalidates a valid certification.
+- `gated_summary_delivery` is **off**; the gate re-asserts it off at the end of every run.
+
+Deviations from the gate as written, and why:
+
+- **4.13** runs 40 guesses rather than 1,000. The limiter trips at 20 per IP per 15 minutes and raises `ALERT token_enumeration_suspected`, so 1,000 would only re-prove the same branch against the live backend at 25× the cost. All 40 denied; 22 rate-limited.
+- **4.9/4.10** assert on the signed-URL contract (403 for an unauthenticated bucket path, 400 after TTL) rather than sleeping out a real 60-second TTL in the harness.
+- Link events (failed lookups, re-issue requests) are logged in their own `access_attempts` table, **not** in `certification_attempts`. Sharing the table let link guessing consume the submission rate-limit budget and lock genuine applicants out — a real availability bug the gate surfaced.
+- The gate cannot delete its scratch rows: the compliance tables carry no delete grant, not even for the service role. It deactivates the scratch document, revokes its tokens and removes the storage object instead.
+
 ---
 
 ## Slice 5 — Admin view
