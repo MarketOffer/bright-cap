@@ -65,7 +65,7 @@ let contactBId = "";
 let statementAId = "";
 let statementBId = "";
 
-const seedContact = async (tag: string) => {
+const seedContact = async (tag: string, signedAtOverride?: Date) => {
   const { data: contact, error } = await db
     .from("contacts")
     .insert({
@@ -77,7 +77,7 @@ const seedContact = async (tag: string) => {
     .select("id")
     .single();
   if (error) throw error;
-  const signedAt = new Date();
+  const signedAt = signedAtOverride ?? new Date();
   const { data: statement, error: sErr } = await db
     .from("investor_statements")
     .insert({
@@ -220,7 +220,11 @@ try {
   const fresh = await insertToken(contactAId, statementAId);
   const oldBody = await (await call("redeem-access-token", { token: older.token })).json();
   const newBody = await (await call("redeem-access-token", { token: fresh.token })).json();
-  check("4.7", oldBody.reason === "token_revoked" && newBody.ok === true, "old dead, new live");
+  check(
+    "4.7",
+    oldBody.reason === "token_revoked" && newBody.ok === true,
+    `old=${oldBody.reason} new=${newBody.ok ? "ok" : newBody.reason}`,
+  );
 
   // ---- 4.12 + 4.11 download, watermark, audit-before-stream ---------------
   const before = await db
@@ -241,7 +245,7 @@ try {
   check(
     "4.11",
     dlA.ok && dlB.ok && !bytesA.equals(bytesB) && textA !== textB,
-    `distinct watermarked bytes (${bytesA.length} vs ${bytesB.length})`,
+    `A=${dlA.status} B=${dlB.status} bytes ${bytesA.length} vs ${bytesB.length} ${dlA.ok ? "" : textA.slice(0, 120)}`,
   );
   check(
     "4.12",
@@ -265,11 +269,7 @@ try {
   check("4.10", !stale.ok, `status ${stale.status}`);
 
   // ---- 4.4 statement expiry / 4.5 revoked --------------------------------
-  const expiredStatement = await seedContact("exp");
-  await db
-    .from("investor_statements")
-    .update({ signed_at: new Date(Date.now() - 400 * 864e5).toISOString() })
-    .eq("id", expiredStatement.statementId);
+  const expiredStatement = await seedContact("exp", new Date(Date.now() - 400 * 864e5));
   const expTok = await insertToken(expiredStatement.contactId, expiredStatement.statementId);
   const expRes = await (await call("redeem-access-token", { token: expTok.token })).json();
   const { count: expComms } = await db
