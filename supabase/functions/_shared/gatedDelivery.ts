@@ -252,7 +252,12 @@ export async function sendAccessEmail(
     tokenId: params.tokenId ?? null,
     ip: params.ip ?? null,
     userAgent: params.userAgent ?? null,
-    email: { to: params.to, subject: "Your BrightCap access link", text },
+    email: {
+      to: params.to,
+      subject: "Your BrightCap access link",
+      text,
+      fullName: params.fullName,
+    },
   });
 
   return { sent: result.ok, reason: result.reason };

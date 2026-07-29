@@ -163,6 +163,7 @@ Deno.serve(async (req) => {
       to: row.email,
       subject: "Your BrightCap investor certification is due for renewal",
       text: promptText(row.full_name, row.expires_at),
+      fullName: row.full_name,
     });
 
     if (result.sent) {
