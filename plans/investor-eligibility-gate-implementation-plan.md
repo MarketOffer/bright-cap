@@ -473,7 +473,8 @@ Live gate: `bun run scripts/slice6-gate.ts` — 6/6. Static gate: `src/test/slic
 **Still off / outstanding**
 
 - `recertification_prompts` and `retention_purge` flags are both **off**; `gated_summary_delivery` remains off pending brief §10 item 1.
-- No email provider is configured (`RESEND_API_KEY` unset) and no scheduler secret (`CRON_SECRET`) is set, so nothing can physically send yet. Both need to be added before the sweep is switched on, along with a daily schedule calling `recertification-sweep`.
+- Email provider **wired**: Resend is linked through the connector gateway (`RESEND_API_KEY` present) — but on the borrowed **MarketOffer** connection, so gate item **0.7** is still red.
+- Scheduler **wired**: `CRON_SECRET` is set and two pg_cron jobs are active — `brightcap-recertification-sweep` daily at 08:00 UTC and `brightcap-retention-sweep` Mondays at 03:30 UTC, both authenticating with the `x-cron-secret` header (no JWT or service key in the schedule). Both currently return `flag_off` / `dry_run`, so nothing sends and nothing is deleted until the flags are flipped.
 
 ---
 
