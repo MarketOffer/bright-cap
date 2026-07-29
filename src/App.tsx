@@ -31,7 +31,9 @@ const App = () => (
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/investors" element={<Investors />} />
+          <Route path="/investors/eligibility" element={<InvestorEligibility />} />
           {/* Gated, token-only. Never linked publicly; noindex; excluded from
+
               sitemap.xml, llms.txt and the prerender pipeline. */}
           <Route path="/investors/summary" element={<InvestorSummary />} />
 
