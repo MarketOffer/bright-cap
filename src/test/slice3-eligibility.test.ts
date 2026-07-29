@@ -84,7 +84,10 @@ const submit = async (payload: unknown) => {
     body: JSON.stringify(payload),
   });
   const json = await res.json().catch(() => ({}));
-  return { status: res.status, json } as { status: number; json: any };
+  return { status: res.status, json } as {
+    status: number;
+    json: Record<string, unknown> & { reasons?: string[] };
+  };
 };
 
 describe.runIf(configured)("Slice 3 — data API exposure", () => {
