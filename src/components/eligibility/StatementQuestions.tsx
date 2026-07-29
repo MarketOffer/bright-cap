@@ -166,13 +166,18 @@ const StatementQuestions = ({
                   <div className="space-y-3 border-l-2 border-primary pl-4">
                     {detail.keys.map((key, index) => {
                       const label = detail.labels[index];
+                      const isStatutory = detail.statutory[index] === true;
+                      const labelClass = isStatutory
+                        ? "font-sans text-xs normal-case tracking-normal text-statutory"
+                        : "font-sans text-xs normal-case tracking-normal text-muted-foreground";
                       const inputId = `${kind}-${key}`;
                       if (key === "B_jurisdiction") {
                         return (
                           <div key={key} className="space-y-1.5">
-                            <Label htmlFor={inputId} className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
+                            <Label htmlFor={inputId} className={labelClass}>
                               {label}
                             </Label>
+
                             <select
                               id={inputId}
                               value={(answers[key] as string) ?? ""}
