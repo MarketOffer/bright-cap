@@ -452,6 +452,8 @@ export type Database = {
         Row: {
           channel: string
           contact_id: string
+          dispatch_ref: string | null
+          dispatched_at: string | null
           document_id: string | null
           exemption_relied_on: string
           id: string
@@ -466,6 +468,8 @@ export type Database = {
         Insert: {
           channel: string
           contact_id: string
+          dispatch_ref?: string | null
+          dispatched_at?: string | null
           document_id?: string | null
           exemption_relied_on: string
           id?: string
@@ -480,6 +484,8 @@ export type Database = {
         Update: {
           channel?: string
           contact_id?: string
+          dispatch_ref?: string | null
+          dispatched_at?: string | null
           document_id?: string | null
           exemption_relied_on?: string
           id?: string
@@ -536,6 +542,71 @@ export type Database = {
           },
         ]
       }
+      recertification_prompts: {
+        Row: {
+          channel: string
+          contact_id: string
+          created_at: string
+          delivered: boolean
+          detail: Json
+          id: string
+          prompt_kind: string
+          sent_at: string
+          statement_id: string
+        }
+        Insert: {
+          channel?: string
+          contact_id: string
+          created_at?: string
+          delivered?: boolean
+          detail?: Json
+          id?: string
+          prompt_kind: string
+          sent_at?: string
+          statement_id: string
+        }
+        Update: {
+          channel?: string
+          contact_id?: string
+          created_at?: string
+          delivered?: boolean
+          detail?: Json
+          id?: string
+          prompt_kind?: string
+          sent_at?: string
+          statement_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recertification_prompts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recertification_prompts_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["contact_id"]
+          },
+          {
+            foreignKeyName: "recertification_prompts_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "investor_statements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recertification_prompts_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["statement_id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -579,6 +650,36 @@ export type Database = {
         Returns: {
           allowed: boolean
           reason: string
+          statement_id: string
+        }[]
+      }
+      fn_promotion_orphans: {
+        Args: { p_at?: string; p_grace_minutes?: number }
+        Returns: {
+          channel: string
+          communication_id: string
+          contact_id: string
+          sent_at: string
+          statement_id: string
+        }[]
+      }
+      fn_recertification_due: {
+        Args: { p_at?: string; p_window_days?: number }
+        Returns: {
+          contact_id: string
+          days_remaining: number
+          email: string
+          expires_at: string
+          full_name: string
+          statement_id: string
+        }[]
+      }
+      fn_retention_candidates: {
+        Args: { p_at?: string; p_years?: number }
+        Returns: {
+          contact_id: string
+          cutoff_at: string
+          last_promotion_at: string
           statement_id: string
         }[]
       }

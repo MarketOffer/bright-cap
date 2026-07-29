@@ -59,7 +59,7 @@ const AdminInvestors = () => {
 
   return (
     <AdminShell title="Certification register">
-      <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+      <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
         <div>
           <h1 className="text-2xl tracking-tight">Certification register</h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -73,6 +73,22 @@ const AdminInvestors = () => {
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
+
+      {/* Slice 6 operational note — read before any outbound contact. */}
+      <div className="mb-8 rounded-md border border-border p-4 text-sm text-muted-foreground">
+        <p>
+          The 12-month test applies at <strong>every</strong> communication, not once at signup.
+          Check the status here immediately before making contact; a certification that was valid
+          last week may not be valid today.
+        </p>
+        <p className="mt-2">
+          Articles 48(1)(a) and 50A cover non-real-time communications and{" "}
+          <strong>solicited</strong> real-time ones. A discovery call the investor books is
+          covered; a call BrightCap initiates is not.
+        </p>
+      </div>
+
+
 
       {error && (
         <p className="text-sm text-destructive mb-6">

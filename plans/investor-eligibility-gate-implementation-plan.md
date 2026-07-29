@@ -440,7 +440,41 @@ Deviations from the gate as written, and why:
 | 6.8 | Retention dry run | Correct rows identified; nothing deleted while disabled |
 | 6.9 | Full regression: Slices 1–5 gates re-run | All green |
 
+### Slice 6 result — 29 July 2026
+
+**Delivered**
+
+- **Schema:** `recertification_prompts` (unique on `statement_id, prompt_kind` — one prompt per statement, ever), `dispatched_at` / `dispatch_ref` on `promotion_communications`, and three service-role-only functions: `fn_recertification_due`, `fn_promotion_orphans`, `fn_retention_candidates`. Historic promotion rows backfilled as dispatched so the orphan report only surfaces genuine faults.
+- **Send-path contract:** `supabase/functions/_shared/sendPromotion.ts` is the only sanctioned outbound path. It (a) calls `fn_can_promote` at send time on every send, never cached, never supplied by the caller, (b) writes `promotion_communications` before dispatch, (c) stamps `dispatched_at` only on a successful dispatch. `sendAccessEmail` now routes through it, so the 12-month test bites on every access link, not just at signup. Served (pull) communications are stamped at log time in `tokenAccess.ts`.
+- **Lint rule:** `no-restricted-syntax` in `eslint.config.js` bans any provider reference outside `sendPromotion.ts`.
+- **Recertification sweep:** `recertification-sweep` edge function, scheduler-secret or admin-JWT only, behind the `recertification_prompts` flag (**off**). Claims the send row before dispatching, so a concurrent or repeated run cannot double-send. The prompt is neutral — no figures, no deal content — and links to `/investors/eligibility?recertify=1`. Recertification always writes a **new** statement row; no prior answers are pre-filled.
+- **Expiry UX:** `/investors/summary` shows a neutral renewal panel (no deal content) on `statement_expired`, `statement_revoked` or `no_statement`; the eligibility form shows a renewal notice explaining that answers are not carried over.
+- **Retention:** `retention-sweep` edge function, dry-run by default behind the `retention_purge` flag (**off**). Reports statements six years past the last promotion made in reliance on them, plus any orphaned promotions. Deletes nothing while the flag is off.
+- **Admin:** operational note on the register — the 12-month test applies at every communication, and arts 48(1)(a)/50A cover non-real-time and *solicited* real-time communications only.
+
+**Gate results**
+
+| # | Result |
+|---|---|
+| 6.1 | Pass — statement at 335 days appears once; after the prompt row exists it drops out of the sweep and a duplicate insert is rejected by the unique index |
+| 6.2 | Pass — recertification wrote a second row; the original `signed_at` and snapshot are untouched and still queryable |
+| 6.3 | Pass — `fn_can_promote` returns `allowed=false, reason=statement_expired` past expiry; the page shows a neutral renewal prompt only |
+| 6.4 | Pass — the send path refuses at the gate; nothing logged, nothing dispatched |
+| 6.5 | Pass — a promotion logged without a dispatch is reported by `fn_promotion_orphans` |
+| 6.6 | Pass — the lint rule fires on any provider reference outside `sendPromotion.ts` (demonstrated by the gate test file, which is explicitly allow-listed) |
+| 6.7 | Pass — no cached certification flag in code or migrations; `is_certified` exists only on the read-only register view, derived live |
+| 6.8 | Pass — purge flag off, candidates reported, zero rows deleted |
+| 6.9 | Pass — `vitest run` 63/63 (Slices 0, 2, 3, 4, 6) and the Slice 4 live gate 16/16 re-run green |
+
+Live gate: `bun run scripts/slice6-gate.ts` — 6/6. Static gate: `src/test/slice6-recertification.test.ts`.
+
+**Still off / outstanding**
+
+- `recertification_prompts` and `retention_purge` flags are both **off**; `gated_summary_delivery` remains off pending brief §10 item 1.
+- No email provider is configured (`RESEND_API_KEY` unset) and no scheduler secret (`CRON_SECRET`) is set, so nothing can physically send yet. Both need to be added before the sweep is switched on, along with a daily schedule calling `recertification-sweep`.
+
 ---
+
 
 ## 2. Cross-cutting rules
 
