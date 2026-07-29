@@ -39,20 +39,64 @@ export interface DispatchResult {
  */
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 
+// TEMPORARY: outbound mail is routed to a Make.com webhook instead of Resend.
+// The Resend call site below is commented out, not deleted — restoring it is a
+// one-line swap once a verified brightcap.capital sender exists (gate item 0.7).
+const WEBHOOK_URL = Deno.env.get("EMAIL_WEBHOOK_URL") ??
+  "https://hook.eu2.make.com/tfeswcx47u1wcycs3v3ftd26tpd6eeoc";
+
+function splitName(fullName?: string): { first: string; last: string } {
+  const parts = (fullName ?? "").trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return { first: "", last: "" };
+  return { first: parts[0], last: parts.slice(1).join(" ") };
+}
+
 export async function dispatchEmail(params: {
   to: string;
   subject: string;
   text: string;
+  fullName?: string;
 }): Promise<DispatchResult> {
+  const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
+    "BrightCap <support@marketoffer.co.uk>";
+  const replyTo = Deno.env.get("ACCESS_EMAIL_REPLY_TO") ?? null;
+  const { first, last } = splitName(params.fullName);
+
+  const payload = {
+    first_name: first,
+    last_name: last,
+    email: params.to,
+    subject: params.subject,
+    text: params.text,
+    from,
+    reply_to: replyTo,
+    sent_at: new Date().toISOString(),
+  };
+
+  const response = await fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    console.error("email webhook dispatch failed", {
+      status: response.status,
+      detail: detail.slice(0, 300),
+    });
+    return { sent: false, reason: "webhook_error" };
+  }
+
+  const ref = await response.text().catch(() => "");
+  return { sent: true, ref: ref ? `webhook:${ref.slice(0, 80)}` : "webhook" };
+
+  /* ---- Resend path (temporarily disabled) --------------------------------
   const lovableKey = Deno.env.get("LOVABLE_API_KEY");
   const connectionKey = Deno.env.get("RESEND_API_KEY");
   if (!lovableKey || !connectionKey) {
     return { sent: false, reason: "no_email_provider" };
   }
-
-  const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
-    "BrightCap <support@marketoffer.co.uk>";
-  const replyTo = Deno.env.get("ACCESS_EMAIL_REPLY_TO") ?? null;
 
   const body: Record<string, unknown> = {
     from,
@@ -83,12 +127,13 @@ export async function dispatchEmail(params: {
 
   let ref: string | null = null;
   try {
-    const body = await response.json();
-    ref = typeof body?.id === "string" ? body.id : null;
+    const parsed = await response.json();
+    ref = typeof parsed?.id === "string" ? parsed.id : null;
   } catch {
-    /* provider returned no body; the send still succeeded */
+    // provider returned no body; the send still succeeded
   }
   return { sent: true, ref };
+  ------------------------------------------------------------------------ */
 }
 
 export interface PromotionParams {
