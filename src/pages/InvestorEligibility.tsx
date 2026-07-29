@@ -1,15 +1,17 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
 import {
+  CONDITIONS,
   KIND_LABEL,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
   ROUTE_OPTIONS,
   declarationIds,
+  type Answer,
   type EligibilityPayload,
   type EligibilityResponse,
 } from "@/legal/eligibility/contract";
@@ -31,6 +33,8 @@ type Outcome =
 
 const InvestorEligibility = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   // Recertification: contact fields may be typed afresh by the investor, but the
   // statement itself is never pre-filled — it must be answered anew each time.
   const isRecertifying = searchParams.get("recertify") === "1";
@@ -70,6 +74,18 @@ const InvestorEligibility = () => {
    * investor may take the other route, but may never reopen the first one.
    */
   const routeLocked = declinedKinds.length > 0;
+
+  /**
+   * If no condition is answered Yes, there is nothing to certify: the investor can
+   * only leave. Nothing is persisted in that case.
+   */
+  const currentAnswers = kind ? (answers[kind] ?? {}) : {};
+  const allNo = kind
+
+    ? CONDITIONS[kind].every((spec) => (currentAnswers[spec.letter] as Answer) === "no")
+    : false;
+  const cancelOnly = Boolean(kind) && (noneApply || allNo);
+
 
   const startAlternative = (alternative: StatementKind) => {
     setDeclinedKinds((current) =>
@@ -493,7 +509,11 @@ const InvestorEligibility = () => {
                     Back
                   </Button>
                 )}
-                {step < STEPS.length - 1 ? (
+                {step === 2 && cancelOnly ? (
+                  <Button variant="outline" onClick={() => navigate("/")}>
+                    Cancel certification
+                  </Button>
+                ) : step < STEPS.length - 1 ? (
                   <Button disabled={!canContinue()} onClick={() => setStep(step + 1)}>
                     Continue
                   </Button>

@@ -48,8 +48,27 @@ const StatementQuestions = ({
   const specs = CONDITIONS[kind];
   const set = (key: string, value: unknown) => onAnswers({ ...answers, [key]: value });
 
+  /**
+   * Display-only derivation. When every condition is answered No the individual
+   * No selections are shown as cleared and the "None of these apply to me" box is
+   * shown as ticked — the underlying answers remain "no" and are persisted as such.
+   */
+  const allNo =
+    specs.length > 0 && specs.every((spec) => (answers[spec.letter] as Answer) === "no");
+  const anyYes = specs.some((spec) => (answers[spec.letter] as Answer) === "yes");
+
+  const clearConditions = () => {
+    const next = { ...answers };
+    specs.forEach((spec) => {
+      delete next[spec.letter];
+    });
+    next.none = false;
+    onAnswers(next);
+  };
+
   const conditionBlock = (blockId: string) =>
     definition.blocks.find((block) => block.id === blockId);
+
 
   return (
     <section
@@ -95,7 +114,7 @@ const StatementQuestions = ({
                       type="radio"
                       name={`${kind}-${spec.letter}`}
                       value={option}
-                      checked={value === option}
+                      checked={!allNo && value === option}
                       onChange={() => set(spec.letter, option)}
                       className="h-4 w-4 accent-primary"
                     />
@@ -169,15 +188,26 @@ const StatementQuestions = ({
         <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-foreground">
           <input
             type="checkbox"
-            checked={answers.none === true}
-            onChange={(event) => set("none", event.target.checked)}
+            checked={allNo || answers.none === true}
+            onChange={(event) => {
+              if (event.target.checked) {
+                set("none", true);
+                return;
+              }
+              if (allNo) {
+                clearConditions();
+                return;
+              }
+              set("none", false);
+            }}
             className="mt-1 h-4 w-4 accent-primary"
           />
           None of these apply to me.
         </label>
       </div>
 
-      <div className="space-y-4 border-t border-border pt-6">
+      <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
+
         {declarationIds(kind).map((id) => {
           const block = definition.blocks.find((candidate) => candidate.id === id);
           if (!block || block.type !== "declaration") return null;
