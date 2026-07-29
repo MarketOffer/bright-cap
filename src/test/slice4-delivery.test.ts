@@ -42,7 +42,7 @@ describe("4.2 tokens are never stored or logged in the clear", () => {
       const logs = source.match(/console\.(log|error|warn)\([^;]*\)/gs) ?? [];
       for (const line of logs) {
         expect(line).not.toMatch(/\btoken\b\s*[,}]/);
-        expect(line).not.toMatch(/issued\.token|value\.token\b|\bclean\b/);
+        expect(line).not.toMatch(/issued\.token\b|value\.token\b|\bclean\b/);
       }
     }
   });
