@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { MoneyInput } from "@/components/eligibility/MoneyInput";
 import {
   CURRENT_STATEMENT_VERSION,
@@ -57,6 +57,15 @@ const StatementQuestions = ({
   const allNo =
     specs.length > 0 && specs.every((spec) => (answers[spec.letter] as Answer) === "no");
   const anyYes = specs.some((spec) => (answers[spec.letter] as Answer) === "yes");
+
+  /** The "I understand that this means:" lead-in carries no tick; accept it implicitly. */
+  const understandId = declarationIds(kind).find((id) => id.endsWith("-understand"));
+  const understandAccepted = understandId
+    ? declarations[understandId]?.accepted === true
+    : true;
+  useEffect(() => {
+    if (anyYes && understandId && !understandAccepted) onDeclaration(understandId, true);
+  }, [anyYes, understandId, understandAccepted, onDeclaration]);
 
   /** Removes every condition answer and its supporting detail figures. */
   const clearConditions = (none: boolean) => {
@@ -285,6 +294,23 @@ const StatementQuestions = ({
         {declarationIds(kind).map((id) => {
           const block = definition.blocks.find((candidate) => candidate.id === id);
           if (!block || block.type !== "declaration") return null;
+
+          /**
+           * "I understand that this means:" is a prescribed lead-in to the
+           * lettered sub-points, not a separate declaration — it is shown as
+           * text and accepted implicitly.
+           */
+          if (id.endsWith("-understand")) {
+            return (
+              <p
+                key={id}
+                className="pl-7 font-sans text-sm leading-relaxed text-statutory"
+              >
+                {renderSegments(block.segments)}
+              </p>
+            );
+          }
+
           return (
             <label
               key={id}
@@ -300,6 +326,7 @@ const StatementQuestions = ({
             </label>
           );
         })}
+
       </div>
     </section>
   );
