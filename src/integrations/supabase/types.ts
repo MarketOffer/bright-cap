@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      certification_attempts: {
+        Row: {
+          answers: Json | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          ip_address: unknown
+          outcome: string
+          reason_codes: string[]
+          requested_kinds: string[]
+          user_agent: string | null
+        }
+        Insert: {
+          answers?: Json | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          ip_address?: unknown
+          outcome?: string
+          reason_codes?: string[]
+          requested_kinds?: string[]
+          user_agent?: string | null
+        }
+        Update: {
+          answers?: Json | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          ip_address?: unknown
+          outcome?: string
+          reason_codes?: string[]
+          requested_kinds?: string[]
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           contact_type: string[]
@@ -61,6 +100,120 @@ export type Database = {
           },
         ]
       }
+      investor_statement_financials: {
+        Row: {
+          created_at: string
+          income_band: number | null
+          net_assets_band: number | null
+          statement_id: string
+        }
+        Insert: {
+          created_at?: string
+          income_band?: number | null
+          net_assets_band?: number | null
+          statement_id: string
+        }
+        Update: {
+          created_at?: string
+          income_band?: number | null
+          net_assets_band?: number | null
+          statement_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investor_statement_financials_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: true
+            referencedRelation: "investor_statements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investor_statement_financials_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: true
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["statement_id"]
+          },
+        ]
+      }
+      investor_statements: {
+        Row: {
+          answers: Json
+          contact_id: string
+          created_at: string
+          declarations: Json
+          declared_full_name: string
+          expires_at: string
+          id: string
+          instrument: string
+          ip_address: unknown
+          qualifying_criteria: string[]
+          revoked_at: string | null
+          revoked_reason: string | null
+          signature_typed: string
+          signed_at: string
+          statement_kind: Database["public"]["Enums"]["statement_kind"]
+          statement_snapshot: string
+          statement_version: string
+          user_agent: string | null
+        }
+        Insert: {
+          answers: Json
+          contact_id: string
+          created_at?: string
+          declarations: Json
+          declared_full_name: string
+          expires_at?: string
+          id?: string
+          instrument?: string
+          ip_address?: unknown
+          qualifying_criteria: string[]
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          signature_typed: string
+          signed_at: string
+          statement_kind: Database["public"]["Enums"]["statement_kind"]
+          statement_snapshot: string
+          statement_version: string
+          user_agent?: string | null
+        }
+        Update: {
+          answers?: Json
+          contact_id?: string
+          created_at?: string
+          declarations?: Json
+          declared_full_name?: string
+          expires_at?: string
+          id?: string
+          instrument?: string
+          ip_address?: unknown
+          qualifying_criteria?: string[]
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          signature_typed?: string
+          signed_at?: string
+          statement_kind?: Database["public"]["Enums"]["statement_kind"]
+          statement_snapshot?: string
+          statement_version?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investor_statements_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investor_statements_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["contact_id"]
+          },
+        ]
+      }
       privacy_notice_versions: {
         Row: {
           body_hash: string
@@ -85,15 +238,108 @@ export type Database = {
         }
         Relationships: []
       }
+      promotion_communications: {
+        Row: {
+          channel: string
+          contact_id: string
+          document_id: string | null
+          exemption_relied_on: string
+          id: string
+          ip_address: unknown
+          sent_at: string
+          statement_expires_at: string
+          statement_id: string
+          statement_signed_at: string
+          token_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          channel: string
+          contact_id: string
+          document_id?: string | null
+          exemption_relied_on: string
+          id?: string
+          ip_address?: unknown
+          sent_at?: string
+          statement_expires_at: string
+          statement_id: string
+          statement_signed_at: string
+          token_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          channel?: string
+          contact_id?: string
+          document_id?: string | null
+          exemption_relied_on?: string
+          id?: string
+          ip_address?: unknown
+          sent_at?: string
+          statement_expires_at?: string
+          statement_id?: string
+          statement_signed_at?: string
+          token_id?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promotion_communications_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promotion_communications_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["contact_id"]
+          },
+          {
+            foreignKeyName: "promotion_communications_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "investor_statements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promotion_communications_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["statement_id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      v_contact_certification: {
+        Row: {
+          contact_id: string | null
+          days_remaining: number | null
+          due_for_recertification: boolean | null
+          expires_at: string | null
+          is_certified: boolean | null
+          signed_at: string | null
+          statement_id: string | null
+          statement_kind: Database["public"]["Enums"]["statement_kind"] | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      fn_can_promote: {
+        Args: { p_at?: string; p_contact_id: string }
+        Returns: {
+          allowed: boolean
+          reason: string
+          statement_id: string
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      statement_kind: "hnw" | "scsi"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -220,6 +466,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      statement_kind: ["hnw", "scsi"],
+    },
   },
 } as const
