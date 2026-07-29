@@ -191,6 +191,31 @@ const AdminStatement = () => {
             )}
           </section>
 
+          {detail.attempts.length > 0 && (
+            <section>
+              <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">
+                Certification episode
+              </h2>
+              <ul className="space-y-2">
+                {detail.attempts.map((attempt) => (
+                  <li key={attempt.id} className="text-sm border-b border-border pb-2">
+                    {formatDate(attempt.created_at)} ·{" "}
+                    {attempt.outcome === "route_declined"
+                      ? `Declined the ${
+                          attempt.declined_kind ? KIND_LABEL[attempt.declined_kind] : "selected"
+                        } basis`
+                      : `Rejected — ${attempt.reason_codes.join(", ") || "no reason recorded"}`}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-muted-foreground mt-3">
+                The bases are independent: declining one does not undermine a statement made on
+                the other. Declined declarations cannot be revised.
+              </p>
+            </section>
+          )}
+
+
           <section>
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">
               Communications
