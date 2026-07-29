@@ -493,7 +493,11 @@ const InvestorEligibility = () => {
                     Back
                   </Button>
                 )}
-                {step < STEPS.length - 1 ? (
+                {step === 2 && cancelOnly ? (
+                  <Button variant="outline" onClick={() => navigate("/")}>
+                    Cancel certification
+                  </Button>
+                ) : step < STEPS.length - 1 ? (
                   <Button disabled={!canContinue()} onClick={() => setStep(step + 1)}>
                     Continue
                   </Button>
