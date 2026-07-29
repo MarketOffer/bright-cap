@@ -245,30 +245,34 @@ const StatementQuestions = ({
           </p>
         )}
 
-        <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-statutory">
-
-          <input
-            type="checkbox"
-            checked={allNo || answers.none === true}
-            onChange={(event) => {
-              if (event.target.checked) {
-                set("none", true);
-                return;
-              }
-              if (allNo) {
-                clearConditions();
-                return;
-              }
-              set("none", false);
-            }}
-            className="mt-1 h-4 w-4 accent-primary"
-          />
-          <span>
+        <fieldset className="space-y-3">
+          <legend className="font-sans leading-relaxed text-statutory">
             {noneBlock && noneBlock.type === "condition"
               ? `${noneBlock.letter} ${noneBlock.segments.map((s) => s.value).join("")}`
               : "None of these apply to me."}
-          </span>
-        </label>
+          </legend>
+          <div className="flex gap-6 pt-1">
+            <label className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory">
+              <input
+                type="checkbox"
+                checked={allNo || answers.none === true}
+                onChange={(event) => {
+                  if (event.target.checked) {
+                    set("none", true);
+                    return;
+                  }
+                  if (allNo) {
+                    clearConditions();
+                    return;
+                  }
+                  set("none", false);
+                }}
+                className="h-4 w-4 accent-primary"
+              />
+              Confirm
+            </label>
+          </div>
+        </fieldset>
       </div>
 
       <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
