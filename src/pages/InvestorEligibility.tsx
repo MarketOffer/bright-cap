@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
 import {
   CONDITIONS,
-  KIND_LABEL,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
   ROUTE_OPTIONS,
@@ -42,7 +41,7 @@ const InvestorEligibility = () => {
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
   // Patch v2.1: one route per submission, chosen before any statutory wording.
   const [kind, setKind] = useState<StatementKind | null>(null);
-  const [noneApply, setNoneApply] = useState(false);
+  
   const [declinedKinds, setDeclinedKinds] = useState<StatementKind[]>([]);
   const [attemptGroupId] = useState(() => crypto.randomUUID());
   const [answers, setAnswers] = useState<Record<string, Record<string, unknown>>>({});
@@ -84,6 +83,8 @@ const InvestorEligibility = () => {
 
     ? CONDITIONS[kind].every((spec) => (currentAnswers[spec.letter] as Answer) === "no")
     : false;
+  /** Driven solely by the prescribed "None of these apply to me" condition. */
+  const noneApply = currentAnswers.none === true;
   const cancelOnly = Boolean(kind) && (noneApply || allNo);
 
 
@@ -92,7 +93,6 @@ const InvestorEligibility = () => {
       kind && !current.includes(kind) ? [...current, kind] : current,
     );
     setKind(alternative);
-    setNoneApply(false);
     setAnswers({});
     setDeclarations({});
     setSignatureTyped("");
@@ -369,7 +369,6 @@ const InvestorEligibility = () => {
                             checked={kind === route.kind}
                             onChange={() => {
                               setKind(route.kind);
-                              setNoneApply(false);
                             }}
                             className="mt-1.5 h-4 w-4 accent-primary"
                           />
@@ -408,19 +407,6 @@ const InvestorEligibility = () => {
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
                     />
-                    <label className="flex cursor-pointer items-start gap-3 border border-border p-4 font-sans text-foreground">
-                      <input
-                        type="checkbox"
-                        checked={noneApply}
-                        onChange={(event) => setNoneApply(event.target.checked)}
-                        className="mt-1 h-4 w-4 accent-primary"
-                      />
-                      <span className="leading-relaxed">
-                        None of the conditions in the {KIND_LABEL[kind].toLowerCase()} statement
-                        apply to me. This is a formal declaration and cannot be changed once
-                        submitted.
-                      </span>
-                    </label>
                   </div>
                 )}
 
