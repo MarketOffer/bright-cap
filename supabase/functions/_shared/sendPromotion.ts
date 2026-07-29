@@ -179,7 +179,13 @@ export interface PromotionParams {
   ip?: string | null;
   userAgent?: string | null;
   /** Present for channel === 'email'. Omitted for logged real-time contact. */
-  email?: { to: string; subject: string; text: string; fullName?: string };
+  email?: {
+    to: string;
+    subject: string;
+    text: string;
+    html?: string;
+    fullName?: string;
+  };
 }
 
 export interface PromotionResult {
