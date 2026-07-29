@@ -53,7 +53,9 @@ const scsiDeclarations = () =>
 
 interface Payload {
   contact: { fullName: string; email: string; phone?: string };
-  kinds: string[];
+  kind: string;
+  declinedKinds?: string[];
+  attemptGroupId?: string;
   noneApply?: boolean;
   answers: Record<string, Record<string, unknown>>;
   declarations: Record<string, unknown>;
@@ -66,7 +68,7 @@ interface Payload {
 
 const basePayload = (tag: string, overrides: Partial<Payload> = {}): Payload => ({
   contact: { fullName: "Gate Three Tester", email: email(tag), phone: "+44 1223 000000" },
-  kinds: ["hnw"],
+  kind: "hnw",
   noneApply: false,
   answers: { hnw: { A: "no", B: "yes", B_net_assets: 300000, none: false } },
   declarations: { hnw: hnwDeclarations() },
@@ -117,7 +119,7 @@ describe.runIf(configured)("Slice 3 — submission pipeline", () => {
   it("3.17 happy path, SCSI only", async () => {
     const { status, json } = await submit(
       basePayload("scsi", {
-        kinds: ["scsi"],
+        kind: "scsi",
         answers: {
           scsi: {
             A: "no",
@@ -137,27 +139,36 @@ describe.runIf(configured)("Slice 3 — submission pipeline", () => {
     expect(json.statementIds).toHaveLength(1);
   });
 
-  it("3.18 both statements produce two rows", async () => {
-    const { status, json } = await submit(
-      basePayload("both", {
-        kinds: ["hnw", "scsi"],
-        answers: {
-          hnw: { A: "yes", A_income: 150000, B: "no", none: false },
-          scsi: { A: "yes", A_organisation: "Example VC", B: "no", C: "no", D: "no", none: false },
-        },
-        declarations: { hnw: hnwDeclarations(), scsi: scsiDeclarations() },
-      }),
-    );
-    expect(status).toBe(200);
-    expect(json.statementIds).toHaveLength(2);
+  it("3.18 a two-kind payload is rejected: one route per submission", async () => {
+    const { status, json } = await submit({
+      ...basePayload("both"),
+      kinds: ["hnw", "scsi"],
+      kind: undefined,
+    });
+    expect(status).toBe(422);
+    expect(json.reasons).toContain("invalid_payload");
   });
 
-  it("3.19a rejects 'none of these apply'", async () => {
-    const { status, json } = await submit(
-      basePayload("rej-none", { kinds: [], noneApply: true, answers: {}, declarations: {} }),
+  it("3.19a declining a route offers the other one, once", async () => {
+    const first = await submit(
+      basePayload("rej-none", { noneApply: true, answers: {}, declarations: {} }),
     );
-    expect(status).toBe(422);
-    expect(json.reasons).toContain("none_apply_selected");
+    expect(first.status).toBe(200);
+    expect(first.json.routeDeclined).toBe("hnw");
+    expect(first.json.offerAlternative).toBe("scsi");
+
+    const second = await submit(
+      basePayload("rej-none", {
+        kind: "scsi",
+        declinedKinds: ["hnw"],
+        attemptGroupId: first.json.attemptGroupId as string,
+        noneApply: true,
+        answers: {},
+        declarations: {},
+      }),
+    );
+    expect(second.status).toBe(422);
+    expect(second.json.reasons).toContain("both_routes_declined");
   });
 
   it("3.19b rejects all conditions No", async () => {
@@ -212,7 +223,7 @@ describe.runIf(configured)("Slice 3 — submission pipeline", () => {
   it("3.22 rejects SCSI condition B with a blank company number", async () => {
     const { status, json } = await submit(
       basePayload("scsi-blank", {
-        kinds: ["scsi"],
+        kind: "scsi",
         answers: {
           scsi: {
             A: "no",
