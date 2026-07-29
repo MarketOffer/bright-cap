@@ -14,7 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contacts: {
+        Row: {
+          contact_type: string[]
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          marketing_opt_in: boolean
+          marketing_opt_in_at: string | null
+          phone: string | null
+          privacy_notice_version: string | null
+          updated_at: string
+        }
+        Insert: {
+          contact_type?: string[]
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          marketing_opt_in?: boolean
+          marketing_opt_in_at?: string | null
+          phone?: string | null
+          privacy_notice_version?: string | null
+          updated_at?: string
+        }
+        Update: {
+          contact_type?: string[]
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          marketing_opt_in?: boolean
+          marketing_opt_in_at?: string | null
+          phone?: string | null
+          privacy_notice_version?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contacts_privacy_notice_version_fkey"
+            columns: ["privacy_notice_version"]
+            isOneToOne: false
+            referencedRelation: "privacy_notice_versions"
+            referencedColumns: ["version"]
+          },
+        ]
+      }
+      privacy_notice_versions: {
+        Row: {
+          body_hash: string
+          created_at: string
+          effective_from: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          body_hash: string
+          created_at?: string
+          effective_from?: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          body_hash?: string
+          created_at?: string
+          effective_from?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
