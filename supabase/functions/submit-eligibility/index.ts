@@ -174,17 +174,25 @@ Deno.serve(async (req) => {
     });
   };
 
-  // ---- rate limiting (per IP and per email, 15 minute window) -------------
+  // ---- rate limiting (15 minute window) -----------------------------------
+  // Per email is tight; per IP is deliberately looser so shared/NAT addresses
+  // (offices, mobile networks) do not lock out genuine applicants.
   const since = new Date(Date.now() - 15 * 60 * 1000).toISOString();
-  let limiter = supabase
-    .from("certification_attempts")
-    .select("id", { count: "exact", head: true })
-    .gte("created_at", since);
-  limiter = email
-    ? limiter.or(`email.eq.${email}${ip ? `,ip_address.eq.${ip}` : ""}`)
-    : limiter;
-  const { count } = await limiter;
-  if ((count ?? 0) >= 10) return await recordAttempt([REASONS.RATE_LIMITED], 429);
+  const countAttempts = async (column: "email" | "ip_address", value: string) => {
+    const { count } = await supabase
+      .from("certification_attempts")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", since)
+      .eq(column, value);
+    return count ?? 0;
+  };
+  if (email && (await countAttempts("email", email)) >= 5) {
+    return await recordAttempt([REASONS.RATE_LIMITED], 429);
+  }
+  if (ip && (await countAttempts("ip_address", ip)) >= 60) {
+    return await recordAttempt([REASONS.RATE_LIMITED], 429);
+  }
+
 
   // ---- contact + consent --------------------------------------------------
   if (fullName.length === 0 || fullName.length > 120) reasons.add(REASONS.CONTACT_INVALID);
