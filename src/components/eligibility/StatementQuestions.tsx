@@ -219,8 +219,13 @@ const StatementQuestions = ({
           );
         })}
 
+        {/* Prescribed connector preceding the "None of these apply to me" condition. */}
+        <p className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+          OR
+        </p>
 
         <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-foreground">
+
           <input
             type="checkbox"
             checked={allNo || answers.none === true}
