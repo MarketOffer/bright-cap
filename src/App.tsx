@@ -40,6 +40,12 @@ const App = () => (
               sitemap.xml, llms.txt and the prerender pipeline. */}
           <Route path="/investors/summary" element={<InvestorSummary />} />
 
+          {/* Staff-only compliance register. Noindex; access enforced server-side. */}
+          <Route path="/admin" element={<Navigate to="/admin/investors" replace />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/investors" element={<AdminInvestors />} />
+          <Route path="/admin/investors/:statementId" element={<AdminStatement />} />
+
           {/* Legacy path — permanent client-side redirect */}
           <Route path="/contactus" element={<Navigate to="/contact" replace />} />
 
