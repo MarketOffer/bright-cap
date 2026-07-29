@@ -102,6 +102,36 @@ export const KIND_LABEL: Record<StatementKind, string> = {
   scsi: "Self-certified sophisticated investor",
 };
 
+/**
+ * Patch v2.1 — neutral route selection.
+ *
+ * This copy appears BEFORE any statutory wording and forms no part of any
+ * declaration. It must stay informative, never persuasive: do not describe either
+ * route as quicker, easier or preferable. The note that the experience-based route
+ * asks nothing about income or assets is a material fact and is stated plainly,
+ * once, without emphasis.
+ */
+export const ROUTE_OPTIONS: {
+  kind: StatementKind;
+  title: string;
+  body: string;
+  note?: string;
+}[] = [
+  {
+    kind: "hnw",
+    title: "Based on my income or assets",
+    body:
+      "You confirm that, in the last financial year, you had an annual income of £100,000 or more, or net assets of £250,000 or more (excluding your home, pensions and certain insurance benefits). This route asks you to state the figure, rounded.",
+  },
+  {
+    kind: "scsi",
+    title: "Based on my investment or business experience",
+    body:
+      "You confirm one or more of the following about the last two years: you were a director of a company turning over at least £1 million, you made two or more investments in unlisted companies, you were a member of a business angels network, or you worked in private equity or in financing small and medium enterprises.",
+    note: "This route does not ask about your income or your assets.",
+  },
+];
+
 export const declarationIds = (kind: StatementKind): string[] =>
   getStatement(CURRENT_STATEMENT_VERSION[kind])
     .blocks.filter((block) => block.type === "declaration")
@@ -116,7 +146,9 @@ export const REASON_MESSAGES: Record<string, string> = {
   contradiction:
     "You answered Yes to a condition and also selected “None of these apply to me”.",
   unanswered_condition: "Every condition must be answered No or Yes.",
-  no_kind_selected: "Please choose at least one statement.",
+  no_kind_selected: "Please choose a basis before continuing.",
+  both_routes_declined:
+    "You have declared that neither basis applies to you. We cannot send you investment information, and this cannot be revised.",
   declarations_incomplete: "Every declaration must be ticked.",
   signature_missing: "A typed signature is required.",
   contact_invalid: "Please check your name and email address.",
@@ -128,8 +160,13 @@ export const REASON_MESSAGES: Record<string, string> = {
 
 export interface EligibilityPayload {
   contact: { fullName: string; email: string; phone: string };
-  kinds: StatementKind[];
+  /** Patch v2.1: exactly one route per submission. */
+  kind: StatementKind;
   noneApply: boolean;
+  /** Routes already formally declared as not applicable; they may not be revisited. */
+  declinedKinds: StatementKind[];
+  /** Links a declined attempt to the submission that follows it. */
+  attemptGroupId: string;
   answers: Record<string, Record<string, unknown>>;
   declarations: Record<string, Record<string, { accepted: boolean; at: string }>>;
   signatureTyped: string;
@@ -138,5 +175,15 @@ export interface EligibilityPayload {
   marketingOptIn: boolean;
 }
 
+export interface EligibilityResponse {
+  ok?: boolean;
+  reasons?: string[];
+  routeDeclined?: StatementKind;
+  offerAlternative?: StatementKind;
+  declinedKinds?: StatementKind[];
+  attemptGroupId?: string;
+}
+
 /** Kept in sync manually with `privacy_notice_versions`. */
 export const PRIVACY_NOTICE_VERSION = "2026-07-29-v1";
+
