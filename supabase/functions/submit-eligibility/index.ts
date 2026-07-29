@@ -46,7 +46,15 @@ const REASONS = {
   PRIVACY_NOT_ACKNOWLEDGED: "privacy_not_acknowledged",
   INVALID_PAYLOAD: "invalid_payload",
   RATE_LIMITED: "rate_limited",
+  BOTH_ROUTES_DECLINED: "both_routes_declined",
 } as const;
+
+/** Patch v2.1: an investor completes exactly one statement, never both. */
+const OTHER_KIND: Record<StatementKind, StatementKind> = { hnw: "scsi", scsi: "hnw" };
+const isKind = (v: unknown): v is StatementKind => v === "hnw" || v === "scsi";
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 
 const str = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 const isAnswer = (v: unknown): v is "yes" | "no" => v === "yes" || v === "no";
