@@ -167,29 +167,63 @@ Deno.serve(async (req) => {
   const fullName = str(contact.fullName);
   const email = str(contact.email).toLowerCase();
   const phone = str(contact.phone) || null;
-  const kindsRaw: string[] = Array.isArray(body?.kinds) ? body.kinds : [];
-  const kinds = kindsRaw.filter((k): k is StatementKind => k === "hnw" || k === "scsi");
+
+  // Patch v2.1: a submission carries exactly one route. Legacy `kinds` arrays are
+  // still read, but anything other than a single valid kind is an invalid payload.
+  const kindsRaw: unknown[] = Array.isArray(body?.kinds)
+    ? body.kinds
+    : body?.kind !== undefined
+      ? [body.kind]
+      : [];
+  const kind: StatementKind | null =
+    kindsRaw.length === 1 && isKind(kindsRaw[0]) ? kindsRaw[0] : null;
+  const kinds: StatementKind[] = kind ? [kind] : [];
+
+  const declinedRaw: unknown[] = Array.isArray(body?.declinedKinds) ? body.declinedKinds : [];
+  const declinedKinds = [...new Set(declinedRaw.filter(isKind))];
+  const attemptGroupId = UUID_RE.test(str(body?.attemptGroupId))
+    ? str(body?.attemptGroupId)
+    : crypto.randomUUID();
 
   const reasons = new Set<string>();
   if (!body || typeof body !== "object") reasons.add(REASONS.INVALID_PAYLOAD);
+  // More than one kind, an unknown kind, or more declines than routes exist.
+  if (kindsRaw.length > 1 || (kindsRaw.length === 1 && !kind)) {
+    reasons.add(REASONS.INVALID_PAYLOAD);
+  }
+  if (declinedKinds.length > 1) reasons.add(REASONS.INVALID_PAYLOAD);
+  // "The first statement can't be revised": a route already declared as
+  // not-applicable may never be re-submitted with answers.
+  if (kind && declinedKinds.includes(kind)) reasons.add(REASONS.INVALID_PAYLOAD);
 
-  const recordAttempt = async (codes: string[], status: number) => {
+  const writeAttempt = async (
+    outcome: "rejected" | "route_declined",
+    codes: string[],
+    declinedKind: StatementKind | null,
+  ) => {
     await supabase.from("certification_attempts").insert({
       email: email || null,
       full_name: fullName || null,
-      outcome: "rejected",
+      outcome,
       reason_codes: codes,
       requested_kinds: kinds,
       answers: body?.answers ?? null,
+      attempt_group_id: attemptGroupId,
+      declined_kind: declinedKind,
       ip_address: ip,
       user_agent: userAgent,
     });
+  };
+
+  const recordAttempt = async (codes: string[], status: number) => {
+    await writeAttempt("rejected", codes, null);
     console.log("eligibility submission rejected", { codes, status });
-    return new Response(JSON.stringify({ ok: false, reasons: codes }), {
+    return new Response(JSON.stringify({ ok: false, reasons: codes, attemptGroupId }), {
       status,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   };
+
 
   // ---- rate limiting (15 minute window) -----------------------------------
   // Per email is tight; per IP is deliberately looser so shared/NAT addresses
