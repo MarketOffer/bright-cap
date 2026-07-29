@@ -24,6 +24,7 @@ These do not stop the build, but they gate the **release** of the gated Summary:
 - **Item 2 (public page copy).** **Slice 0b** removes the offending figures from the live site. Blocked pending Andy's written confirmation; no existing public copy is edited before then.
 - **Item 3 (promoting entity).** Determines whether the art 48(5A) block is static or per-document. Slice 4 stores it per-document either way, so the answer can arrive late.
 - **Item 4 (transcription sign-off).** Slice 2 ships the statement component; sign-off must land before Slice 3 goes live to real users.
+- **Item 5 (sender domain — BLOCKING).** Outbound email currently runs through the **MarketOffer** Resend connection, so investor mail leaves from a MarketOffer-verified domain. Before any gated delivery or recertification mail goes to a real investor, Resend **must** be migrated to a verified `brightcap.capital` sender (its own Resend connection/API key, SPF/DKIM/DMARC verified, `ACCESS_EMAIL_FROM` set to e.g. `BrightCap <noreply@brightcap.capital>`). A financial promotion arriving from an unrelated firm's domain is both a deliverability and a compliance problem. Tracked as gate item **0.7** below.
 
 ---
 
@@ -71,8 +72,9 @@ Each slice ends at a **test gate**. No slice starts until the previous gate is g
 | 0.4 | Select from `contacts` using the anon key | Zero rows / permission denied |
 | 0.5 | Migration re-run | Idempotent, no error |
 | 0.6 | `bunx vitest run` + production build | Pass |
+| 0.7 | **BLOCKING — sender domain.** `ACCESS_EMAIL_FROM` resolves to a `@brightcap.capital` address on a Resend connection whose domain is verified for BrightCap (SPF/DKIM/DMARC pass), *not* the borrowed MarketOffer connection | Currently **red** — outbound mail runs on MarketOffer's Resend connection and sends from a MarketOffer-verified domain. Must be migrated before any gated-delivery or recertification mail reaches a real investor |
 
-**Exit criteria:** all six green; region confirmed and recorded.
+**Exit criteria:** 0.1–0.6 green; region confirmed and recorded. **0.7 is a release blocker for Slices 4 and 6** — the build may proceed on the borrowed connection, but no live investor email goes out until a verified `brightcap.capital` sender is in place.
 
 ### Slice 0 result — 29 July 2026
 
