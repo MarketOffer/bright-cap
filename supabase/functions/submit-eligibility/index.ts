@@ -288,7 +288,8 @@ Deno.serve(async (req) => {
           reasons: [REASONS.BOTH_ROUTES_DECLINED],
           attemptGroupId,
         }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        { status: 422, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+
       );
     }
 
