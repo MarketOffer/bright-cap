@@ -34,7 +34,9 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "money10k",
         keys: ["A_income"],
-        labels: ["Income, to the nearest £10,000"],
+        labels: [
+          "Please specify your income (as defined above) to the nearest £10,000 in the last financial year",
+        ],
       },
     },
     {
@@ -43,10 +45,13 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       detailField: {
         kind: "money100k",
         keys: ["B_net_assets"],
-        labels: ["Net assets, to the nearest £50,000"],
+        labels: [
+          "Please specify your net assets (as defined above) to the nearest £100,000 in the last financial year",
+        ],
       },
     },
   ],
+
   scsi: [
     {
       letter: "A",
