@@ -368,7 +368,7 @@ Rate-limit by IP and email. Never log tokens, signatures or financial figures.
 | Item | Owner | Status | Date |
 |---|---|---|---|
 | **Slice 0 test gate (0.1–0.6)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
-| Backend region UK/EU confirmed | Dev | Open | |
+| Backend region UK/EU confirmed | Dev | **Closed — EU, eu-west-1 (Ireland)** | 2026-07-29 |
 | Brief item 2 — public copy remediated and signed off | Solicitor | Open | |
 | Brief item 4 — statement transcription vs SI images | Solicitor | Open | |
 | Declaration-tick deviation blessed | Solicitor | Open | |
