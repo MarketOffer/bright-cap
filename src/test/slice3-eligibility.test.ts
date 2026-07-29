@@ -205,6 +205,27 @@ describe.runIf(configured)("Slice 3 — submission pipeline", () => {
     expect(json.reasons).toContain("unanswered_condition");
   });
 
+  it("3.19f rejects a figure that contradicts the condition", async () => {
+    const { status, json } = await submit(
+      basePayload("rej-below", {
+        answers: { hnw: { A: "yes", A_income: 40000, B: "no", none: false } },
+      }),
+    );
+    expect(status).toBe(422);
+    expect(json.reasons).toContain("figure_below_threshold");
+  });
+
+  it("3.19g rejects a figure not rounded as prescribed", async () => {
+    const { status, json } = await submit(
+      basePayload("rej-rounding", {
+        answers: { hnw: { A: "no", B: "yes", B_net_assets: 550000, none: false } },
+      }),
+    );
+    expect(status).toBe(422);
+    expect(json.reasons).toContain("figure_not_rounded");
+  });
+
+
   it("3.20 rejects a malformed payload without partial writes", async () => {
     const { status, json } = await submit({ nonsense: true });
     expect(status).toBe(422);
