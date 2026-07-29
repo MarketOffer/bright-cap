@@ -187,9 +187,26 @@ export async function dispatchEmail(params: {
     subject: params.subject,
     text: params.text,
     html,
-
+    tags: [{ name: "email_type", value: params.emailType }],
   };
   if (replyTo) body.reply_to = replyTo;
+
+  // Initial signup carries the JV Investor Summary as a real attachment.
+  if (attachSummary) {
+    const attachment = await loadSummaryAttachment();
+    if (attachment) {
+      body.attachments = [
+        {
+          filename: attachment.filename,
+          content: attachment.content,
+          content_type: "application/pdf",
+        },
+      ];
+    } else {
+      return { sent: false, reason: "attachment_unavailable" };
+    }
+  }
+
 
   const response = await fetch(`${GATEWAY_URL}/emails`, {
     method: "POST",
