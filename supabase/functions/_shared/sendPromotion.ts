@@ -147,7 +147,7 @@ export interface PromotionParams {
   ip?: string | null;
   userAgent?: string | null;
   /** Present for channel === 'email'. Omitted for logged real-time contact. */
-  email?: { to: string; subject: string; text: string };
+  email?: { to: string; subject: string; text: string; fullName?: string };
 }
 
 export interface PromotionResult {
