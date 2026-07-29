@@ -442,6 +442,11 @@ Test data created during the gate was deleted afterwards; the delete rule on `in
 | Item | Owner | Status | Date |
 |---|---|---|---|
 | **Slice 0 test gate (0.1–0.6)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
+| **Slice 1 (new build only; no public copy touched)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
+| **Slice 2 test gate (statement components)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
+| **Slice 3 test gate (3.1–3.26)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
+| **Slice 4 test gate (4.1–4.17)** | Dev | **Green — 29 Jul 2026; flag stays OFF pending 4.18** | 2026-07-29 |
+| **Slice 4 item 4.18 — SHA confirmation before the flag flips** | Solicitor | Open | |
 | Backend region UK/EU confirmed | Dev | **Closed — EU, eu-west-1 (Ireland)** | 2026-07-29 |
 | Brief item 2 — public copy remediated and signed off | Solicitor | Open | |
 | Brief item 4 — statement transcription vs SI images | Solicitor | Open | |
