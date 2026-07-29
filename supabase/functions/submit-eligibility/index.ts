@@ -191,6 +191,7 @@ Deno.serve(async (req) => {
       .from("certification_attempts")
       .select("id", { count: "exact", head: true })
       .gte("created_at", since)
+      .eq("outcome", "rejected") // submission attempts only, not token/re-issue events
       .eq(column, value);
     return count ?? 0;
   };

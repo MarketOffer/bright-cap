@@ -50,11 +50,12 @@ Deno.serve(async (req) => {
       .select("id", { count: "exact", head: true })
       .gte("created_at", since)
       .eq("ip_address", ip)
+      .eq("outcome", "reissue_request")
       .contains("reason_codes", ["reissue_request"]);
     if ((count ?? 0) >= 10) return jsonResponse(GENERIC, 200);
   }
   await supabase.from("certification_attempts").insert({
-    outcome: "rejected",
+    outcome: "reissue_request",
     reason_codes: ["reissue_request"],
     ip_address: ip,
     user_agent: userAgent,

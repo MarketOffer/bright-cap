@@ -52,8 +52,10 @@ export async function recordTokenFailure(
   userAgent: string | null,
   code: string,
 ) {
+  // Recorded under its own outcome so token guessing cannot poison the
+  // submission rate limiter in `submit-eligibility`.
   await supabase.from("certification_attempts").insert({
-    outcome: "rejected",
+    outcome: "token_rejected",
     reason_codes: [code],
     ip_address: ip,
     user_agent: userAgent,
@@ -71,6 +73,7 @@ export async function guessLimitExceeded(
     .select("id", { count: "exact", head: true })
     .gte("created_at", since)
     .eq("ip_address", ip)
+    .eq("outcome", "token_rejected")
     .contains("reason_codes", ["token_invalid"]);
   const exceeded = (count ?? 0) >= GUESS_LIMIT;
   if (exceeded) {
