@@ -85,7 +85,7 @@ Each slice ends at a **test gate**. No slice starts until the previous gate is g
 | 0.6 | Pass — `vitest run` 3/3, production build clean |
 
 Delivered: `contacts`, `privacy_notice_versions`, `update_updated_at_column()` trigger function, `src/test/slice0-backend.test.ts`.
-Outstanding: backend region confirmation (UK/EU) — infrastructure item, not code.
+Region: **EU — AWS eu-west-1 (Ireland)**, confirmed 29 Jul 2026. Satisfies brief §9 ("UK or EU"). UK–EEA adequacy applies, so no SCCs or transfer risk assessment are required. Region is fixed at provisioning and cannot be changed in place.
 
 ---
 
@@ -368,7 +368,7 @@ Rate-limit by IP and email. Never log tokens, signatures or financial figures.
 | Item | Owner | Status | Date |
 |---|---|---|---|
 | **Slice 0 test gate (0.1–0.6)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
-| Backend region UK/EU confirmed | Dev | Open | |
+| Backend region UK/EU confirmed | Dev | **Closed — EU, eu-west-1 (Ireland)** | 2026-07-29 |
 | Brief item 2 — public copy remediated and signed off | Solicitor | Open | |
 | Brief item 4 — statement transcription vs SI images | Solicitor | Open | |
 | Declaration-tick deviation blessed | Solicitor | Open | |
