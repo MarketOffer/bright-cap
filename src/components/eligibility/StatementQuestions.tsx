@@ -285,6 +285,23 @@ const StatementQuestions = ({
         {declarationIds(kind).map((id) => {
           const block = definition.blocks.find((candidate) => candidate.id === id);
           if (!block || block.type !== "declaration") return null;
+
+          /**
+           * "I understand that this means:" is a prescribed lead-in to the
+           * lettered sub-points, not a separate declaration — it is shown as
+           * text and accepted implicitly.
+           */
+          if (id.endsWith("-understand")) {
+            return (
+              <p
+                key={id}
+                className="pl-7 font-sans text-sm leading-relaxed text-statutory"
+              >
+                {renderSegments(block.segments)}
+              </p>
+            );
+          }
+
           return (
             <label
               key={id}
@@ -300,6 +317,7 @@ const StatementQuestions = ({
             </label>
           );
         })}
+
       </div>
     </section>
   );
