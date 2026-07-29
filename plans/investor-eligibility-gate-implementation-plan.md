@@ -397,6 +397,20 @@ Deviations from the gate as written, and why:
 | 5.9 | Snapshot renders in the detail view | Bold and underline intact |
 | 5.10 | Security scan | No privilege-escalation finding |
 
+### Slice 5 — built (29 Jul 2026)
+
+- `app_role` enum, `user_roles`, `has_role()` security-definer function, `admin_access_log`. Roles are never on a profile row.
+- `admin-api` edge function: one POST endpoint, four actions (`list`, `statement`, `financials`, `revoke`). Every call re-validates the bearer token with the auth server and re-checks the role server-side; the anon key never reaches the compliance tables.
+- `/admin/login`, `/admin/investors`, `/admin/investors/:statementId`. Noindex, and `Disallow: /admin` in robots.txt.
+- Financial bands are absent from the list payload for every role and are served only to `compliance`, with the reveal logged before the values are returned.
+- Revocation also revokes any outstanding access tokens for that statement.
+
+**Deviations:** revocation is available to either staff role (both are trusted compliance staff), not `admin` alone. Public sign-up is now disabled at the auth level — staff accounts and role grants are provisioned server-side.
+
+**Gate result:** 5.1–5.10 green. Forged JWT role claims rejected (401); role-less account denied (403) and logged; `admin` denied financials (403) and logged; `compliance` reveal logged; revoke set only `revoked_at`/`revoked_reason`; snapshot bold/underline intact. Remaining linter output is the documented deny-all posture (RLS on, no policies, service-role access only).
+
+
+
 ---
 
 ## Slice 6 — Recertification and the send-path contract
