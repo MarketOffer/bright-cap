@@ -338,9 +338,9 @@ const InvestorEligibility = () => {
                 {step === 1 && (
                   <fieldset className="space-y-4">
                     <legend className="font-sans leading-relaxed text-foreground">
-                      There are two independent bases on which you can certify. Either one, on its
-                      own, is sufficient. Please choose the one that applies to you.
+                      Choose the basis on which you want to be certified as an investor
                     </legend>
+
                     {ROUTE_OPTIONS.filter((route) => !declinedKinds.includes(route.kind)).map(
                       (route) => (
                         <label
