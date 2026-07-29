@@ -380,10 +380,6 @@ const InvestorEligibility = () => {
                         </label>
                       ),
                     )}
-                    <p className="font-sans text-sm leading-relaxed text-muted-foreground">
-                      You are asked to complete one statement only. If the basis you choose turns
-                      out not to apply to you, you will be able to consider the other one.
-                    </p>
                   </fieldset>
                 )}
 
