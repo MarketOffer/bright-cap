@@ -304,31 +304,24 @@ try {
 } finally {
   await setFlag(false);
 
-  // Remove scratch data so the gate leaves no residue in the live database.
+  // The compliance tables are insert-only by design (no delete grant, not even
+  // for the service role), so the gate retires its scratch artefacts instead of
+  // deleting them: document deactivated, tokens revoked, storage object removed.
   try {
-    const { data: scratchContacts } = await db
-      .from("contacts")
-      .select("id")
-      .like("email", "s4-%@example.test");
-    const ids = (scratchContacts ?? []).map((c: { id: string }) => c.id);
-    if (ids.length) {
-      await db.from("promotion_communications").delete().in("contact_id", ids);
-      await db.from("access_tokens").delete().in("contact_id", ids);
-      await db.from("investor_statement_financials").delete().in("statement_id", []);
-      await db.from("investor_statements").delete().in("contact_id", ids);
-      await db.from("contacts").delete().in("id", ids);
+    if (documentId) {
+      await db.from("documents").update({ is_active: false }).eq("id", documentId);
+      await db
+        .from("access_tokens")
+        .update({ revoked_at: new Date().toISOString(), revoked_reason: "test_gate_cleanup" })
+        .eq("document_id", documentId)
+        .is("revoked_at", null);
+      const { data: files } = await db.storage.from("investor-documents").list(run);
+      if (files?.length) {
+        await db.storage
+          .from("investor-documents")
+          .remove(files.map((f: { name: string }) => `${run}/${f.name}`));
+      }
     }
-    await db.from("documents").delete().like("slug", "scratch-s4-%");
-    const { data: files } = await db.storage.from("investor-documents").list(run);
-    if (files?.length) {
-      await db.storage
-        .from("investor-documents")
-        .remove(files.map((f: { name: string }) => `${run}/${f.name}`));
-    }
-    await db
-      .from("certification_attempts")
-      .delete()
-      .in("outcome", ["token_rejected", "reissue_request"]);
   } catch (cleanupError) {
     console.log("cleanup warning", cleanupError);
   }
