@@ -399,8 +399,8 @@ const InvestorEligibility = () => {
                     ) : (
                       <>
                         <p className="font-sans leading-relaxed text-secondary">
-                          The declarations for each statement are ticked alongside the conditions
-                          in the previous step. Sign below to complete your statement.
+                          The declarations are ticked alongside the conditions in the previous
+                          step. Sign below to complete your statement.
                         </p>
                         <div className="space-y-1.5">
                           <Label htmlFor="signature">Signature — type your full name</Label>
@@ -462,7 +462,7 @@ const InvestorEligibility = () => {
               </div>
 
               <div className="mt-12 flex items-center gap-4">
-                {step > 0 && (
+                {step > (routeLocked ? 2 : 0) && (
                   <Button variant="outline" onClick={() => setStep(step - 1)}>
                     Back
                   </Button>
