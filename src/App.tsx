@@ -10,6 +10,8 @@ import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import Investors from "./pages/Investors";
 import InvestorEligibility from "./pages/InvestorEligibility";
+import InvestorSummary from "./pages/InvestorSummary";
+
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
