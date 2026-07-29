@@ -14,6 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: unknown
+          kind: string
+          reason_code: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          kind: string
+          reason_code: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          kind?: string
+          reason_code?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      access_tokens: {
+        Row: {
+          contact_id: string
+          created_at: string
+          document_id: string
+          expires_at: string
+          first_used_at: string | null
+          id: string
+          last_used_at: string | null
+          revoked_at: string | null
+          revoked_reason: string | null
+          statement_id: string
+          token_hash: string
+          use_count: number
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string
+          document_id: string
+          expires_at: string
+          first_used_at?: string | null
+          id?: string
+          last_used_at?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          statement_id: string
+          token_hash: string
+          use_count?: number
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string
+          document_id?: string
+          expires_at?: string
+          first_used_at?: string | null
+          id?: string
+          last_used_at?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          statement_id?: string
+          token_hash?: string
+          use_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_tokens_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_tokens_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["contact_id"]
+          },
+          {
+            foreignKeyName: "access_tokens_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_tokens_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "investor_statements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "access_tokens_statement_id_fkey"
+            columns: ["statement_id"]
+            isOneToOne: false
+            referencedRelation: "v_contact_certification"
+            referencedColumns: ["statement_id"]
+          },
+        ]
+      }
       certification_attempts: {
         Row: {
           answers: Json | null
@@ -99,6 +207,69 @@ export type Database = {
             referencedColumns: ["version"]
           },
         ]
+      }
+      documents: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          promoter_company_number: string
+          promoter_entity_name: string
+          slug: string
+          storage_path: string
+          title: string
+          updated_at: string
+          version: string
+          warning_block_version: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          promoter_company_number: string
+          promoter_entity_name: string
+          slug: string
+          storage_path: string
+          title: string
+          updated_at?: string
+          version: string
+          warning_block_version: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          promoter_company_number?: string
+          promoter_entity_name?: string
+          slug?: string
+          storage_path?: string
+          title?: string
+          updated_at?: string
+          version?: string
+          warning_block_version?: string
+        }
+        Relationships: []
+      }
+      feature_flags: {
+        Row: {
+          description: string | null
+          enabled: boolean
+          key: string
+          updated_at: string
+        }
+        Insert: {
+          description?: string | null
+          enabled?: boolean
+          key: string
+          updated_at?: string
+        }
+        Update: {
+          description?: string | null
+          enabled?: boolean
+          key?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       investor_statement_financials: {
         Row: {
@@ -297,6 +468,13 @@ export type Database = {
             referencedColumns: ["contact_id"]
           },
           {
+            foreignKeyName: "promotion_communications_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "promotion_communications_statement_id_fkey"
             columns: ["statement_id"]
             isOneToOne: false
@@ -309,6 +487,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_contact_certification"
             referencedColumns: ["statement_id"]
+          },
+          {
+            foreignKeyName: "promotion_communications_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "access_tokens"
+            referencedColumns: ["id"]
           },
         ]
       }

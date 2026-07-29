@@ -10,6 +10,8 @@ import Cookies from "./pages/Cookies";
 import Contact from "./pages/Contact";
 import Investors from "./pages/Investors";
 import InvestorEligibility from "./pages/InvestorEligibility";
+import InvestorSummary from "./pages/InvestorSummary";
+
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -30,6 +32,11 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/investors" element={<Investors />} />
           <Route path="/investors/eligibility" element={<InvestorEligibility />} />
+          {/* Gated, token-only. Never linked publicly; noindex; excluded from
+
+              sitemap.xml, llms.txt and the prerender pipeline. */}
+          <Route path="/investors/summary" element={<InvestorSummary />} />
+
           {/* Legacy path — permanent client-side redirect */}
           <Route path="/contactus" element={<Navigate to="/contact" replace />} />
 
