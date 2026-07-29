@@ -73,6 +73,20 @@ Each slice ends at a **test gate**. No slice starts until the previous gate is g
 
 **Exit criteria:** all six green; region confirmed and recorded.
 
+### Slice 0 result — 29 July 2026
+
+| # | Result |
+|---|---|
+| 0.1 | Pass — `{investor}` contact inserted |
+| 0.2 | Pass — `{banana}` rejected by `contacts_type_valid` |
+| 0.3 | Pass — `GATE.ZERO@EXAMPLE.COM` rejected by `contacts_email_uidx` |
+| 0.4 | Pass — anon key returns zero rows; no grants exist for `anon`/`authenticated` on `contacts` |
+| 0.5 | Pass — migration written idempotently (`if not exists`, `drop policy/trigger if exists`) |
+| 0.6 | Pass — `vitest run` 3/3, production build clean |
+
+Delivered: `contacts`, `privacy_notice_versions`, `update_updated_at_column()` trigger function, `src/test/slice0-backend.test.ts`.
+Outstanding: backend region confirmation (UK/EU) — infrastructure item, not code.
+
 ---
 
 ## Slice 1 — Public page and remedial copy fix
@@ -353,6 +367,7 @@ Rate-limit by IP and email. Never log tokens, signatures or financial figures.
 
 | Item | Owner | Status | Date |
 |---|---|---|---|
+| **Slice 0 test gate (0.1–0.6)** | Dev | **Green — 29 Jul 2026** | 2026-07-29 |
 | Backend region UK/EU confirmed | Dev | Open | |
 | Brief item 2 — public copy remediated and signed off | Solicitor | Open | |
 | Brief item 4 — statement transcription vs SI images | Solicitor | Open | |
