@@ -92,14 +92,15 @@ export async function resolveToken(
 ): Promise<ResolveOutcome> {
   if (!(await flagEnabled(supabase))) return { ok: false, reason: "flag_off" };
 
-  if (await guessLimitExceeded(supabase, ip)) {
-    return { ok: false, reason: "rate_limited" };
-  }
-
   const clean = typeof token === "string" ? token.trim() : "";
   const deny = async (reason: DenyReason, reissuable = false) => {
     if (reason === "invalid_token") {
       await recordTokenFailure(supabase, ip, userAgent, "token_invalid");
+      // Enumeration guard applies to FAILED lookups only. A holder of a valid
+      // token is never locked out by guesses from a shared address.
+      if (await guessLimitExceeded(supabase, ip)) {
+        return { ok: false as const, reason: "rate_limited" as DenyReason, reissuable: false };
+      }
     }
     return { ok: false as const, reason, reissuable };
   };
