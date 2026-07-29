@@ -42,7 +42,7 @@ const InvestorEligibility = () => {
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
   // Patch v2.1: one route per submission, chosen before any statutory wording.
   const [kind, setKind] = useState<StatementKind | null>(null);
-  const [noneApply, setNoneApply] = useState(false);
+  
   const [declinedKinds, setDeclinedKinds] = useState<StatementKind[]>([]);
   const [attemptGroupId] = useState(() => crypto.randomUUID());
   const [answers, setAnswers] = useState<Record<string, Record<string, unknown>>>({});
