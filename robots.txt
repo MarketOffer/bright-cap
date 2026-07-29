@@ -3,6 +3,8 @@ User-agent: *
 Allow: /
 # Gated, token-only investor material — never index
 Disallow: /investors/summary
+# Staff-only compliance area
+Disallow: /admin
 
 # Explicitly allow AI crawlers
 User-agent: GPTBot
