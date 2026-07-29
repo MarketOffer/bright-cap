@@ -34,6 +34,10 @@
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 85% 97%;
 
+    /* Temporary review marker: text prescribed by SI 2024/301 is shown in this
+       colour so it is obvious which wording must not be edited. */
+    --statutory: 0 74% 42%;
+
     --border: 0 0% 83%;
     --input: 0 0% 83%;
     --ring: 243 75% 58%;
