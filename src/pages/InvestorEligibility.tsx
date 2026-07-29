@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
 import {
   CONDITIONS,
-  KIND_LABEL,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
   ROUTE_OPTIONS,
