@@ -51,16 +51,44 @@ function splitName(fullName?: string): { first: string; last: string } {
   return { first: parts[0], last: parts.slice(1).join(" ") };
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Convert the plain-text body into simple, email-safe HTML. */
+function textToHtml(text: string): string {
+  const paragraphs = text
+    .trim()
+    .split(/\n{2,}/)
+    .map((block) =>
+      `<p style="margin:0 0 16px;">${
+        escapeHtml(block).replace(
+          /(https?:\/\/[^\s<]+)/g,
+          '<a href="$1" style="color:#3CD7B6;">$1</a>',
+        ).replace(/\n/g, "<br />")
+      }</p>`
+    )
+    .join("");
+  return `<div style="font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#171717;">${paragraphs}</div>`;
+}
+
 export async function dispatchEmail(params: {
   to: string;
   subject: string;
   text: string;
+  /** Optional pre-built HTML body. Falls back to HTML derived from `text`. */
+  html?: string;
   fullName?: string;
 }): Promise<DispatchResult> {
   const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
     "BrightCap <support@marketoffer.co.uk>";
   const replyTo = Deno.env.get("ACCESS_EMAIL_REPLY_TO") ?? null;
   const { first, last } = splitName(params.fullName);
+  const html = params.html ?? textToHtml(params.text);
 
   const payload = {
     first_name: first,
@@ -68,10 +96,12 @@ export async function dispatchEmail(params: {
     email: params.to,
     subject: params.subject,
     text: params.text,
+    html,
     from,
     reply_to: replyTo,
     sent_at: new Date().toISOString(),
   };
+
 
   const response = await fetch(WEBHOOK_URL, {
     method: "POST",
@@ -103,6 +133,8 @@ export async function dispatchEmail(params: {
     to: [params.to],
     subject: params.subject,
     text: params.text,
+    html,
+
   };
   if (replyTo) body.reply_to = replyTo;
 
@@ -147,7 +179,13 @@ export interface PromotionParams {
   ip?: string | null;
   userAgent?: string | null;
   /** Present for channel === 'email'. Omitted for logged real-time contact. */
-  email?: { to: string; subject: string; text: string; fullName?: string };
+  email?: {
+    to: string;
+    subject: string;
+    text: string;
+    html?: string;
+    fullName?: string;
+  };
 }
 
 export interface PromotionResult {
