@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_attempts: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: unknown
+          kind: string
+          reason_code: string
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          kind: string
+          reason_code: string
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          kind?: string
+          reason_code?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       access_tokens: {
         Row: {
           contact_id: string
