@@ -31,23 +31,23 @@ const StatementBlock = ({ block }: { block: Block }) => {
   switch (block.type) {
     case "lead":
       return (
-        <p data-block={block.id} className="font-sans leading-relaxed text-foreground">
+        <p data-block={block.id} className="font-sans leading-relaxed text-statutory">
           {renderSegments(block.segments)}
         </p>
       );
     case "paragraph":
       return (
-        <p data-block={block.id} className="font-sans leading-relaxed text-foreground">
+        <p data-block={block.id} className="font-sans leading-relaxed text-statutory">
           {renderSegments(block.segments)}
         </p>
       );
     case "condition":
       return (
         <div data-block={block.id} className="space-y-2">
-          <p className="font-sans leading-relaxed text-foreground">
+          <p className="font-sans leading-relaxed text-statutory">
             {block.letter} {renderSegments(block.segments)}
           </p>
-          <ul className="list-none space-y-1 pl-0 font-sans text-foreground">
+          <ul className="list-none space-y-1 pl-0 font-sans text-statutory">
             {block.options.map((option) => (
               <li key={option}>&#9744; {option}</li>
             ))}
@@ -55,7 +55,7 @@ const StatementBlock = ({ block }: { block: Block }) => {
           {block.followUp && (
             <p
               data-follow-up={block.id}
-              className="font-sans leading-relaxed text-foreground"
+              className="font-sans leading-relaxed text-statutory"
             >
               {renderSegments(block.followUp)}
             </p>
@@ -66,7 +66,7 @@ const StatementBlock = ({ block }: { block: Block }) => {
       return (
         <p
           data-block={block.id}
-          className="font-sans font-semibold uppercase tracking-wide text-foreground"
+          className="font-sans font-semibold uppercase tracking-wide text-statutory"
         >
           {block.value}
         </p>
@@ -75,13 +75,13 @@ const StatementBlock = ({ block }: { block: Block }) => {
       return <hr data-block={block.id} className="border-border" />;
     case "declaration":
       return (
-        <p data-block={block.id} className="font-sans leading-relaxed text-foreground">
+        <p data-block={block.id} className="font-sans leading-relaxed text-statutory">
           {renderSegments(block.segments)}
         </p>
       );
     case "signature":
       return (
-        <p data-block={block.id} className="font-sans leading-relaxed text-foreground">
+        <p data-block={block.id} className="font-sans leading-relaxed text-statutory">
           {block.value}
         </p>
       );
@@ -101,7 +101,7 @@ const PrescribedStatement = ({ version }: PrescribedStatementProps) => {
       aria-label={statement.title}
       className="space-y-5 rounded-sm border border-border p-6 md:p-8"
     >
-      <h2 className="font-sans text-base font-semibold uppercase tracking-wide text-foreground">
+      <h2 className="font-sans text-base font-semibold uppercase tracking-wide text-statutory">
         {statement.title}
       </h2>
       {statement.blocks.map((block) => (

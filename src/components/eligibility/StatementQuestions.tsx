@@ -69,6 +69,18 @@ const StatementQuestions = ({
   const conditionBlock = (blockId: string) =>
     definition.blocks.find((block) => block.id === blockId);
 
+  /**
+   * The final "None of these apply to me" condition (C for HNW, E for SCSI) and the
+   * prescribed connector that precedes it, both taken from the frozen definitions.
+   */
+  const noneBlockIndex = definition.blocks.findIndex(
+    (block) => block.type === "condition" && !specs.some((s) => s.blockId === block.id),
+  );
+  const noneBlock = noneBlockIndex >= 0 ? definition.blocks[noneBlockIndex] : undefined;
+  const noneConnector = definition.blocks
+    .slice(0, noneBlockIndex >= 0 ? noneBlockIndex : 0)
+    .reverse()
+    .find((block) => block.type === "connector");
 
   return (
     <section
@@ -76,7 +88,7 @@ const StatementQuestions = ({
       aria-label={definition.title}
     >
       <header className="space-y-3">
-        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
           {definition.title}
         </h3>
         {definition.blocks
@@ -84,12 +96,13 @@ const StatementQuestions = ({
           .map((block) => (
             <p
               key={block.id}
-              className="font-sans text-sm leading-relaxed text-secondary"
+              className="font-sans text-sm leading-relaxed text-statutory"
             >
               {renderSegments(block.segments)}
             </p>
           ))}
       </header>
+
 
       <div className="space-y-8">
         {specs.map((spec, specIndex) => {
@@ -120,20 +133,21 @@ const StatementQuestions = ({
           return (
             <div key={spec.letter} className="space-y-8">
               {connector && connector.type === "connector" && (
-                <p className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+                <p className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
                   {connector.value}
                 </p>
               )}
               <fieldset className="space-y-3">
-                <legend className="font-sans leading-relaxed text-foreground">
+                <legend className="font-sans leading-relaxed text-statutory">
                   {block.letter} {renderSegments(block.segments)}
                 </legend>
+
 
                 <div className="flex gap-6 pt-1">
                   {(["no", "yes"] as const).map((option) => (
                     <label
                       key={option}
-                      className="flex cursor-pointer items-center gap-2 font-sans text-sm text-foreground"
+                      className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory"
                     >
                       <input
                         type="radio"
@@ -152,13 +166,18 @@ const StatementQuestions = ({
                   <div className="space-y-3 border-l-2 border-primary pl-4">
                     {detail.keys.map((key, index) => {
                       const label = detail.labels[index];
+                      const isStatutory = detail.statutory[index] === true;
+                      const labelClass = isStatutory
+                        ? "font-sans text-xs normal-case tracking-normal text-statutory"
+                        : "font-sans text-xs normal-case tracking-normal text-muted-foreground";
                       const inputId = `${kind}-${key}`;
                       if (key === "B_jurisdiction") {
                         return (
                           <div key={key} className="space-y-1.5">
-                            <Label htmlFor={inputId} className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
+                            <Label htmlFor={inputId} className={labelClass}>
                               {label}
                             </Label>
+
                             <select
                               id={inputId}
                               value={(answers[key] as string) ?? ""}
@@ -181,7 +200,7 @@ const StatementQuestions = ({
                         detail.kind === "integer";
                       return (
                         <div key={key} className="space-y-1.5">
-                          <Label htmlFor={inputId} className="font-sans text-xs normal-case tracking-normal text-muted-foreground">
+                          <Label htmlFor={inputId} className={labelClass}>
                             {label}
                           </Label>
                           <Input
@@ -220,11 +239,13 @@ const StatementQuestions = ({
         })}
 
         {/* Prescribed connector preceding the "None of these apply to me" condition. */}
-        <p className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
-          OR
-        </p>
+        {noneConnector && noneConnector.type === "connector" && (
+          <p className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
+            {noneConnector.value}
+          </p>
+        )}
 
-        <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-foreground">
+        <label className="flex cursor-pointer items-start gap-3 border-t border-border pt-6 font-sans text-sm text-statutory">
 
           <input
             type="checkbox"
@@ -242,7 +263,11 @@ const StatementQuestions = ({
             }}
             className="mt-1 h-4 w-4 accent-primary"
           />
-          None of these apply to me.
+          <span>
+            {noneBlock && noneBlock.type === "condition"
+              ? `${noneBlock.letter} ${noneBlock.segments.map((s) => s.value).join("")}`
+              : "None of these apply to me."}
+          </span>
         </label>
       </div>
 
@@ -254,8 +279,9 @@ const StatementQuestions = ({
           return (
             <label
               key={id}
-              className="flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-foreground"
+              className="flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-statutory"
             >
+
               <Checkbox
                 checked={declarations[id]?.accepted === true}
                 onCheckedChange={(checked) => onDeclaration(id, checked === true)}
