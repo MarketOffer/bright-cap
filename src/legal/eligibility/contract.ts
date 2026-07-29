@@ -154,6 +154,11 @@ export const REASON_MESSAGES: Record<string, string> = {
   all_conditions_no:
     "You answered No to every condition, so no statement can be made.",
   missing_detail: "A required detail is missing for a condition you answered Yes to.",
+  figure_below_threshold:
+    "The figure you entered is below the threshold stated in the condition you answered Yes to. A statement cannot declare both.",
+  figure_not_rounded:
+    "Please enter the figure rounded as the statement requires — income to the nearest £10,000, net assets to the nearest £100,000.",
+
   contradiction:
     "You answered Yes to a condition and also selected “None of these apply to me”.",
   unanswered_condition: "Every condition must be answered No or Yes.",
