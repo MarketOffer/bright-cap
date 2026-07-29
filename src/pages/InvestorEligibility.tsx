@@ -200,6 +200,34 @@ const InvestorEligibility = () => {
                 of the team will be in touch shortly.
               </p>
             </div>
+          ) : outcome.state === "offer_alternative" ? (
+            <div className="mt-8">
+              <h1 className={heading}>That basis does not apply to you</h1>
+              <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
+                You have declared that none of the conditions on that statement apply to you. That
+                declaration has been recorded and cannot be changed.
+              </p>
+              <p className="mt-6 font-sans leading-relaxed text-secondary">
+                The two bases are independent of one another, so you may still qualify on the
+                other. You can complete the{" "}
+                <span className="text-foreground">
+                  {ROUTE_OPTIONS.find((route) => route.kind === outcome.alternative)?.title
+                    .replace(/^Based on my /, "")}
+                </span>{" "}
+                basis instead, if it applies to you. This is offered once.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Button onClick={() => startAlternative(outcome.alternative)}>
+                  Continue on the other basis
+                </Button>
+                <Link
+                  to="/investors"
+                  className="font-sans text-sm text-secondary underline underline-offset-4"
+                >
+                  No thank you
+                </Link>
+              </div>
+            </div>
           ) : outcome.state === "rejected" ? (
             <div className="mt-8">
               <h1 className={heading}>We cannot proceed at this stage</h1>
@@ -217,14 +245,18 @@ const InvestorEligibility = () => {
                 </Link>
                 .
               </p>
-              <Button
-                variant="outline"
-                className="mt-8"
-                onClick={() => setOutcome({ state: "idle" })}
-              >
-                Review my answers
-              </Button>
+              {/* A completed declaration is never reopened; only correctable errors are. */}
+              {!outcome.final && (
+                <Button
+                  variant="outline"
+                  className="mt-8"
+                  onClick={() => setOutcome({ state: "idle" })}
+                >
+                  Review my answers
+                </Button>
+              )}
             </div>
+
           ) : (
             <>
               <h1 className={heading}>Investor eligibility</h1>
