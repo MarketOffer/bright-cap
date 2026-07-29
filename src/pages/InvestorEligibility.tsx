@@ -33,6 +33,8 @@ type Outcome =
 
 const InvestorEligibility = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   // Recertification: contact fields may be typed afresh by the investor, but the
   // statement itself is never pre-filled — it must be answered anew each time.
   const isRecertifying = searchParams.get("recertify") === "1";
