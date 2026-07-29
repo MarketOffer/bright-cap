@@ -8,8 +8,10 @@ import {
   KIND_LABEL,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
+  ROUTE_OPTIONS,
   declarationIds,
   type EligibilityPayload,
+  type EligibilityResponse,
 } from "@/legal/eligibility/contract";
 import { type StatementKind } from "@/legal/statements/statementDefinitions";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,13 +20,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Statement", "Conditions", "Declaration", "Privacy"];
+const STEPS = ["Your details", "Basis", "Statement", "Declaration", "Privacy"];
 
 type Outcome =
   | { state: "idle" }
   | { state: "submitting" }
   | { state: "accepted" }
-  | { state: "rejected"; reasons: string[] };
+  | { state: "offer_alternative"; alternative: StatementKind }
+  | { state: "rejected"; reasons: string[]; final: boolean };
 
 const InvestorEligibility = () => {
   const [searchParams] = useSearchParams();
@@ -33,8 +36,11 @@ const InvestorEligibility = () => {
   const isRecertifying = searchParams.get("recertify") === "1";
   const [step, setStep] = useState(0);
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
-  const [kinds, setKinds] = useState<StatementKind[]>([]);
+  // Patch v2.1: one route per submission, chosen before any statutory wording.
+  const [kind, setKind] = useState<StatementKind | null>(null);
   const [noneApply, setNoneApply] = useState(false);
+  const [declinedKinds, setDeclinedKinds] = useState<StatementKind[]>([]);
+  const [attemptGroupId] = useState(() => crypto.randomUUID());
   const [answers, setAnswers] = useState<Record<string, Record<string, unknown>>>({});
   const [declarations, setDeclarations] = useState<
     Record<string, Record<string, { accepted: boolean; at: string }>>
@@ -50,46 +56,60 @@ const InvestorEligibility = () => {
     [],
   );
 
-  const toggleKind = (kind: StatementKind) => {
-    setNoneApply(false);
-    setKinds((current) =>
-      current.includes(kind) ? current.filter((k) => k !== kind) : [...current, kind],
-    );
-  };
-
-  const setDeclaration = (kind: StatementKind, id: string, accepted: boolean) =>
+  const setDeclaration = (k: StatementKind, id: string, accepted: boolean) =>
     setDeclarations((current) => ({
       ...current,
-      [kind]: {
-        ...(current[kind] ?? {}),
+      [k]: {
+        ...(current[k] ?? {}),
         [id]: { accepted, at: new Date().toISOString() },
       },
     }));
+
+  /**
+   * Once a route has been declared not-applicable, that declaration stands. The
+   * investor may take the other route, but may never reopen the first one.
+   */
+  const routeLocked = declinedKinds.length > 0;
+
+  const startAlternative = (alternative: StatementKind) => {
+    setDeclinedKinds((current) =>
+      kind && !current.includes(kind) ? [...current, kind] : current,
+    );
+    setKind(alternative);
+    setNoneApply(false);
+    setAnswers({});
+    setDeclarations({});
+    setSignatureTyped("");
+    setOutcome({ state: "idle" });
+    setStep(2);
+  };
 
   const canContinue = () => {
     if (step === 0) {
       return contact.fullName.trim().length > 0 && /\S+@\S+\.\S{2,}/.test(contact.email);
     }
-    if (step === 1) return noneApply || kinds.length > 0;
-    if (step === 2) return noneApply || kinds.length > 0;
+    if (step === 1) return kind !== null;
+    if (step === 2) return kind !== null;
     if (step === 3) {
       if (noneApply) return true;
       return (
+        kind !== null &&
         signatureTyped.trim().length > 0 &&
-        kinds.every((kind) =>
-          declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true),
-        )
+        declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)
       );
     }
     return privacyAcknowledged;
   };
 
   const submit = async () => {
+    if (!kind) return;
     setOutcome({ state: "submitting" });
     const payload: EligibilityPayload = {
       contact,
-      kinds: noneApply ? [] : kinds,
+      kind,
       noneApply,
+      declinedKinds,
+      attemptGroupId,
       answers,
       declarations,
       signatureTyped,
@@ -98,12 +118,19 @@ const InvestorEligibility = () => {
       marketingOptIn,
     };
 
-    const { data, error } = await supabase.functions.invoke("submit-eligibility", {
-      body: payload,
-    });
+    const { data, error } = await supabase.functions.invoke<EligibilityResponse>(
+      "submit-eligibility",
+      { body: payload },
+    );
 
     if (data?.ok === true) {
       setOutcome({ state: "accepted" });
+      return;
+    }
+
+    if (data?.offerAlternative) {
+      setDeclinedKinds(data.declinedKinds ?? [kind]);
+      setOutcome({ state: "offer_alternative", alternative: data.offerAlternative });
       return;
     }
 
@@ -117,8 +144,14 @@ const InvestorEligibility = () => {
         /* fall through to the generic message */
       }
     }
-    setOutcome({ state: "rejected", reasons: reasons.length ? reasons : ["server_error"] });
+    const codes = reasons.length ? reasons : ["server_error"];
+    setOutcome({
+      state: "rejected",
+      reasons: codes,
+      final: codes.includes("both_routes_declined"),
+    });
   };
+
 
   const heading = "text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]";
 
