@@ -144,6 +144,22 @@ const InvestorSummary = () => {
               {DENY_MESSAGE[state.reason] ?? DENY_MESSAGE.invalid_token}
             </p>
 
+            {/* Expiry is absolute: nothing about the opportunity is shown here,
+                only a neutral route back to a fresh certification. */}
+            {["statement_expired", "statement_revoked", "no_statement"].includes(state.reason) && (
+              <div className="mt-10 max-w-md border border-border p-6">
+                <h2 className="text-lg font-normal">Renew your certification</h2>
+                <p className="mt-2 text-sm text-secondary">
+                  A certification lasts 12 months and cannot be extended. A new statement must be
+                  completed and signed afresh; previous answers are not carried over.
+                </p>
+                <Button asChild className="mt-4">
+                  <a href="/investors/eligibility?recertify=1">Complete a new certification</a>
+                </Button>
+              </div>
+            )}
+
+
             {state.reissuable && (
               <div className="mt-10 max-w-md border border-border p-6">
                 <h2 className="text-lg font-normal">Request a new link</h2>

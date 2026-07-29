@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
@@ -27,6 +27,10 @@ type Outcome =
   | { state: "rejected"; reasons: string[] };
 
 const InvestorEligibility = () => {
+  const [searchParams] = useSearchParams();
+  // Recertification: contact fields may be typed afresh by the investor, but the
+  // statement itself is never pre-filled — it must be answered anew each time.
+  const isRecertifying = searchParams.get("recertify") === "1";
   const [step, setStep] = useState(0);
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
   const [kinds, setKinds] = useState<StatementKind[]>([]);
@@ -141,7 +145,21 @@ const InvestorEligibility = () => {
             ← Back to investors
           </Link>
 
+          {isRecertifying && outcome.state !== "accepted" && (
+            <div className="mt-8 border border-border p-6">
+              <h2 className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+                Renewing your certification
+              </h2>
+              <p className="mt-3 font-sans leading-relaxed text-secondary">
+                A certification lasts twelve months and cannot be extended. Please complete the
+                statement in full: your previous answers are not carried over, and each condition
+                must be considered again as at today's date.
+              </p>
+            </div>
+          )}
+
           {outcome.state === "accepted" ? (
+
             <div className="mt-8">
               <h1 className={heading}>Thank you — your statement is recorded</h1>
               <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">

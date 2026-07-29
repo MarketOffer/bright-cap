@@ -190,6 +190,10 @@ export async function logCommunication(
     token_id: resolved.tokenRow.id,
     ip_address: ip,
     user_agent: userAgent,
+    // Served (pull) communications are dispatched at the moment they are
+    // logged, so they are stamped here and never appear as orphans.
+    dispatched_at: new Date().toISOString(),
+    dispatch_ref: channel,
   });
   if (error) throw error;
 }

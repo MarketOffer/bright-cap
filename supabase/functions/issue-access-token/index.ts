@@ -76,11 +76,16 @@ Deno.serve(async (req) => {
 
   const { data: document } = await supabase
     .from("documents")
-    .select("promoter_entity_name, promoter_company_number")
+    .select("id, promoter_entity_name, promoter_company_number")
     .eq("slug", issued.documentSlug!)
     .maybeSingle();
 
-  await sendAccessEmail({
+  await sendAccessEmail(supabase, {
+    contactId: contact.id,
+    documentId: document?.id ?? null,
+    tokenId: issued.tokenId ?? null,
+    ip,
+    userAgent,
     to: contact.email,
     fullName: contact.full_name,
     link: `${SITE_ORIGIN}/investors/summary?t=${issued.token}`,

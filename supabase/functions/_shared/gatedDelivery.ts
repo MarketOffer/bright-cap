@@ -8,6 +8,7 @@
 
 // deno-lint-ignore-file no-explicit-any
 import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+import { sendPromotion } from "./sendPromotion.ts";
 
 export const GATED_FLAG = "gated_summary_delivery";
 export const TOKEN_TTL_DAYS = 14;
@@ -207,19 +208,26 @@ export async function issueAccessToken(
 /**
  * Confirmation + access link ONLY. Zero deal content: no yields, no prices, no
  * property specifics. The warning block travels with it regardless.
+ *
+ * Slice 6: this now goes through sendPromotion(), so the 12-month test is
+ * re-applied at SEND TIME and the communication is logged before dispatch.
  */
-export async function sendAccessEmail(params: {
-  to: string;
-  fullName: string;
-  link: string;
-  expiresAt: string;
-  promoterName: string;
-  promoterNumber: string;
-}): Promise<{ sent: boolean; reason?: string }> {
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  if (!apiKey) return { sent: false, reason: "no_email_provider" };
-
-  const from = Deno.env.get("ACCESS_EMAIL_FROM") ?? "BrightCap <noreply@brightcap.capital>";
+export async function sendAccessEmail(
+  supabase: SupabaseClient,
+  params: {
+    contactId: string;
+    documentId?: string | null;
+    tokenId?: string | null;
+    to: string;
+    fullName: string;
+    link: string;
+    expiresAt: string;
+    promoterName: string;
+    promoterNumber: string;
+    ip?: string | null;
+    userAgent?: string | null;
+  },
+): Promise<{ sent: boolean; reason?: string }> {
   const expiry = new Date(params.expiresAt).toUTCString();
   const warning = warningBlock(params.promoterName, params.promoterNumber);
 
@@ -236,23 +244,16 @@ export async function sendAccessEmail(params: {
     warning,
   ].join("\n");
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [params.to],
-      subject: "Your BrightCap access link",
-      text,
-    }),
+  const result = await sendPromotion(supabase, {
+    contactId: params.contactId,
+    channel: "email",
+    exemptionReliedOn: "FPO art 48/50A",
+    documentId: params.documentId ?? null,
+    tokenId: params.tokenId ?? null,
+    ip: params.ip ?? null,
+    userAgent: params.userAgent ?? null,
+    email: { to: params.to, subject: "Your BrightCap access link", text },
   });
 
-  if (!response.ok) {
-    console.error("access email failed", { status: response.status });
-    return { sent: false, reason: "provider_error" };
-  }
-  return { sent: true };
+  return { sent: result.ok, reason: result.reason };
 }

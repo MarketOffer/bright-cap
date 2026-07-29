@@ -1,0 +1,181 @@
+// Slice 6 — the send-path contract.
+//
+// THIS FILE IS THE ONLY SANCTIONED OUTBOUND EMAIL PATH IN THE PROJECT.
+// A lint rule (see eslint.config.js, `no-restricted-syntax`) fails the build if
+// any other file calls the email provider directly.
+//
+// Rules enforced here, in this order, for every financial promotion:
+//   (a) fn_can_promote() is called at SEND TIME, fresh, on every send. The
+//       result is never cached, never stored on `contacts`, never passed in by
+//       the caller.
+//   (b) a `promotion_communications` row is written BEFORE dispatch, carrying
+//       the statement's signed_at/expires_at as they stood at that moment.
+//   (c) dispatch happens last; on success the row is stamped `dispatched_at`.
+//       A row left without `dispatched_at` is an orphan and is surfaced by
+//       fn_promotion_orphans() — a logged promotion that never went out is a
+//       data-integrity fault, not a silent success.
+//
+// A neutral operational email (e.g. a recertification prompt) is NOT a
+// financial promotion: it carries no deal content of any kind. Those go through
+// `dispatchEmail` directly and are never written to promotion_communications.
+
+// deno-lint-ignore-file no-explicit-any
+import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
+
+export interface DispatchResult {
+  sent: boolean;
+  reason?: string;
+  ref?: string | null;
+}
+
+/**
+ * Raw provider call. Internal to the send path — do not call from anywhere
+ * that constitutes a financial promotion; use `sendPromotion` for those.
+ */
+export async function dispatchEmail(params: {
+  to: string;
+  subject: string;
+  text: string;
+}): Promise<DispatchResult> {
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  if (!apiKey) return { sent: false, reason: "no_email_provider" };
+
+  const from = Deno.env.get("ACCESS_EMAIL_FROM") ??
+    "BrightCap <noreply@brightcap.capital>";
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [params.to],
+      subject: params.subject,
+      text: params.text,
+    }),
+  });
+
+  if (!response.ok) {
+    console.error("email dispatch failed", { status: response.status });
+    return { sent: false, reason: "provider_error" };
+  }
+
+  let ref: string | null = null;
+  try {
+    const body = await response.json();
+    ref = typeof body?.id === "string" ? body.id : null;
+  } catch {
+    /* provider returned no body; the send still succeeded */
+  }
+  return { sent: true, ref };
+}
+
+export interface PromotionParams {
+  contactId: string;
+  /** 'email' | 'call' | 'meeting' | 'document' — how the promotion travelled. */
+  channel: string;
+  /** The FPO article relied on, e.g. 'FPO art 48' or 'FPO art 50A'. */
+  exemptionReliedOn: string;
+  documentId?: string | null;
+  tokenId?: string | null;
+  ip?: string | null;
+  userAgent?: string | null;
+  /** Present for channel === 'email'. Omitted for logged real-time contact. */
+  email?: { to: string; subject: string; text: string };
+}
+
+export interface PromotionResult {
+  ok: boolean;
+  reason?: string;
+  communicationId?: string;
+  statementId?: string;
+  dispatched?: boolean;
+}
+
+/**
+ * The only sanctioned way to make a financial promotion.
+ * Refuses before dispatch if the contact is not currently certified.
+ */
+export async function sendPromotion(
+  supabase: SupabaseClient,
+  params: PromotionParams,
+): Promise<PromotionResult> {
+  // (a) live gate check — always re-read, never cached.
+  const { data: gate, error: gateError } = await supabase
+    .rpc("fn_can_promote", { p_contact_id: params.contactId })
+    .maybeSingle();
+
+  if (gateError) return { ok: false, reason: "gate_check_failed" };
+
+  const gateRow = gate as
+    | { allowed?: boolean; statement_id?: string; reason?: string }
+    | null;
+
+  if (!gateRow?.allowed || !gateRow.statement_id) {
+    console.log("promotion refused", { reason: gateRow?.reason ?? "no_statement" });
+    return { ok: false, reason: gateRow?.reason ?? "no_statement" };
+  }
+  const statementId = gateRow.statement_id;
+
+  const { data: statement } = await supabase
+    .from("investor_statements")
+    .select("signed_at, expires_at")
+    .eq("id", statementId)
+    .maybeSingle();
+
+  if (!statement) return { ok: false, reason: "statement_missing" };
+
+  // (b) log BEFORE dispatch.
+  const { data: row, error: logError } = await supabase
+    .from("promotion_communications")
+    .insert({
+      contact_id: params.contactId,
+      statement_id: statementId,
+      document_id: params.documentId ?? null,
+      channel: params.channel,
+      exemption_relied_on: params.exemptionReliedOn,
+      statement_signed_at: statement.signed_at,
+      statement_expires_at: statement.expires_at,
+      token_id: params.tokenId ?? null,
+      ip_address: params.ip ?? null,
+      user_agent: params.userAgent ?? null,
+    })
+    .select("id")
+    .single();
+
+  if (logError || !row) return { ok: false, reason: "log_failed" };
+
+  // (c) dispatch, then stamp.
+  if (!params.email) {
+    // Non-email channel: the caller is recording a communication it is making
+    // itself (e.g. a solicited real-time call). Stamp it immediately.
+    await supabase
+      .from("promotion_communications")
+      .update({ dispatched_at: new Date().toISOString(), dispatch_ref: "manual" })
+      .eq("id", row.id);
+    return { ok: true, communicationId: row.id, statementId, dispatched: true };
+  }
+
+  const result = await dispatchEmail(params.email);
+  if (result.sent) {
+    await supabase
+      .from("promotion_communications")
+      .update({ dispatched_at: new Date().toISOString(), dispatch_ref: result.ref })
+      .eq("id", row.id);
+  } else {
+    console.error("promotion logged but not dispatched", {
+      communicationId: row.id,
+      reason: result.reason,
+    });
+  }
+
+  return {
+    ok: result.sent,
+    reason: result.sent ? undefined : result.reason,
+    communicationId: row.id,
+    statementId,
+    dispatched: result.sent,
+  };
+}
