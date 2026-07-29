@@ -84,6 +84,8 @@ const InvestorEligibility = () => {
 
     ? CONDITIONS[kind].every((spec) => (currentAnswers[spec.letter] as Answer) === "no")
     : false;
+  /** Driven solely by the prescribed "None of these apply to me" condition. */
+  const noneApply = currentAnswers.none === true;
   const cancelOnly = Boolean(kind) && (noneApply || allNo);
 
 
