@@ -72,8 +72,9 @@ Each slice ends at a **test gate**. No slice starts until the previous gate is g
 | 0.4 | Select from `contacts` using the anon key | Zero rows / permission denied |
 | 0.5 | Migration re-run | Idempotent, no error |
 | 0.6 | `bunx vitest run` + production build | Pass |
+| 0.7 | **BLOCKING — sender domain.** `ACCESS_EMAIL_FROM` resolves to a `@brightcap.capital` address on a Resend connection whose domain is verified for BrightCap (SPF/DKIM/DMARC pass), *not* the borrowed MarketOffer connection | Currently **red** — outbound mail runs on MarketOffer's Resend connection and sends from a MarketOffer-verified domain. Must be migrated before any gated-delivery or recertification mail reaches a real investor |
 
-**Exit criteria:** all six green; region confirmed and recorded.
+**Exit criteria:** 0.1–0.6 green; region confirmed and recorded. **0.7 is a release blocker for Slices 4 and 6** — the build may proceed on the borrowed connection, but no live investor email goes out until a verified `brightcap.capital` sender is in place.
 
 ### Slice 0 result — 29 July 2026
 
