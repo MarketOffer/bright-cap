@@ -403,6 +403,28 @@ const InvestorEligibility = () => {
                         }
                       />
                     </div>
+                    <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
+                      <input
+                        type="checkbox"
+                        checked={privacyAcknowledged}
+                        onChange={(event) => setPrivacyAcknowledged(event.target.checked)}
+                        className="mt-1 h-4 w-4 accent-primary"
+                      />
+                      <span>
+                        I have read the{" "}
+                        <Link
+                          to="/privacy"
+                          className="text-foreground underline underline-offset-4"
+                        >
+                          privacy notice
+                        </Link>{" "}
+                        (version {PRIVACY_NOTICE_VERSION}) and understand how BrightCap will use my
+                        information.
+                        <span aria-hidden="true" className="text-primary">
+                          {" *"}
+                        </span>
+                      </span>
+                    </label>
                   </div>
                 )}
 
@@ -494,41 +516,6 @@ const InvestorEligibility = () => {
                   </div>
                 )}
 
-                {step === 3 && (
-                  <div className="space-y-6">
-                    <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
-                      <input
-                        type="checkbox"
-                        checked={privacyAcknowledged}
-                        onChange={(event) => setPrivacyAcknowledged(event.target.checked)}
-                        className="mt-1 h-4 w-4 accent-primary"
-                      />
-                      <span>
-                        I have read the{" "}
-                        <Link
-                          to="/privacy"
-                          className="text-foreground underline underline-offset-4"
-                        >
-                          privacy notice
-                        </Link>{" "}
-                        (version {PRIVACY_NOTICE_VERSION}) and understand how BrightCap will use my
-                        information. Required.
-                      </span>
-                    </label>
-                    <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
-                      <input
-                        type="checkbox"
-                        checked={marketingOptIn}
-                        onChange={(event) => setMarketingOptIn(event.target.checked)}
-                        className="mt-1 h-4 w-4 accent-primary"
-                      />
-                      <span>
-                        Optional and separate: I would like to receive occasional updates from
-                        BrightCap. You can withdraw this at any time.
-                      </span>
-                    </label>
-                  </div>
-                )}
               </div>
 
               <div className="mt-12 flex items-center gap-4">
@@ -541,7 +528,7 @@ const InvestorEligibility = () => {
                   <Button variant="outline" onClick={() => navigate("/")}>
                     Cancel certification
                   </Button>
-                ) : step < STEPS.length - 1 ? (
+                ) : step < 2 ? (
                   <Button disabled={!canContinue()} onClick={() => setStep(step + 1)}>
                     Continue
                   </Button>
