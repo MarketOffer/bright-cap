@@ -298,7 +298,10 @@ const StatementQuestions = ({
           </p>
         )}
 
-        <fieldset className="space-y-3">
+        <fieldset
+          disabled={lockNone}
+          className={`space-y-3${lockNone ? " opacity-50" : ""}`}
+        >
           <legend className="font-sans leading-relaxed text-statutory">
             {noneBlock && noneBlock.type === "condition"
               ? `${noneBlock.letter} ${noneBlock.segments.map((s) => s.value).join("")}`
