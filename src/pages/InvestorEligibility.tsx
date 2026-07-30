@@ -4,14 +4,12 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
-import DeclarationList from "@/components/eligibility/DeclarationList";
 import {
   CONDITIONS,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
   ROUTE_OPTIONS,
   declarationIds,
-  declarationStepDeclarationIds,
 
   type Answer,
   type EligibilityPayload,
@@ -24,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Basis", "Statement", "Declaration", "Privacy"];
+const STEPS = ["Your details", "Basis", "Statement", "Privacy"];
 
 type Outcome =
   | { state: "idle" }
