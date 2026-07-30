@@ -20,6 +20,31 @@ const KIND_LABEL: Record<string, string> = {
   scsi: "Self-certified sophisticated investor",
 };
 
+const INSTRUMENT_LABEL: Record<string, string> = {
+  FPO: "Financial Services and Markets Act 2000 (Financial Promotion) Order 2005 (FPO)",
+};
+
+const VERSION_LABEL: Record<string, string> = {
+  "FPO_SCH5_PT1_SI2024-301":
+    "Schedule 5, Part 1 (High net worth individual statement) of the FPO 2005, as substituted by the Financial Services and Markets Act 2000 (Financial Promotion) (Amendment) Order 2024 (SI 2024/301), Schedule 3 — in force 27 March 2024",
+  "FPO_SCH5_PT2_SI2024-301":
+    "Schedule 5, Part 2 (Self-certified sophisticated investor statement) of the FPO 2005, as substituted by the Financial Services and Markets Act 2000 (Financial Promotion) (Amendment) Order 2024 (SI 2024/301), Schedule 4 — in force 27 March 2024",
+};
+
+/** Plain-English summary of each lettered condition, by statement kind. */
+const CRITERIA_LABEL: Record<string, Record<string, string>> = {
+  hnw: {
+    A: "A — Annual income of £100,000 or more in the last financial year (excluding one-off pension withdrawals).",
+    B: "B — Net assets of £250,000 or more (excluding primary residence, pensions and insurance rights).",
+  },
+  scsi: {
+    A: "A — Worked in a professional capacity in private equity, or in providing finance to SMEs, in the last two years.",
+    B: "B — Been a director of a company with annual turnover of at least £1 million in the last two years.",
+    C: "C — Made two or more investments in an unlisted company in the last two years.",
+    D: "D — Been a member of a network or syndicate of business angels for more than six months, and still a member.",
+  },
+};
+
 const money = (value: number | null) =>
   value === null || value === undefined
     ? "—"
@@ -35,6 +60,7 @@ const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
     <dd className="text-sm break-words">{value}</dd>
   </div>
 );
+
 
 /** Full statement record. Financial bands stay hidden until explicitly revealed. */
 const AdminStatement = () => {
@@ -140,16 +166,43 @@ const AdminStatement = () => {
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">Statement</h2>
             <dl>
               <Row label="Type" value={KIND_LABEL[detail.statement.statementKind]} />
-              <Row label="Version" value={detail.statement.statementVersion} />
-              <Row label="Instrument" value={detail.statement.instrument} />
-              <Row label="Qualifying criteria" value={detail.statement.qualifyingCriteria.join(", ") || "—"} />
+              <Row
+                label="Instrument"
+                value={INSTRUMENT_LABEL[detail.statement.instrument] ?? detail.statement.instrument}
+              />
+              <Row
+                label="Version"
+                value={
+                  <>
+                    {VERSION_LABEL[detail.statement.statementVersion] ??
+                      detail.statement.statementVersion}
+                    <span className="block text-xs text-muted-foreground mt-1">
+                      Reference: {detail.statement.statementVersion}
+                    </span>
+                  </>
+                }
+              />
+              <Row
+                label="Qualifying criteria"
+                value={
+                  detail.statement.qualifyingCriteria.length === 0 ? (
+                    "—"
+                  ) : (
+                    <ul className="list-disc pl-4 space-y-1">
+                      {detail.statement.qualifyingCriteria.map((code) => (
+                        <li key={code}>
+                          {CRITERIA_LABEL[detail.statement.statementKind]?.[code] ?? code}
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                }
+              />
               <Row label="Signed" value={formatDate(detail.statement.signedAt)} />
               <Row label="Expires" value={formatDate(detail.statement.expiresAt)} />
               <Row label="Typed signature" value={detail.statement.signatureTyped} />
               <Row label="Declared name" value={detail.statement.declaredFullName} />
-              <Row label="IP address" value={detail.statement.ipAddress ?? "—"} />
-              <Row label="User agent" value={detail.statement.userAgent ?? "—"} />
-              <Row label="Gate status" value={detail.gate?.reason ?? "—"} />
+
               {detail.statement.revokedAt && (
                 <Row
                   label="Revoked"
@@ -237,10 +290,33 @@ const AdminStatement = () => {
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">
               Statement as signed
             </h2>
-            <pre className="text-xs whitespace-pre-wrap border border-border rounded-md p-6 bg-card">
-              {detail.statement.snapshot}
-            </pre>
+            <div
+              className="statement-snapshot text-sm border border-border rounded-md p-6 bg-card overflow-x-auto"
+              dangerouslySetInnerHTML={{ __html: detail.statement.snapshot }}
+            />
+            <details className="mt-3">
+              <summary className="text-xs text-muted-foreground cursor-pointer">
+                View raw HTML source
+              </summary>
+              <pre className="text-xs whitespace-pre-wrap border border-border rounded-md p-4 mt-2 bg-muted">
+                {detail.statement.snapshot}
+              </pre>
+            </details>
           </section>
+
+          <section>
+            <details>
+              <summary className="text-sm uppercase tracking-wider text-muted-foreground cursor-pointer">
+                Technical audit trail
+              </summary>
+              <dl className="mt-3">
+                <Row label="IP address" value={detail.statement.ipAddress ?? "—"} />
+                <Row label="User agent" value={detail.statement.userAgent ?? "—"} />
+                <Row label="Gate status" value={detail.gate?.reason ?? "—"} />
+              </dl>
+            </details>
+          </section>
+
 
           {!detail.statement.revokedAt && (
             <section>
