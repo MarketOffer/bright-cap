@@ -433,10 +433,24 @@ const InvestorEligibility = () => {
                       </p>
                     ) : (
                       <>
-                        <p className="font-sans leading-relaxed text-secondary">
-                          The declarations are ticked alongside the conditions in the previous
-                          step. Sign below to complete your statement.
-                        </p>
+                        {kind && declarationStepDeclarationIds(kind).length > 0 ? (
+                          <div className="space-y-4 border border-border p-6 md:p-8">
+                            <DeclarationList
+                              kind={kind}
+                              ids={declarationStepDeclarationIds(kind)}
+                              declarations={declarations[kind] ?? {}}
+                              onDeclaration={(id, accepted) =>
+                                setDeclaration(kind, id, accepted)
+                              }
+                            />
+                          </div>
+                        ) : (
+                          <p className="font-sans leading-relaxed text-secondary">
+                            The declarations are ticked alongside the conditions in the previous
+                            step. Sign below to complete your statement.
+                          </p>
+                        )}
+
                         <div className="space-y-1.5">
                           <Label htmlFor="signature">
                             Signature — type your full name
