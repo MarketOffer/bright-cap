@@ -37,6 +37,8 @@ interface Props {
   onAnswers: (next: Record<string, unknown>) => void;
   declarations: Record<string, { accepted: boolean; at: string }>;
   onDeclaration: (id: string, accepted: boolean) => void;
+  /** Signature and date fields, rendered inside the declaration block. */
+  children?: ReactNode;
 }
 
 const StatementQuestions = ({
@@ -45,9 +47,11 @@ const StatementQuestions = ({
   onAnswers,
   declarations,
   onDeclaration,
+  children,
 }: Props) => {
   const definition = getStatement(CURRENT_STATEMENT_VERSION[kind]);
   const specs = CONDITIONS[kind];
+  const declarationTitle = definition.title.replace(/STATEMENT$/i, "DECLARATION");
   const set = (key: string, value: unknown) => onAnswers({ ...answers, [key]: value });
 
   /**
