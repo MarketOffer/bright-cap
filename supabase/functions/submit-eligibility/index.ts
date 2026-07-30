@@ -430,6 +430,17 @@ Deno.serve(async (req) => {
     for (const kind of kinds) {
       const result = perKind[kind];
       const version = CURRENT_STATEMENT_VERSION[kind];
+      const normalisedAnswers = normaliseAnswers(kind, body?.answers?.[kind] ?? {});
+      const kindDeclarations = declarations?.[kind] ?? {};
+      // The snapshot is the complete signed record: prescribed wording, the answers
+      // given, every declaration, and the signature with the server-set date.
+      const snapshot = renderStatementSnapshot(version, {
+        answers: normalisedAnswers,
+        declarations: kindDeclarations,
+        signatureTyped: signature,
+        declaredFullName,
+        signedAt,
+      });
       const { data: statement, error } = await supabase
         .from("investor_statements")
         .insert({
@@ -440,10 +451,10 @@ Deno.serve(async (req) => {
           signed_at: signedAt,
           signature_typed: signature,
           declared_full_name: declaredFullName,
-          answers: normaliseAnswers(kind, body?.answers?.[kind] ?? {}),
+          answers: normalisedAnswers,
           qualifying_criteria: result.criteria,
-          declarations: declarations?.[kind] ?? {},
-          statement_snapshot: renderStatementSnapshot(version),
+          declarations: kindDeclarations,
+          statement_snapshot: snapshot,
           attempt_group_id: attemptGroupId,
           ip_address: ip,
           user_agent: userAgent,
