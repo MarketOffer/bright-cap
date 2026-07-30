@@ -166,16 +166,43 @@ const AdminStatement = () => {
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">Statement</h2>
             <dl>
               <Row label="Type" value={KIND_LABEL[detail.statement.statementKind]} />
-              <Row label="Version" value={detail.statement.statementVersion} />
-              <Row label="Instrument" value={detail.statement.instrument} />
-              <Row label="Qualifying criteria" value={detail.statement.qualifyingCriteria.join(", ") || "—"} />
+              <Row
+                label="Instrument"
+                value={INSTRUMENT_LABEL[detail.statement.instrument] ?? detail.statement.instrument}
+              />
+              <Row
+                label="Version"
+                value={
+                  <>
+                    {VERSION_LABEL[detail.statement.statementVersion] ??
+                      detail.statement.statementVersion}
+                    <span className="block text-xs text-muted-foreground mt-1">
+                      Reference: {detail.statement.statementVersion}
+                    </span>
+                  </>
+                }
+              />
+              <Row
+                label="Qualifying criteria"
+                value={
+                  detail.statement.qualifyingCriteria.length === 0 ? (
+                    "—"
+                  ) : (
+                    <ul className="list-disc pl-4 space-y-1">
+                      {detail.statement.qualifyingCriteria.map((code) => (
+                        <li key={code}>
+                          {CRITERIA_LABEL[detail.statement.statementKind]?.[code] ?? code}
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                }
+              />
               <Row label="Signed" value={formatDate(detail.statement.signedAt)} />
               <Row label="Expires" value={formatDate(detail.statement.expiresAt)} />
               <Row label="Typed signature" value={detail.statement.signatureTyped} />
               <Row label="Declared name" value={detail.statement.declaredFullName} />
-              <Row label="IP address" value={detail.statement.ipAddress ?? "—"} />
-              <Row label="User agent" value={detail.statement.userAgent ?? "—"} />
-              <Row label="Gate status" value={detail.gate?.reason ?? "—"} />
+
               {detail.statement.revokedAt && (
                 <Row
                   label="Revoked"
