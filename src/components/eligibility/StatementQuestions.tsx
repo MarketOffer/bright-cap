@@ -261,19 +261,19 @@ const StatementQuestions = ({
           <div className="flex gap-6 pt-1">
             <label className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory">
               <input
-                type="checkbox"
+                type="radio"
+                name="none-apply"
                 checked={allNo || answers.none === true}
-                onChange={(event) => {
-                  if (event.target.checked) {
-                    /* Selecting "none apply" wipes any answers or figures given for A and B. */
-                    clearConditions(true);
-                    return;
+                onChange={() => {
+                  /* Selecting "none apply" wipes any answers or figures given for A and B. */
+                  clearConditions(true);
+                }}
+                onClick={() => {
+                  if (allNo || answers.none === true) {
+                    /* Clicking the selected option again clears it. */
+                    if (allNo) clearConditions(false);
+                    else set("none", false);
                   }
-                  if (allNo) {
-                    clearConditions(false);
-                    return;
-                  }
-                  set("none", false);
                 }}
                 className="h-4 w-4 accent-primary"
               />
