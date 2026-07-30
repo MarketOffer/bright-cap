@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { MoneyInput } from "@/components/eligibility/MoneyInput";
+import { MoneyInput, LARGE_FIGURE_THRESHOLD } from "@/components/eligibility/MoneyInput";
 import DeclarationList from "@/components/eligibility/DeclarationList";
 import {
   CURRENT_STATEMENT_VERSION,
@@ -77,6 +77,7 @@ const StatementQuestions = ({
       delete next[spec.letter];
       spec.detailField?.keys.forEach((key) => {
         delete next[key];
+        delete next[`${key}_confirmed`];
       });
     });
     next.none = none;
@@ -233,7 +234,24 @@ const StatementQuestions = ({
                               id={inputId}
                               step={detail.kind === "money10k" ? 10000 : 100000}
                               value={String((answers[key] as string | number) ?? "")}
-                              onChange={(next) => set(key, next)}
+                              confirmed={answers[`${key}_confirmed`] === true}
+                              onConfirm={(next) =>
+                                set(`${key}_confirmed`, next ? true : undefined)
+                              }
+                              onChange={(next) => {
+                                /* Figures persist as integers, never formatted strings. */
+                                const parsed = next === "" ? undefined : Number(next);
+                                const nextAnswers = { ...answers };
+                                if (parsed === undefined) delete nextAnswers[key];
+                                else nextAnswers[key] = parsed;
+                                if (
+                                  parsed === undefined ||
+                                  parsed < LARGE_FIGURE_THRESHOLD
+                                ) {
+                                  delete nextAnswers[`${key}_confirmed`];
+                                }
+                                onAnswers(nextAnswers);
+                              }}
                             />
                           ) : (
                             <Input
@@ -241,6 +259,11 @@ const StatementQuestions = ({
                               type={numeric ? "number" : "text"}
                               inputMode={numeric ? "numeric" : "text"}
                               onWheel={(event) => (event.target as HTMLInputElement).blur()}
+                              className={
+                                numeric
+                                  ? "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                  : undefined
+                              }
                               maxLength={numeric ? undefined : 200}
                               value={(answers[key] as string | number) ?? ""}
                               onChange={(event) =>

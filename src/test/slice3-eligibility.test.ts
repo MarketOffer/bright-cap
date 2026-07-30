@@ -184,7 +184,7 @@ describe.runIf(configured)("Slice 3 — submission pipeline", () => {
       basePayload("rej-detail", { answers: { hnw: { A: "yes", B: "no", none: false } } }),
     );
     expect(status).toBe(422);
-    expect(json.reasons).toContain("missing_detail");
+    expect(json.reasons).toContain("figure_missing");
   });
 
   it("3.19d rejects a contradiction", async () => {
