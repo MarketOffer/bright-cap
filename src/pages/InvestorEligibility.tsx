@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -52,6 +52,17 @@ const InvestorEligibility = () => {
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
+
+  // Smooth-scroll back to the top of the form when moving between steps.
+  const formTopRef = useRef<HTMLOListElement | null>(null);
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    formTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [step]);
 
   const serverDate = useMemo(
     () =>
@@ -281,7 +292,10 @@ const InvestorEligibility = () => {
                 you to certify your investor status. Nothing is sent until this is complete.
               </p>
 
-              <ol className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest">
+              <ol
+                ref={formTopRef}
+                className="mt-10 scroll-mt-28 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest"
+              >
                 {STEPS.map((label, index) => (
                   <li
                     key={label}
