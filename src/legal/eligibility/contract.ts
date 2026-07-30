@@ -241,6 +241,8 @@ export interface EligibilityResponse {
   offerAlternative?: StatementKind;
   declinedKinds?: StatementKind[];
   attemptGroupId?: string;
+  /** Present only on acceptance when gated delivery is on: path to the summary. */
+  delivery?: { issued: boolean; emailed: boolean; summaryPath?: string };
 }
 
 /** Kept in sync manually with `privacy_notice_versions`. */
