@@ -145,18 +145,19 @@ export const ROUTE_OPTIONS: {
     kind: "hnw",
     title: "Based on my income or assets",
     body:
-      "In the last financial year you had an annual income of £100,000 or more, or net assets of £250,000 or more (excluding your home, pensions and certain insurance benefits)",
+      "In the last financial year you had an annual income of £100,000 or more, or net assets of £250,000 or more (excluding your home, pension and insurance policies)",
   },
   {
     kind: "scsi",
     title: "Based on my investment or business experience",
     body: "In the last two years you:",
     bullets: [
+      "worked in private equity, or in providing finance to small and medium-sized businesses",
       "were a director of a company turning over at least £1 million",
       "made two or more investments in unlisted companies",
-      "were a member of a business angels network",
-      "worked in private equity or in financing small and medium enterprises",
+      "were a member of a business angels network for over six months, and still are",
     ],
+    note: "This route does not ask about your income or assets.",
   },
 ];
 
