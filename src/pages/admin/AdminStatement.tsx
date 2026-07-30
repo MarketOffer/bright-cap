@@ -195,7 +195,7 @@ const AdminStatement = () => {
               )}
             </dl>
 
-            <details className="mt-6 border border-border rounded-md p-4">
+            <details className="mt-6">
               <summary className="text-sm uppercase tracking-wider text-muted-foreground cursor-pointer">
                 Statement version
               </summary>
@@ -219,7 +219,7 @@ const AdminStatement = () => {
               </dl>
             </details>
 
-            <details className="mt-4 border border-border rounded-md p-4">
+            <details className="mt-6">
               <summary className="text-sm uppercase tracking-wider text-muted-foreground cursor-pointer">
                 Statement as signed
               </summary>
