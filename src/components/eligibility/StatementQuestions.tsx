@@ -304,17 +304,21 @@ const StatementQuestions = ({
             return (
               <p
                 key={id}
-                className="pl-7 font-sans text-sm leading-relaxed text-statutory"
+                className="font-sans text-sm leading-relaxed text-statutory"
               >
                 {renderSegments(block.segments)}
               </p>
             );
           }
 
+          const isSubPoint = id.endsWith("-understand-a") || id.endsWith("-understand-b");
+
           return (
             <label
               key={id}
-              className="flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-statutory"
+              className={`flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-statutory${
+                isSubPoint ? " -mt-2" : ""
+              }`}
             >
 
               <Checkbox
@@ -326,6 +330,7 @@ const StatementQuestions = ({
             </label>
           );
         })}
+
 
       </div>
     </section>
