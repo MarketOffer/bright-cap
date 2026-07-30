@@ -305,23 +305,8 @@ const AdminStatement = () => {
             )}
           </section>
 
-          <section>
-            <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">
-              Statement as signed
-            </h2>
-            <div
-              className="statement-snapshot text-sm border border-border rounded-md p-6 bg-card overflow-x-auto"
-              dangerouslySetInnerHTML={{ __html: detail.statement.snapshot }}
-            />
-            <details className="mt-3">
-              <summary className="text-xs text-muted-foreground cursor-pointer">
-                View raw HTML source
-              </summary>
-              <pre className="text-xs whitespace-pre-wrap border border-border rounded-md p-4 mt-2 bg-muted">
-                {detail.statement.snapshot}
-              </pre>
-            </details>
-          </section>
+
+
 
           <section>
             <details>
