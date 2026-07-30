@@ -52,6 +52,7 @@ const InvestorEligibility = () => {
   const [signatureTyped, setSignatureTyped] = useState("");
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [preferenceSaved, setPreferenceSaved] = useState(false);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
 
   // Smooth-scroll back to the top of the form when moving between steps.
@@ -230,6 +231,42 @@ const InvestorEligibility = () => {
                 We have recorded your investor statement. It is valid for twelve months. A member
                 of the team will be in touch shortly.
               </p>
+
+              <ol className="mt-12 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest">
+                {STEPS.map((label, index) => (
+                  <li
+                    key={label}
+                    className={
+                      index === 3 ? "font-semibold text-foreground" : "text-muted-foreground"
+                    }
+                  >
+                    {index + 1}. {label}
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-8 space-y-6">
+                <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
+                  <input
+                    type="checkbox"
+                    checked={marketingOptIn}
+                    disabled={preferenceSaved}
+                    onChange={(event) => setMarketingOptIn(event.target.checked)}
+                    className="mt-1 h-4 w-4 accent-primary"
+                  />
+                  <span>
+                    Optional and separate: I would like to receive occasional updates from
+                    BrightCap. You can withdraw this at any time.
+                  </span>
+                </label>
+                {preferenceSaved ? (
+                  <p className="font-sans text-sm text-secondary">
+                    Your communication preference has been noted.
+                  </p>
+                ) : (
+                  <Button onClick={() => setPreferenceSaved(true)}>Save preference</Button>
+                )}
+              </div>
             </div>
           ) : outcome.state === "offer_alternative" ? (
             <div className="mt-8">
