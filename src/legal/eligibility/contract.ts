@@ -23,6 +23,11 @@ export interface ConditionSpec {
     /** payload key(s) written into `answers[kind]` */
     keys: string[];
     /**
+     * Optional prescribed follow-up question shown above the fields, used where the
+     * single statutory question is answered by more than one input. Verbatim SI wording.
+     */
+    prompt?: string;
+    /**
      * Field labels. Where `statutory[i]` is true the label is the prescribed
      * follow-up wording from SI 2024/301 and MUST NOT be reworded or shortened.
      */
