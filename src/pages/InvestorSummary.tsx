@@ -33,6 +33,8 @@ const DENY_MESSAGE: Record<string, string> = {
   invalid_token: "This link is not valid. Please use the link sent to you, or request a new one.",
   token_expired: "This link has expired. You can request a fresh one below.",
   token_revoked: "This link is no longer active. You can request a fresh one below.",
+  token_claimed:
+    "This link has already been opened on another device and is personal to the investor it was issued to. It cannot be used again here. If this was you, request a fresh link below.",
   statement_expired:
     "Your investor certification has expired. Certifications last 12 months and must be renewed before we can share this material.",
   statement_revoked: "Your investor certification has been withdrawn.",
@@ -44,6 +46,44 @@ const DENY_MESSAGE: Record<string, string> = {
 
 const formatDate = (iso: string) =>
   new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(new Date(iso));
+
+/**
+ * Device claim. The link is bound server-side to the first browser that opens
+ * it; that browser is handed a secret it must replay on every later request.
+ * Held per token so an investor with two valid links keeps both working.
+ */
+const claimKey = (token: string) => `bc.claim.${token.slice(0, 12)}`;
+
+const readClaim = (token: string): string => {
+  try {
+    return window.localStorage.getItem(claimKey(token)) ?? "";
+  } catch {
+    return "";
+  }
+};
+
+const storeClaim = (token: string, claim: string) => {
+  try {
+    window.localStorage.setItem(claimKey(token), claim);
+  } catch {
+    /* private browsing: the link simply stays single-session */
+  }
+};
+
+/** Non-2xx responses arrive as FunctionsHttpError; the reason lives in the body. */
+const denialFromError = async (
+  error: unknown,
+): Promise<{ reason: string; reissuable: boolean } | null> => {
+  const response = (error as { context?: Response } | null)?.context;
+  if (!response || typeof response.json !== "function") return null;
+  try {
+    const body = await response.clone().json();
+    if (typeof body?.reason !== "string") return null;
+    return { reason: body.reason, reissuable: Boolean(body.reissuable) };
+  } catch {
+    return null;
+  }
+};
 
 const InvestorSummary = () => {
   const [params] = useSearchParams();
@@ -67,18 +107,23 @@ const InvestorSummary = () => {
         return;
       }
       const { data, error } = await supabase.functions.invoke("redeem-access-token", {
-        body: { token },
+        body: { token, claim: readClaim(token) },
       });
       if (cancelled) return;
       if (error || !data?.ok) {
-        const reason = (data?.reason as string) ?? "invalid_token";
+        const fromBody = await denialFromError(error);
+        if (cancelled) return;
+        const reason = fromBody?.reason ?? (data?.reason as string) ?? "invalid_token";
         setState({
           status: "denied",
           reason,
-          reissuable: Boolean(data?.reissuable) || reason === "invalid_token",
+          reissuable:
+            fromBody?.reissuable || Boolean(data?.reissuable) || reason === "invalid_token",
         });
         return;
       }
+      // Issued once, on the first open. Later loads replay it instead.
+      if (typeof data.claim === "string") storeClaim(token, data.claim);
       setState({ status: "ready", payload: data as GatedPayload });
     };
     void run();
@@ -92,7 +137,7 @@ const InvestorSummary = () => {
     setDownloadError(null);
     try {
       const { data, error } = await supabase.functions.invoke("download-document", {
-        body: { token },
+        body: { token, claim: readClaim(token) },
       });
       if (error) throw error;
       const blob = data instanceof Blob ? data : new Blob([data as BlobPart], {
@@ -110,6 +155,7 @@ const InvestorSummary = () => {
       setDownloading(false);
     }
   }, [token]);
+
 
   const requestReissue = async () => {
     setReissueMessage(null);
