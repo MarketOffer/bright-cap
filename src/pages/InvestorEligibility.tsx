@@ -53,6 +53,17 @@ const InvestorEligibility = () => {
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
 
+  // Smooth-scroll back to the top of the form when moving between steps.
+  const formTopRef = useRef<HTMLDivElement | null>(null);
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    formTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [step]);
+
   const serverDate = useMemo(
     () =>
       new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(new Date()),
