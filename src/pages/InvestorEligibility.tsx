@@ -114,6 +114,59 @@ const InvestorEligibility = () => {
     setStep(2);
   };
 
+  /**
+   * What is still missing on the statement step, in plain words. Shown next to the
+   * Submit button so a disabled control always explains itself.
+   */
+  const outstanding = (): string[] => {
+    if (step !== 2 || !kind || cancelOnly) return [];
+    const items: string[] = [];
+
+    CONDITIONS[kind].forEach((spec) => {
+      const value = currentAnswers[spec.letter] as Answer;
+      /* SCSI only — the HNW gating is unchanged. */
+      if (kind === "scsi" && value !== "yes" && value !== "no") {
+        items.push(`Answer No or Yes to condition ${spec.letter}`);
+        return;
+      }
+      if (value !== "yes") return;
+      (spec.detailField?.keys ?? []).forEach((key) => {
+        const raw = currentAnswers[key];
+        const numeric = typeof raw === "number" ? raw : Number(raw ?? NaN);
+        if (spec.detailField?.kind === "integer") {
+          if (kind !== "scsi") return;
+          if (!Number.isInteger(numeric) || numeric < 2) {
+            items.push(
+              `Give the number of investments for condition ${spec.letter} (two or more)`,
+            );
+          }
+          return;
+        }
+        if (spec.detailField?.kind === "text" || spec.detailField?.kind === "company") {
+          if (kind !== "scsi") return;
+          if (String(raw ?? "").trim().length === 0) {
+            items.push(`Complete the details for condition ${spec.letter}`);
+          }
+          return;
+        }
+        /* Large figures require an explicit confirmation before they can be signed. */
+        if (
+          Number.isFinite(numeric) &&
+          numeric >= LARGE_FIGURE_THRESHOLD &&
+          currentAnswers[`${key}_confirmed`] !== true
+        ) {
+          items.push(`Confirm the figure entered for condition ${spec.letter}`);
+        }
+      });
+    });
+
+    if (!declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)) {
+      items.push("Tick every declaration");
+    }
+    if (signatureTyped.trim().length === 0) items.push("Type your signature");
+    return items;
+  };
+
   const canContinue = () => {
     if (step === 0) {
       return (
@@ -125,47 +178,9 @@ const InvestorEligibility = () => {
     if (step === 1) return kind !== null;
     if (step === 2) {
       if (cancelOnly) return false;
-      /* Large figures require an explicit confirmation before they can be signed. */
-      const unconfirmedLargeFigure = kind
-        ? CONDITIONS[kind].some((spec) => {
-            if ((currentAnswers[spec.letter] as Answer) !== "yes") return false;
-            const keys = spec.detailField?.keys ?? [];
-            return keys.some((key) => {
-              const raw = currentAnswers[key];
-              const value = typeof raw === "number" ? raw : Number(raw ?? NaN);
-              return (
-                Number.isFinite(value) &&
-                value >= LARGE_FIGURE_THRESHOLD &&
-                currentAnswers[`${key}_confirmed`] !== true
-              );
-            });
-          })
-        : false;
-      if (unconfirmedLargeFigure) return false;
-      /* SCSI only — the HNW gating is unchanged. Every condition must carry an
-         answer and every Yes must carry its supporting detail before signing. */
-      if (kind === "scsi") {
-        const complete = CONDITIONS.scsi.every((spec) => {
-          const value = currentAnswers[spec.letter] as Answer;
-          if (value !== "yes" && value !== "no") return false;
-          if (value !== "yes") return true;
-          return (spec.detailField?.keys ?? []).every((key) => {
-            const raw = currentAnswers[key];
-            if (spec.detailField?.kind === "integer") {
-              const n = Number(raw);
-              return Number.isInteger(n) && n >= 2;
-            }
-            return String(raw ?? "").trim().length > 0;
-          });
-        });
-        if (!complete) return false;
-      }
-      return (
-        kind !== null &&
-        signatureTyped.trim().length > 0 &&
-        declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)
-      );
+      return kind !== null && outstanding().length === 0;
     }
+
 
     return true;
   };
