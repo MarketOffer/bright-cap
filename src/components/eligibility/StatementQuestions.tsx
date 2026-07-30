@@ -51,8 +51,13 @@ const StatementQuestions = ({
 }: Props) => {
   const definition = getStatement(CURRENT_STATEMENT_VERSION[kind]);
   const specs = CONDITIONS[kind];
-  const declarationTitle = definition.title.replace(/STATEMENT$/i, "DECLARATION");
-  const set = (key: string, value: unknown) => onAnswers({ ...answers, [key]: value });
+  const set = (key: string, value: unknown) => {
+    const next = { ...answers };
+    if (value === undefined) delete next[key];
+    else next[key] = value;
+    onAnswers(next);
+  };
+
 
   /**
    * Display-only derivation. When every condition is answered No the individual
@@ -163,11 +168,13 @@ const StatementQuestions = ({
                       className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory"
                     >
                       <input
-                        type="radio"
-                        name={`${kind}-${spec.letter}`}
+                        type="checkbox"
+                        name={`${kind}-${spec.letter}-${option}`}
                         value={option}
                         checked={!allNo && value === option}
-                        onChange={() => set(spec.letter, option)}
+                        onChange={(event) =>
+                          set(spec.letter, event.target.checked ? option : undefined)
+                        }
                         className="h-4 w-4 accent-primary"
                       />
                       {option === "no" ? "No" : "Yes"}
@@ -175,8 +182,14 @@ const StatementQuestions = ({
                   ))}
                 </div>
 
-                {value === "yes" && detail && (
-                  <div className="space-y-3 border-l-2 border-primary pl-4">
+                {detail && (
+                  <fieldset
+                    disabled={value !== "yes"}
+                    className={`space-y-3 border-l-2 border-primary pl-4${
+                      value === "yes" ? "" : " opacity-50"
+                    }`}
+                  >
+
                     {detail.keys.map((key, index) => {
                       const label = detail.labels[index];
                       const isStatutory = detail.statutory[index] === true;
@@ -242,7 +255,8 @@ const StatementQuestions = ({
                       );
 
                     })}
-                  </div>
+                  </fieldset>
+
                 )}
               </fieldset>
             </div>
@@ -265,32 +279,28 @@ const StatementQuestions = ({
           <div className="flex gap-6 pt-1">
             <label className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory">
               <input
-                type="radio"
+                type="checkbox"
                 name="none-apply"
                 checked={allNo || answers.none === true}
-                onChange={() => {
+                onChange={(event) => {
                   /* Selecting "none apply" wipes any answers or figures given for A and B. */
-                  clearConditions(true);
-                }}
-                onClick={() => {
-                  if (allNo || answers.none === true) {
-                    /* Clicking the selected option again clears it. */
-                    if (allNo) clearConditions(false);
-                    else set("none", false);
-                  }
+                  if (event.target.checked) clearConditions(true);
+                  else if (allNo) clearConditions(false);
+                  else set("none", false);
                 }}
                 className="h-4 w-4 accent-primary"
               />
               Yes
             </label>
           </div>
+
         </fieldset>
       </div>
 
-      <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
-        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
-          {declarationTitle}
-        </h3>
+      <fieldset
+        disabled={!anyYes}
+        className={`space-y-4 border-t border-border pt-6${anyYes ? "" : " opacity-50"}`}
+      >
         <DeclarationList
           kind={kind}
           ids={statementStepDeclarationIds(kind)}
@@ -299,7 +309,8 @@ const StatementQuestions = ({
           autoAcceptLeadIn={anyYes}
         />
         {children}
-      </div>
+      </fieldset>
+
 
     </section>
   );
