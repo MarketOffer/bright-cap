@@ -170,3 +170,53 @@
     color: hsl(var(--statutory));
   }
 }
+
+/* Rendered statutory statement snapshot (admin record view). Style-free HTML. */
+.statement-snapshot h1,
+.statement-snapshot h2,
+.statement-snapshot h3 {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.statement-snapshot p,
+.statement-snapshot div,
+.statement-snapshot li {
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.statement-snapshot ul,
+.statement-snapshot ol {
+  padding-left: 1.25rem;
+  margin: 0 0 0.75rem;
+  list-style: disc;
+}
+
+.statement-snapshot strong {
+  font-weight: 700;
+}
+
+.statement-snapshot u {
+  text-decoration: underline;
+}
+
+.statement-snapshot hr {
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+  margin: 1.25rem 0;
+}
+
+.statement-snapshot table {
+  border-collapse: collapse;
+}
+
+.statement-snapshot td,
+.statement-snapshot th {
+  border: 1px solid hsl(var(--border));
+  padding: 0.375rem 0.625rem;
+  text-align: left;
+}
