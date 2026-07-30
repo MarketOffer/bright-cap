@@ -488,7 +488,7 @@ const InvestorEligibility = () => {
                         <div className="space-y-6 pt-2">
                           <div className="space-y-1.5">
                             <Label htmlFor="signature">
-                              Signature — type your full name
+                              Signature
                               <span aria-hidden="true" className="text-primary">
                                 {" *"}
                               </span>
@@ -497,10 +497,17 @@ const InvestorEligibility = () => {
                               id="signature"
                               required
                               aria-required="true"
+                              aria-describedby="signature-help"
                               maxLength={120}
                               value={signatureTyped}
                               onChange={(event) => setSignatureTyped(event.target.value)}
                             />
+                            <p
+                              id="signature-help"
+                              className="font-sans text-xs text-muted-foreground"
+                            >
+                              Type your full name.
+                            </p>
                           </div>
                           <div className="space-y-1.5">
                             <Label htmlFor="signed-date">Date</Label>
