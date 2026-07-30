@@ -182,13 +182,6 @@ const StatementQuestions = ({
                              apply to me", so that declaration is cleared. */
                           if (checked && option === "yes") {
                             next.none = false;
-                            /* An "all No" state is displayed as none-apply; clear the
-                               other No answers so the tick is released. */
-                            specs.forEach((other) => {
-                              if (other.letter !== spec.letter && next[other.letter] === "no") {
-                                delete next[other.letter];
-                              }
-                            });
                           }
                           onAnswers(next);
                         }}
