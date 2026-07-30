@@ -51,8 +51,13 @@ const StatementQuestions = ({
 }: Props) => {
   const definition = getStatement(CURRENT_STATEMENT_VERSION[kind]);
   const specs = CONDITIONS[kind];
-  const declarationTitle = definition.title.replace(/STATEMENT$/i, "DECLARATION");
-  const set = (key: string, value: unknown) => onAnswers({ ...answers, [key]: value });
+  const set = (key: string, value: unknown) => {
+    const next = { ...answers };
+    if (value === undefined) delete next[key];
+    else next[key] = value;
+    onAnswers(next);
+  };
+
 
   /**
    * Display-only derivation. When every condition is answered No the individual
