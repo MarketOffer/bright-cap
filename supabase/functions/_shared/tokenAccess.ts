@@ -209,3 +209,81 @@ export async function markTokenUsed(supabase: SupabaseClient, resolved: Resolved
     })
     .eq("id", resolved.tokenRow.id);
 }
+
+/* ------------------------------------------------------------------ *
+ * Device claim: a link is bound to the first browser that opens it.
+ *
+ * On first successful redemption the server mints a claim secret, stores
+ * only its digest against the token, and hands the secret to that browser.
+ * Every later request must present it. A forwarded link therefore opens for
+ * the first person to use it and is refused — and logged — for everyone else.
+ * ------------------------------------------------------------------ */
+
+export type ClaimOutcome =
+  | { ok: true; claim: string | null }
+  | { ok: false; reason: "token_claimed" };
+
+export interface ClaimRow {
+  claim_hash: string | null;
+}
+
+const newClaimSecret = (): string => {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+};
+
+/**
+ * Enforces the one-device rule. Returns a freshly minted claim secret the
+ * caller must return to the client when the token was previously unclaimed,
+ * or `null` when the presented claim already matched.
+ */
+export async function enforceClaim(
+  supabase: SupabaseClient,
+  resolved: ResolvedToken,
+  presented: string,
+  ip: string | null,
+  userAgent: string | null,
+): Promise<ClaimOutcome> {
+  const { data: row } = await supabase
+    .from("access_tokens")
+    .select("claim_hash")
+    .eq("id", resolved.tokenRow.id)
+    .maybeSingle<ClaimRow>();
+
+  const existing = row?.claim_hash ?? null;
+
+  if (existing) {
+    const candidate = typeof presented === "string" ? presented.trim() : "";
+    if (candidate.length >= 20 && timingSafeEqual(await hashToken(candidate), existing)) {
+      return { ok: true, claim: null };
+    }
+    await recordTokenFailure(supabase, ip, userAgent, "token_claimed_elsewhere");
+    console.warn("ALERT link_reuse_from_second_device", { tokenId: resolved.tokenRow.id });
+    return { ok: false, reason: "token_claimed" };
+  }
+
+  const secret = newClaimSecret();
+  const { error } = await supabase
+    .from("access_tokens")
+    // Guarded so two simultaneous first opens cannot both claim the link.
+    .update({
+      claim_hash: await hashToken(secret),
+      claimed_at: new Date().toISOString(),
+      claimed_ip: ip,
+      claimed_user_agent: userAgent,
+    })
+    .eq("id", resolved.tokenRow.id)
+    .is("claim_hash", null)
+    .select("id")
+    .maybeSingle();
+
+  if (error) {
+    await recordTokenFailure(supabase, ip, userAgent, "token_claimed_elsewhere");
+    return { ok: false, reason: "token_claimed" };
+  }
+  return { ok: true, claim: secret };
+}
