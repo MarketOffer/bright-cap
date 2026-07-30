@@ -155,7 +155,10 @@ const StatementQuestions = ({
                   {connector.value}
                 </p>
               )}
-              <fieldset className="space-y-3">
+              <fieldset
+                disabled={lockConditions}
+                className={`space-y-3${lockConditions ? " opacity-50" : ""}`}
+              >
                 <legend className="font-sans leading-relaxed text-statutory">
                   {block.letter} {renderSegments(block.segments)}
                 </legend>
