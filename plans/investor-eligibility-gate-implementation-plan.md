@@ -24,7 +24,7 @@ These do not stop the build, but they gate the **release** of the gated Summary:
 - **Item 2 (public page copy).** **Slice 0b** removes the offending figures from the live site. Blocked pending Andy's written confirmation; no existing public copy is edited before then.
 - **Item 3 (promoting entity).** Determines whether the art 48(5A) block is static or per-document. Slice 4 stores it per-document either way, so the answer can arrive late.
 - **Item 4 (transcription sign-off).** Slice 2 ships the statement component; sign-off must land before Slice 3 goes live to real users.
-- **Item 5 (sender domain — BLOCKING).** Outbound email currently runs through the **MarketOffer** Resend connection, so investor mail leaves from a MarketOffer-verified domain. Before any gated delivery or recertification mail goes to a real investor, Resend **must** be migrated to a verified `brightcap.capital` sender (its own Resend connection/API key, SPF/DKIM/DMARC verified, `ACCESS_EMAIL_FROM` set to e.g. `BrightCap <noreply@brightcap.capital>`). A financial promotion arriving from an unrelated firm's domain is both a deliverability and a compliance problem. Tracked as gate item **0.7** below.
+- **Item 5 (sender domain — BLOCKING).** Outbound email currently runs through the **MarketOffer** Resend connection, so investor mail leaves from a MarketOffer-verified domain. Before any gated delivery or recertification mail goes to a real investor, Resend **must** be migrated to a verified `brightcap.capital` sender (its own Resend connection/API key, SPF/DKIM/DMARC verified, `ACCESS_EMAIL_FROM` set to e.g. `BrightCap <noreply@brightcap.capital>`). A financial promotion arriving from an unrelated firm's domain is both a deliverability and a compliance problem. Tracked as gate item **0.7** below. **Update 30 Jul 2026 — closed:** outbound mail no longer goes through the MarketOffer Resend connection. `dispatchEmail` posts to the Make.com webhook, whose scenario sends from `sam@brightcap.capital`; `ACCESS_EMAIL_FROM` is set to `BrightCap <sam@brightcap.capital>`. The Resend call site is retained, commented out, for a future direct-send swap.
 
 ---
 
@@ -515,10 +515,10 @@ Live gate: `bun run scripts/slice6-gate.ts` — 6/6. Static gate: `src/test/slic
 | **Slice 5 — staff accounts to provision** | Directors | Open (public sign-up disabled; roles granted server-side) | |
 | **Slice 4 item 4.18 — SHA confirmation before the flag flips** | Solicitor | Open | |
 | Backend region UK/EU confirmed | Dev | **Closed — EU, eu-west-1 (Ireland)** | 2026-07-29 |
-| Brief item 2 — public copy remediated and signed off | Solicitor | Open | |
-| Brief item 4 — statement transcription vs SI images | Solicitor | Open | |
+| Brief item 2 — public copy remediated and signed off | Solicitor | Open — remediation spec issued (`plans/open-items-1-and-2-sha-and-public-copy.md` §Item 2) | |
+| Brief item 4 — statement transcription vs SI images | Solicitor | **Closed — confirmed accurate, 30 Jul 2026** | 2026-07-30 |
 | Declaration-tick deviation blessed | Solicitor | Open | |
-| Brief item 1 — SHA has no further-funding obligation | Solicitor | Open | |
+| Brief item 1 — SHA has no further-funding obligation | Solicitor | Open — brief issued (`plans/open-items-1-and-2-sha-and-public-copy.md`) | |
 | Brief item 3 — promoting entity | Directors | Open | |
 | Brief item 5 — has the Summary already been sent? | Directors | Open | |
 | Legitimate interests assessment documented | Directors | Open | |
