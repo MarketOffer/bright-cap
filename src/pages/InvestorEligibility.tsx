@@ -54,7 +54,14 @@ const InvestorEligibility = () => {
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [preferenceSaved, setPreferenceSaved] = useState(false);
+  // Returned by the accepted submission so the investor never re-enters an email.
+  const [summaryPath, setSummaryPath] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
+
+  const goToSummary = () => {
+    setPreferenceSaved(true);
+    navigate(summaryPath ?? "/investors/summary");
+  };
 
   // Smooth-scroll back to the top of the form when moving between steps.
   const formTopRef = useRef<HTMLOListElement | null>(null);
@@ -208,6 +215,7 @@ const InvestorEligibility = () => {
     );
 
     if (data?.ok === true) {
+      setSummaryPath(data.delivery?.summaryPath ?? null);
       setOutcome({ state: "accepted" });
       return;
     }
@@ -278,40 +286,50 @@ const InvestorEligibility = () => {
           {outcome.state === "accepted" ? (
 
             <div className="mt-8">
-              <h1 className={heading}>Certification complete</h1>
+              <h1 className={heading}>Joint Venture Investment Summary</h1>
               <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
                 Your investor statement has been recorded and is valid for twelve months. We have
-                emailed you a confirmation, and a member of the team will be in touch shortly.
+                emailed you a confirmation.
               </p>
 
               <div className="mt-12 border border-border p-6">
                 <h2 className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
-                  Communication preferences
+                  Get the summary
                 </h2>
-                <p className="mt-3 font-sans text-sm leading-relaxed text-secondary">
-                  This is separate from your certification, which is already complete.
-                </p>
 
                 <div className="mt-6 space-y-6">
-                  <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
-                    <input
-                      type="checkbox"
-                      checked={marketingOptIn}
-                      disabled={preferenceSaved}
-                      onChange={(event) => setMarketingOptIn(event.target.checked)}
-                      className="mt-1 h-4 w-4 accent-primary"
-                    />
-                    <span>
+                  <fieldset disabled={preferenceSaved}>
+                    <legend className="font-sans leading-relaxed text-foreground">
                       I would like to receive updates from BrightCap about future investment
-                      opportunities. These are only sent while your investor certification is valid.
-                    </span>
-                  </label>
+                      opportunities.
+                    </legend>
+                    <div className="mt-4 flex gap-8">
+                      {[
+                        { label: "Yes", value: true },
+                        { label: "No", value: false },
+                      ].map((option) => (
+                        <label
+                          key={option.label}
+                          className="flex cursor-pointer items-center gap-3 font-sans leading-relaxed text-foreground"
+                        >
+                          <input
+                            type="radio"
+                            name="marketing-opt-in"
+                            checked={marketingOptIn === option.value}
+                            onChange={() => setMarketingOptIn(option.value)}
+                            className="h-4 w-4 accent-primary"
+                          />
+                          <span>{option.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
                   {preferenceSaved ? (
                     <p className="font-sans text-sm text-secondary">
                       Your communication preference has been noted.
                     </p>
                   ) : (
-                    <Button onClick={() => setPreferenceSaved(true)}>Save preference</Button>
+                    <Button onClick={goToSummary}>Get Investment Summary</Button>
                   )}
                 </div>
               </div>
