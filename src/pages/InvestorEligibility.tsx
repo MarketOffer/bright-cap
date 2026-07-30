@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
+import { LARGE_FIGURE_THRESHOLD } from "@/components/eligibility/MoneyInput";
 import {
   CONDITIONS,
   PRIVACY_NOTICE_VERSION,
@@ -124,6 +125,23 @@ const InvestorEligibility = () => {
     if (step === 1) return kind !== null;
     if (step === 2) {
       if (cancelOnly) return false;
+      /* Large figures require an explicit confirmation before they can be signed. */
+      const unconfirmedLargeFigure = kind
+        ? CONDITIONS[kind].some((spec) => {
+            if ((currentAnswers[spec.letter] as Answer) !== "yes") return false;
+            const keys = spec.detailField?.keys ?? [];
+            return keys.some((key) => {
+              const raw = currentAnswers[key];
+              const value = typeof raw === "number" ? raw : Number(raw ?? NaN);
+              return (
+                Number.isFinite(value) &&
+                value >= LARGE_FIGURE_THRESHOLD &&
+                currentAnswers[`${key}_confirmed`] !== true
+              );
+            });
+          })
+        : false;
+      if (unconfirmedLargeFigure) return false;
       return (
         kind !== null &&
         signatureTyped.trim().length > 0 &&
