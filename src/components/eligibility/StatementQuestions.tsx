@@ -173,9 +173,18 @@ const StatementQuestions = ({
                         name={`${kind}-${spec.letter}-${option}`}
                         value={option}
                         checked={!allNo && value === option}
-                        onChange={(event) =>
-                          set(spec.letter, event.target.checked ? option : undefined)
-                        }
+                        onChange={(event) => {
+                          const checked = event.target.checked;
+                          const next = { ...answers };
+                          if (checked) next[spec.letter] = option;
+                          else delete next[spec.letter];
+                          /* Answering Yes to a condition contradicts "none of these
+                             apply to me", so that declaration is cleared. */
+                          if (checked && option === "yes") {
+                            next.none = false;
+                          }
+                          onAnswers(next);
+                        }}
                         className="h-4 w-4 accent-primary"
                       />
                       {option === "no" ? "No" : "Yes"}
