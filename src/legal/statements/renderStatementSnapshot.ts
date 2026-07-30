@@ -107,6 +107,7 @@ const renderBlock = (block: Block, completion?: StatementCompletion): string => 
       const options = block.options
         .map((option) => {
           const ticked = completion && answer === option;
+          if (!completion) return `<li>${EMPTY} ${escapeHtml(option)}</li>`;
           return `<li data-answer="${escapeHtml(option)}"${
             ticked ? ' data-selected="true"' : ""
           }>${ticked ? TICKED : EMPTY} ${escapeHtml(option)}</li>`;
