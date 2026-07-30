@@ -292,7 +292,10 @@ const InvestorEligibility = () => {
                 you to certify your investor status. Nothing is sent until this is complete.
               </p>
 
-              <ol className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest">
+              <ol
+                ref={formTopRef}
+                className="mt-10 scroll-mt-28 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest"
+              >
                 {STEPS.map((label, index) => (
                   <li
                     key={label}
