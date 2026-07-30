@@ -169,12 +169,12 @@ export const declarationIds = (kind: StatementKind): string[] =>
 /**
  * Declarations shown alongside the conditions, on the statement step.
  *
- * HNW: only the "I declare that I have answered yes to A and/or B…" line stays with
- * the conditions; the consequences are ticked on the Declaration step.
- * SCSI: still shown in full on the statement step — to be migrated later.
+ * Both routes keep the whole prescribed declaration block with the statement it
+ * belongs to — the statutory wording is never separated from the answers it
+ * relates to.
  */
 export const STATEMENT_STEP_DECLARATIONS: Record<StatementKind, string[] | null> = {
-  hnw: ["hnw-declaration"],
+  hnw: null,
   scsi: null,
 };
 

@@ -4,14 +4,12 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
-import DeclarationList from "@/components/eligibility/DeclarationList";
 import {
   CONDITIONS,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
   ROUTE_OPTIONS,
   declarationIds,
-  declarationStepDeclarationIds,
 
   type Answer,
   type EligibilityPayload,
@@ -24,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Basis", "Statement", "Declaration", "Privacy"];
+const STEPS = ["Your details", "Basis", "Statement", "Privacy"];
 
 type Outcome =
   | { state: "idle" }
@@ -119,9 +117,8 @@ const InvestorEligibility = () => {
       return contact.fullName.trim().length > 0 && /\S+@\S+\.\S{2,}/.test(contact.email);
     }
     if (step === 1) return kind !== null;
-    if (step === 2) return kind !== null;
-    if (step === 3) {
-      if (noneApply) return true;
+    if (step === 2) {
+      if (cancelOnly) return false;
       return (
         kind !== null &&
         signatureTyped.trim().length > 0 &&
@@ -424,42 +421,15 @@ const InvestorEligibility = () => {
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
                     />
-                  </div>
-                )}
 
-
-                {step === 3 && (
-                  <div className="space-y-6">
-                    {noneApply ? (
-                      <p className="font-sans leading-relaxed text-secondary">
-                        No declaration is required.
-                      </p>
-                    ) : (
-                      <>
-                        {kind && declarationStepDeclarationIds(kind).length > 0 ? (
-                          <div className="space-y-4 border border-border p-6 md:p-8">
-                            <DeclarationList
-                              kind={kind}
-                              ids={declarationStepDeclarationIds(kind)}
-                              declarations={declarations[kind] ?? {}}
-                              onDeclaration={(id, accepted) =>
-                                setDeclaration(kind, id, accepted)
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <p className="font-sans leading-relaxed text-secondary">
-                            The declarations are ticked alongside the conditions in the previous
-                            step. Sign below to complete your statement.
-                          </p>
-                        )}
-
+                    {!cancelOnly && (
+                      <div className="space-y-6">
                         <div className="space-y-1.5">
                           <Label htmlFor="signature">
                             Signature — type your full name
                             <span aria-hidden="true" className="text-primary">
-                          {" *"}
-                        </span>
+                              {" *"}
+                            </span>
                           </Label>
                           <Input
                             id="signature"
@@ -478,12 +448,12 @@ const InvestorEligibility = () => {
                             edited.
                           </p>
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
                 )}
 
-                {step === 4 && (
+                {step === 3 && (
                   <div className="space-y-6">
                     <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
                       <input
