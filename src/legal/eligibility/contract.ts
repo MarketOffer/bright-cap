@@ -116,15 +116,6 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
 };
 
 
-export const JURISDICTIONS = [
-  "United Kingdom",
-  "Ireland",
-  "Guernsey",
-  "Jersey",
-  "Isle of Man",
-  "United States",
-  "Other",
-] as const;
 
 export const KIND_LABEL: Record<StatementKind, string> = {
   hnw: "High net worth individual",
