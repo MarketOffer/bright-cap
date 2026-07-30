@@ -9,7 +9,6 @@ import {
 } from "@/legal/statements/statementDefinitions";
 import {
   CONDITIONS,
-  JURISDICTIONS,
   statementStepDeclarationIds,
   type Answer,
 } from "@/legal/eligibility/contract";
