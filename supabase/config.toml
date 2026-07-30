@@ -2,3 +2,6 @@ project_id = "dvkxbbuhkfjrdtnreywv"
 
 [functions.submit-eligibility]
 verify_jwt = false
+
+[functions.set-marketing-preference]
+verify_jwt = false
