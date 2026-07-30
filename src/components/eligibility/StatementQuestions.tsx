@@ -67,6 +67,18 @@ const StatementQuestions = ({
     specs.length > 0 && specs.every((spec) => (answers[spec.letter] as Answer) === "no");
   const anyYes = specs.some((spec) => (answers[spec.letter] as Answer) === "yes");
 
+  /**
+   * SCSI only — the HNW form is unchanged. Selecting "None of these apply to me"
+   * locks the lettered conditions and their detail fields; answering Yes to any
+   * condition locks the "none" box, so the two can never be held at once.
+   */
+  const mutualLock = kind === "scsi";
+  const noneSelected = allNo || answers.none === true;
+  const lockConditions = mutualLock && noneSelected;
+  const lockNone = mutualLock && anyYes;
+
+
+
 
 
   /** Removes every condition answer and its supporting detail figures. */
@@ -155,7 +167,10 @@ const StatementQuestions = ({
                   {connector.value}
                 </p>
               )}
-              <fieldset className="space-y-3">
+              <fieldset
+                disabled={lockConditions}
+                className={`space-y-3${lockConditions ? " opacity-50" : ""}`}
+              >
                 <legend className="font-sans leading-relaxed text-statutory">
                   {block.letter} {renderSegments(block.segments)}
                 </legend>
@@ -283,7 +298,10 @@ const StatementQuestions = ({
           </p>
         )}
 
-        <fieldset className="space-y-3">
+        <fieldset
+          disabled={lockNone}
+          className={`space-y-3${lockNone ? " opacity-50" : ""}`}
+        >
           <legend className="font-sans leading-relaxed text-statutory">
             {noneBlock && noneBlock.type === "condition"
               ? `${noneBlock.letter} ${noneBlock.segments.map((s) => s.value).join("")}`
