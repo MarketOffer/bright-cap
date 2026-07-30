@@ -54,7 +54,7 @@ const InvestorEligibility = () => {
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
 
   // Smooth-scroll back to the top of the form when moving between steps.
-  const formTopRef = useRef<HTMLDivElement | null>(null);
+  const formTopRef = useRef<HTMLOListElement | null>(null);
   const firstRender = useRef(true);
   useEffect(() => {
     if (firstRender.current) {
