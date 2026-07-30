@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Basis", "Statement", "Communication"];
+const STEPS = ["Your details", "Basis", "Statement"];
 
 type Outcome =
   | { state: "idle" }
