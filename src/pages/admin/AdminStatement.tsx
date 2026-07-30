@@ -234,6 +234,8 @@ const AdminStatement = () => {
           <section>
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">Contact</h2>
             <dl>
+              <Row label="Full name" value={detail.contact?.full_name ?? "—"} />
+              <Row label="Email" value={detail.contact?.email ?? "—"} />
               <Row label="Phone" value={detail.contact?.phone ?? "—"} />
               <Row label="Marketing opt-in" value={detail.contact?.marketing_opt_in ? "Yes" : "No"} />
               <Row label="Opted in at" value={formatDate(detail.contact?.marketing_opt_in_at ?? null)} />
