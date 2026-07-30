@@ -483,36 +483,36 @@ const InvestorEligibility = () => {
                       onAnswers={(next) => setAnswers({ ...answers, [kind]: next })}
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
-                    />
-
-                    {!cancelOnly && (
-                      <div className="space-y-6">
-                        <div className="space-y-1.5">
-                          <Label htmlFor="signature">
-                            Signature — type your full name
-                            <span aria-hidden="true" className="text-primary">
-                              {" *"}
-                            </span>
-                          </Label>
-                          <Input
-                            id="signature"
-                            required
-                            aria-required="true"
-                            maxLength={120}
-                            value={signatureTyped}
-                            onChange={(event) => setSignatureTyped(event.target.value)}
-                          />
+                    >
+                      {!cancelOnly && (
+                        <div className="space-y-6 pt-2">
+                          <div className="space-y-1.5">
+                            <Label htmlFor="signature">
+                              Signature — type your full name
+                              <span aria-hidden="true" className="text-primary">
+                                {" *"}
+                              </span>
+                            </Label>
+                            <Input
+                              id="signature"
+                              required
+                              aria-required="true"
+                              maxLength={120}
+                              value={signatureTyped}
+                              onChange={(event) => setSignatureTyped(event.target.value)}
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label htmlFor="signed-date">Date</Label>
+                            <Input id="signed-date" value={serverDate} readOnly disabled />
+                            <p className="font-sans text-xs text-muted-foreground">
+                              The date is set by our server at the moment of submission and cannot
+                              be edited.
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-1.5">
-                          <Label htmlFor="signed-date">Date</Label>
-                          <Input id="signed-date" value={serverDate} readOnly disabled />
-                          <p className="font-sans text-xs text-muted-foreground">
-                            The date is set by our server at the moment of submission and cannot be
-                            edited.
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </StatementQuestions>
                   </div>
                 )}
 
@@ -537,7 +537,7 @@ const InvestorEligibility = () => {
                     disabled={!canContinue() || outcome.state === "submitting"}
                     onClick={submit}
                   >
-                    {outcome.state === "submitting" ? "Submitting…" : "Submit statement"}
+                    {outcome.state === "submitting" ? "Submitting…" : "Submit"}
                   </Button>
                 )}
               </div>

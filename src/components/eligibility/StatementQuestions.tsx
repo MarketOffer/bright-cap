@@ -37,6 +37,8 @@ interface Props {
   onAnswers: (next: Record<string, unknown>) => void;
   declarations: Record<string, { accepted: boolean; at: string }>;
   onDeclaration: (id: string, accepted: boolean) => void;
+  /** Signature and date fields, rendered inside the declaration block. */
+  children?: ReactNode;
 }
 
 const StatementQuestions = ({
@@ -45,9 +47,11 @@ const StatementQuestions = ({
   onAnswers,
   declarations,
   onDeclaration,
+  children,
 }: Props) => {
   const definition = getStatement(CURRENT_STATEMENT_VERSION[kind]);
   const specs = CONDITIONS[kind];
+  const declarationTitle = definition.title.replace(/STATEMENT$/i, "DECLARATION");
   const set = (key: string, value: unknown) => onAnswers({ ...answers, [key]: value });
 
   /**
@@ -284,6 +288,9 @@ const StatementQuestions = ({
       </div>
 
       <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
+        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
+          {declarationTitle}
+        </h3>
         <DeclarationList
           kind={kind}
           ids={statementStepDeclarationIds(kind)}
@@ -291,6 +298,7 @@ const StatementQuestions = ({
           onDeclaration={onDeclaration}
           autoAcceptLeadIn={anyYes}
         />
+        {children}
       </div>
 
     </section>
