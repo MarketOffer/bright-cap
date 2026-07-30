@@ -302,8 +302,8 @@ const InvestorEligibility = () => {
                       className="mt-1 h-4 w-4 accent-primary"
                     />
                     <span>
-                      Optional and separate: I would like to receive occasional updates from
-                      BrightCap. You can withdraw this at any time.
+                      I would like to receive updates from BrightCap about future investment
+                      opportunities. These are only sent while your investor certification is valid.
                     </span>
                   </label>
                   {preferenceSaved ? (
