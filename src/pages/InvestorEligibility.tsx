@@ -54,7 +54,14 @@ const InvestorEligibility = () => {
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [preferenceSaved, setPreferenceSaved] = useState(false);
+  // Returned by the accepted submission so the investor never re-enters an email.
+  const [summaryPath, setSummaryPath] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
+
+  const goToSummary = () => {
+    setPreferenceSaved(true);
+    navigate(summaryPath ?? "/investors/summary");
+  };
 
   // Smooth-scroll back to the top of the form when moving between steps.
   const formTopRef = useRef<HTMLOListElement | null>(null);
