@@ -37,6 +37,7 @@ const REASONS = {
   NONE_APPLY_SELECTED: "none_apply_selected",
   ALL_CONDITIONS_NO: "all_conditions_no",
   MISSING_DETAIL: "missing_detail",
+  FIGURE_MISSING: "figure_missing",
   FIGURE_BELOW_THRESHOLD: "figure_below_threshold",
   FIGURE_NOT_ROUNDED: "figure_not_rounded",
   CONTRADICTION: "contradiction",
@@ -122,7 +123,7 @@ function validateKind(kind: StatementKind, raw: any): KindResult {
     ): number | null => {
       const v = num(raw);
       if (v === null || v <= 0) {
-        reasons.push(REASONS.MISSING_DETAIL);
+        reasons.push(REASONS.FIGURE_MISSING);
         return null;
       }
       let ok = true;
@@ -158,6 +159,25 @@ function validateKind(kind: StatementKind, raw: any): KindResult {
   }
 
   return { criteria, reasons, income_band, net_assets_band };
+}
+
+/**
+ * Figures are persisted as integers, never as formatted or string values, and the
+ * UI-only large-figure confirmations are not part of the signed record.
+ */
+function normaliseAnswers(kind: StatementKind, raw: any): Record<string, unknown> {
+  const out: Record<string, unknown> = { ...(raw ?? {}) };
+  for (const key of Object.keys(out)) {
+    if (key.endsWith("_confirmed")) delete out[key];
+  }
+  const numericKeys =
+    kind === "hnw" ? ["A_income", "B_net_assets"] : ["C_investment_count"];
+  for (const key of numericKeys) {
+    if (out[key] === undefined || out[key] === null || out[key] === "") continue;
+    const v = num(out[key]);
+    if (v !== null) out[key] = Math.trunc(v);
+  }
+  return out;
 }
 
 Deno.serve(async (req) => {
@@ -420,7 +440,7 @@ Deno.serve(async (req) => {
           signed_at: signedAt,
           signature_typed: signature,
           declared_full_name: declaredFullName,
-          answers: body?.answers?.[kind] ?? {},
+          answers: normaliseAnswers(kind, body?.answers?.[kind] ?? {}),
           qualifying_criteria: result.criteria,
           declarations: declarations?.[kind] ?? {},
           statement_snapshot: renderStatementSnapshot(version),
