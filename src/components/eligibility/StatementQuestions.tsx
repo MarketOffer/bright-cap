@@ -296,10 +296,10 @@ const StatementQuestions = ({
         </fieldset>
       </div>
 
-      <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
-        <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
-          {declarationTitle}
-        </h3>
+      <fieldset
+        disabled={!anyYes}
+        className={`space-y-4 border-t border-border pt-6${anyYes ? "" : " opacity-50"}`}
+      >
         <DeclarationList
           kind={kind}
           ids={statementStepDeclarationIds(kind)}
@@ -308,7 +308,8 @@ const StatementQuestions = ({
           autoAcceptLeadIn={anyYes}
         />
         {children}
-      </div>
+      </fieldset>
+
 
     </section>
   );
