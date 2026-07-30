@@ -296,44 +296,44 @@ const InvestorEligibility = () => {
                 <h2 className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
                   Get the summary
                 </h2>
-
-                <div className="mt-6 space-y-6">
-                  <fieldset disabled={preferenceSaved}>
-                    <legend className="font-sans leading-relaxed text-foreground">
-                      I would like to receive updates from BrightCap about future investment
-                      opportunities.
-                    </legend>
-                    <div className="mt-4 flex gap-8">
-                      {[
-                        { label: "Yes", value: true },
-                        { label: "No", value: false },
-                      ].map((option) => (
-                        <label
-                          key={option.label}
-                          className="flex cursor-pointer items-center gap-3 font-sans leading-relaxed text-foreground"
-                        >
-                          <input
-                            type="radio"
-                            name="marketing-opt-in"
-                            checked={marketingOptIn === option.value}
-                            onChange={() => setMarketingOptIn(option.value)}
-                            className="h-4 w-4 accent-primary"
-                          />
-                          <span>{option.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </fieldset>
-                  {preferenceSaved ? (
-                    <p className="font-sans text-sm text-secondary">
-                      Your communication preference has been noted.
-                    </p>
-                  ) : (
-                    <Button onClick={goToSummary}>Get Investment Summary</Button>
-                  )}
+                <div className="mt-6">
+                  <Button onClick={() => setPreferenceOpen(true)}>Get Investment Summary</Button>
                 </div>
               </div>
+
+              <Dialog open={preferenceOpen} onOpenChange={setPreferenceOpen}>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="font-sans text-lg leading-snug tracking-[-0.01em]">
+                      Would you like to receive updates from BrightCap about future investment
+                      opportunities?
+                    </DialogTitle>
+                    <DialogDescription className="font-sans leading-relaxed">
+                      These are only sent while your investor certification is valid, and you can
+                      withdraw at any time.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="mt-2 flex gap-4">
+                    <Button
+                      className="flex-1"
+                      disabled={savingPreference}
+                      onClick={() => goToSummary(true)}
+                    >
+                      Yes
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="flex-1"
+                      disabled={savingPreference}
+                      onClick={() => goToSummary(false)}
+                    >
+                      No
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
+
           ) : outcome.state === "offer_alternative" ? (
             <div className="mt-8">
               <h1 className={heading}>That basis does not apply to you</h1>
