@@ -119,9 +119,8 @@ const InvestorEligibility = () => {
       return contact.fullName.trim().length > 0 && /\S+@\S+\.\S{2,}/.test(contact.email);
     }
     if (step === 1) return kind !== null;
-    if (step === 2) return kind !== null;
-    if (step === 3) {
-      if (noneApply) return true;
+    if (step === 2) {
+      if (cancelOnly) return false;
       return (
         kind !== null &&
         signatureTyped.trim().length > 0 &&
