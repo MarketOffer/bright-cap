@@ -163,11 +163,13 @@ const StatementQuestions = ({
                       className="flex cursor-pointer items-center gap-2 font-sans text-sm text-statutory"
                     >
                       <input
-                        type="radio"
-                        name={`${kind}-${spec.letter}`}
+                        type="checkbox"
+                        name={`${kind}-${spec.letter}-${option}`}
                         value={option}
                         checked={!allNo && value === option}
-                        onChange={() => set(spec.letter, option)}
+                        onChange={(event) =>
+                          set(spec.letter, event.target.checked ? option : undefined)
+                        }
                         className="h-4 w-4 accent-primary"
                       />
                       {option === "no" ? "No" : "Yes"}
@@ -175,8 +177,14 @@ const StatementQuestions = ({
                   ))}
                 </div>
 
-                {value === "yes" && detail && (
-                  <div className="space-y-3 border-l-2 border-primary pl-4">
+                {detail && (
+                  <fieldset
+                    disabled={value !== "yes"}
+                    className={`space-y-3 border-l-2 border-primary pl-4${
+                      value === "yes" ? "" : " opacity-50"
+                    }`}
+                  >
+
                     {detail.keys.map((key, index) => {
                       const label = detail.labels[index];
                       const isStatutory = detail.statutory[index] === true;
