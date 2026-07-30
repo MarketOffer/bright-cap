@@ -142,12 +142,31 @@ const InvestorEligibility = () => {
           })
         : false;
       if (unconfirmedLargeFigure) return false;
+      /* SCSI only — the HNW gating is unchanged. Every condition must carry an
+         answer and every Yes must carry its supporting detail before signing. */
+      if (kind === "scsi") {
+        const complete = CONDITIONS.scsi.every((spec) => {
+          const value = currentAnswers[spec.letter] as Answer;
+          if (value !== "yes" && value !== "no") return false;
+          if (value !== "yes") return true;
+          return (spec.detailField?.keys ?? []).every((key) => {
+            const raw = currentAnswers[key];
+            if (spec.detailField?.kind === "integer") {
+              const n = Number(raw);
+              return Number.isInteger(n) && n >= 2;
+            }
+            return String(raw ?? "").trim().length > 0;
+          });
+        });
+        if (!complete) return false;
+      }
       return (
         kind !== null &&
         signatureTyped.trim().length > 0 &&
         declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)
       );
     }
+
     return true;
   };
 
