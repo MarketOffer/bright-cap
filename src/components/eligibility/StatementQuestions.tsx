@@ -250,7 +250,8 @@ const StatementQuestions = ({
                       );
 
                     })}
-                  </div>
+                  </fieldset>
+
                 )}
               </fieldset>
             </div>
