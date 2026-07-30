@@ -149,7 +149,6 @@ function validateKind(kind: StatementKind, raw: any): KindResult {
     if (criteria.includes("B")) {
       requireText(answers.B_company_name);
       requireText(answers.B_company_number);
-      requireText(answers.B_jurisdiction);
     }
     if (criteria.includes("C")) {
       const v = num(answers.C_investment_count);

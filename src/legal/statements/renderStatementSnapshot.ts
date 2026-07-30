@@ -63,7 +63,6 @@ const DETAIL_LABELS: Record<string, string> = {
   A_organisation: "Organisation",
   B_company_name: "Company name",
   B_company_number: "Company number",
-  B_jurisdiction: "Jurisdiction",
   C_investment_count: "Number of investments",
   D_network_name: "Network or syndicate",
 };
