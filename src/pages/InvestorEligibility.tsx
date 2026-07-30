@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Basis", "Statement", "Privacy"];
+const STEPS = ["Your details", "Basis", "Statement", "Communication"];
 
 type Outcome =
   | { state: "idle" }
@@ -114,7 +114,11 @@ const InvestorEligibility = () => {
 
   const canContinue = () => {
     if (step === 0) {
-      return contact.fullName.trim().length > 0 && /\S+@\S+\.\S{2,}/.test(contact.email);
+      return (
+        contact.fullName.trim().length > 0 &&
+        /\S+@\S+\.\S{2,}/.test(contact.email) &&
+        privacyAcknowledged
+      );
     }
     if (step === 1) return kind !== null;
     if (step === 2) {
@@ -125,7 +129,7 @@ const InvestorEligibility = () => {
         declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)
       );
     }
-    return privacyAcknowledged;
+    return true;
   };
 
   const submit = async () => {
