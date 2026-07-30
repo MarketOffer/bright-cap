@@ -23,6 +23,11 @@ export interface ConditionSpec {
     /** payload key(s) written into `answers[kind]` */
     keys: string[];
     /**
+     * Optional prescribed follow-up question shown above the fields, used where the
+     * single statutory question is answered by more than one input. Verbatim SI wording.
+     */
+    prompt?: string;
+    /**
      * Field labels. Where `statutory[i]` is true the label is the prescribed
      * follow-up wording from SI 2024/301 and MUST NOT be reworded or shortened.
      */
@@ -75,13 +80,14 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       blockId: "scsi-b",
       detailField: {
         kind: "company",
-        keys: ["B_company_name", "B_company_number", "B_jurisdiction"],
-        labels: [
+        keys: ["B_company_name", "B_company_number"],
+        prompt:
           "If yes, what is/was the name of the company, and its Companies House number (or international equivalent)?",
+        labels: [
+          "Name of the company",
           "Companies House number (or international equivalent)",
-          "Jurisdiction",
         ],
-        statutory: [true, false, false],
+        statutory: [false, false],
       },
     },
     {
@@ -110,15 +116,6 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
 };
 
 
-export const JURISDICTIONS = [
-  "United Kingdom",
-  "Ireland",
-  "Guernsey",
-  "Jersey",
-  "Isle of Man",
-  "United States",
-  "Other",
-] as const;
 
 export const KIND_LABEL: Record<StatementKind, string> = {
   hnw: "High net worth individual",

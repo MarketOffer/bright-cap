@@ -268,7 +268,7 @@ const SCSI: StatementDefinition = {
       id: "scsi-declaration",
       segments: [
         t(
-          "I declare that I have answered yes to A and/or B and/or C and/or D and wish to be treated as a self-certified sophisticated investor."
+          "I declare that I have answered yes to A and/or B and/or C and/or D, and wish to be treated as a self-certified sophisticated investor."
         ),
       ],
     },
@@ -282,7 +282,7 @@ const SCSI: StatementDefinition = {
       id: "scsi-understand-a",
       segments: [
         t(
-          "a) I can receive financial promotions where the contents may not comply with rules made by the Financial Conduct Authority (FCA); and"
+          "a) I can receive financial promotions where the contents may not comply with rules made by the Financial Conduct Authority (FCA);"
         ),
       ],
     },
@@ -293,7 +293,7 @@ const SCSI: StatementDefinition = {
         t("b) I can expect "),
         b("no protection"),
         t(
-          " from the FCA, the Financial Ombudsman Service or the Financial Services Compensation Scheme."
+          " from the FCA, the Financial Ombudsman Service, or the Financial Services Compensation Scheme."
         ),
       ],
     },
