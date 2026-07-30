@@ -537,7 +537,7 @@ const InvestorEligibility = () => {
                     disabled={!canContinue() || outcome.state === "submitting"}
                     onClick={submit}
                   >
-                    {outcome.state === "submitting" ? "Submitting…" : "Submit statement"}
+                    {outcome.state === "submitting" ? "Submitting…" : "Submit"}
                   </Button>
                 )}
               </div>
