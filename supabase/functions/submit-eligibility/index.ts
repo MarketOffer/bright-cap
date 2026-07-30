@@ -479,7 +479,10 @@ Deno.serve(async (req) => {
 
     // ---- Slice 4: gated document delivery (feature-flagged, OFF by default) --
     // With the flag off this block is a no-op and Slice 3 behaviour is unchanged.
-    let delivery: { issued: boolean; emailed: boolean } = { issued: false, emailed: false };
+    let delivery: { issued: boolean; emailed: boolean; summaryPath?: string } = {
+      issued: false,
+      emailed: false,
+    };
     try {
       if (await flagEnabled(supabase)) {
         const issued = await issueAccessToken(supabase, {
@@ -506,7 +509,13 @@ Deno.serve(async (req) => {
             promoterNumber: document?.promoter_company_number ?? "",
             emailType: EMAIL_TYPES.SIGNUP_JV_SUMMARY,
           });
-          delivery = { issued: true, emailed: sent.sent };
+          // Returned to the submitting browser only, so the investor can go
+          // straight to the summary without re-entering their email. Never logged.
+          delivery = {
+            issued: true,
+            emailed: sent.sent,
+            summaryPath: `/investors/summary?t=${issued.token}`,
+          };
           console.log("access token issued", { tokenId: issued.tokenId, emailed: sent.sent });
         } else {
           console.log("access token not issued", { reason: issued.reason });
