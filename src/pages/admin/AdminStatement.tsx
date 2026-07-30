@@ -247,11 +247,22 @@ const AdminStatement = () => {
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">
               Financial detail
             </h2>
-            {financials ? (
-              <dl>
-                <Row label="Income" value={money(financials.incomeBand)} />
-                <Row label="Net assets" value={money(financials.netAssetsBand)} />
-              </dl>
+            {detail.statement.statementKind === "scsi" ? (
+              <p className="text-sm text-muted-foreground">
+                Not applicable. The self-certified sophisticated investor basis does not rely on
+                income or net asset figures, so none are collected or held for this statement.
+              </p>
+            ) : financials ? (
+              financials.incomeBand === null && financials.netAssetsBand === null ? (
+                <p className="text-sm text-muted-foreground">
+                  No figures are held against this statement.
+                </p>
+              ) : (
+                <dl>
+                  <Row label="Income" value={money(financials.incomeBand)} />
+                  <Row label="Net assets" value={money(financials.netAssetsBand)} />
+                </dl>
+              )
             ) : (
               <div className="border border-border rounded-md p-6">
                 <p className="text-sm text-muted-foreground mb-4">
@@ -264,6 +275,7 @@ const AdminStatement = () => {
               </div>
             )}
           </section>
+
 
           {detail.attempts.length > 0 && (
             <section>
