@@ -53,15 +53,28 @@ const InvestorEligibility = () => {
   const [signatureTyped, setSignatureTyped] = useState("");
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
-  const [preferenceSaved, setPreferenceSaved] = useState(false);
+  const [preferenceOpen, setPreferenceOpen] = useState(false);
+  const [savingPreference, setSavingPreference] = useState(false);
   // Returned by the accepted submission so the investor never re-enters an email.
   const [summaryPath, setSummaryPath] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
 
-  const goToSummary = () => {
-    setPreferenceSaved(true);
+  const goToSummary = async (optIn: boolean) => {
+    setSavingPreference(true);
+    setMarketingOptIn(optIn);
+    const token = summaryPath?.split("t=")[1];
+    if (token) {
+      try {
+        await supabase.functions.invoke("set-marketing-preference", {
+          body: { token, optIn },
+        });
+      } catch {
+        /* preference is non-blocking: never hold up document access */
+      }
+    }
     navigate(summaryPath ?? "/investors/summary");
   };
+
 
   // Smooth-scroll back to the top of the form when moving between steps.
   const formTopRef = useRef<HTMLOListElement | null>(null);
