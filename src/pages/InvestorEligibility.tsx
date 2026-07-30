@@ -215,6 +215,7 @@ const InvestorEligibility = () => {
     );
 
     if (data?.ok === true) {
+      setSummaryPath(data.delivery?.summaryPath ?? null);
       setOutcome({ state: "accepted" });
       return;
     }
