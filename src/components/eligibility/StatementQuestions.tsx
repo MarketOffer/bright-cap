@@ -198,7 +198,11 @@ const StatementQuestions = ({
                       value === "yes" ? "" : " opacity-50"
                     }`}
                   >
-
+                    {detail.prompt && (
+                      <p className="font-sans text-xs normal-case tracking-normal text-statutory">
+                        {detail.prompt}
+                      </p>
+                    )}
                     {detail.keys.map((key, index) => {
                       const label = detail.labels[index];
                       const isStatutory = detail.statutory[index] === true;
@@ -206,29 +210,7 @@ const StatementQuestions = ({
                         ? "font-sans text-xs normal-case tracking-normal text-statutory"
                         : "font-sans text-xs normal-case tracking-normal text-muted-foreground";
                       const inputId = `${kind}-${key}`;
-                      if (key === "B_jurisdiction") {
-                        return (
-                          <div key={key} className="space-y-1.5">
-                            <Label htmlFor={inputId} className={labelClass}>
-                              {label}
-                            </Label>
 
-                            <select
-                              id={inputId}
-                              value={(answers[key] as string) ?? ""}
-                              onChange={(event) => set(key, event.target.value)}
-                              className="h-10 w-full border border-input bg-background px-3 font-sans text-sm text-foreground"
-                            >
-                              <option value="">Select…</option>
-                              {JURISDICTIONS.map((jurisdiction) => (
-                                <option key={jurisdiction} value={jurisdiction}>
-                                  {jurisdiction}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        );
-                      }
                       const money =
                         detail.kind === "money10k" || detail.kind === "money100k";
                       const numeric = money || detail.kind === "integer";
