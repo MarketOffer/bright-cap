@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Basis", "Statement", "Privacy"];
+const STEPS = ["Your details", "Basis", "Statement", "Communication"];
 
 type Outcome =
   | { state: "idle" }
@@ -52,6 +52,7 @@ const InvestorEligibility = () => {
   const [signatureTyped, setSignatureTyped] = useState("");
   const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [preferenceSaved, setPreferenceSaved] = useState(false);
   const [outcome, setOutcome] = useState<Outcome>({ state: "idle" });
 
   // Smooth-scroll back to the top of the form when moving between steps.
@@ -114,7 +115,11 @@ const InvestorEligibility = () => {
 
   const canContinue = () => {
     if (step === 0) {
-      return contact.fullName.trim().length > 0 && /\S+@\S+\.\S{2,}/.test(contact.email);
+      return (
+        contact.fullName.trim().length > 0 &&
+        /\S+@\S+\.\S{2,}/.test(contact.email) &&
+        privacyAcknowledged
+      );
     }
     if (step === 1) return kind !== null;
     if (step === 2) {
@@ -125,7 +130,7 @@ const InvestorEligibility = () => {
         declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)
       );
     }
-    return privacyAcknowledged;
+    return true;
   };
 
   const submit = async () => {
@@ -226,6 +231,42 @@ const InvestorEligibility = () => {
                 We have recorded your investor statement. It is valid for twelve months. A member
                 of the team will be in touch shortly.
               </p>
+
+              <ol className="mt-12 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest">
+                {STEPS.map((label, index) => (
+                  <li
+                    key={label}
+                    className={
+                      index === 3 ? "font-semibold text-foreground" : "text-muted-foreground"
+                    }
+                  >
+                    {index + 1}. {label}
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-8 space-y-6">
+                <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
+                  <input
+                    type="checkbox"
+                    checked={marketingOptIn}
+                    disabled={preferenceSaved}
+                    onChange={(event) => setMarketingOptIn(event.target.checked)}
+                    className="mt-1 h-4 w-4 accent-primary"
+                  />
+                  <span>
+                    Optional and separate: I would like to receive occasional updates from
+                    BrightCap. You can withdraw this at any time.
+                  </span>
+                </label>
+                {preferenceSaved ? (
+                  <p className="font-sans text-sm text-secondary">
+                    Your communication preference has been noted.
+                  </p>
+                ) : (
+                  <Button onClick={() => setPreferenceSaved(true)}>Save preference</Button>
+                )}
+              </div>
             </div>
           ) : outcome.state === "offer_alternative" ? (
             <div className="mt-8">
@@ -362,6 +403,28 @@ const InvestorEligibility = () => {
                         }
                       />
                     </div>
+                    <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
+                      <input
+                        type="checkbox"
+                        checked={privacyAcknowledged}
+                        onChange={(event) => setPrivacyAcknowledged(event.target.checked)}
+                        className="mt-1 h-4 w-4 accent-primary"
+                      />
+                      <span>
+                        I have read the{" "}
+                        <Link
+                          to="/privacy"
+                          className="text-foreground underline underline-offset-4"
+                        >
+                          privacy notice
+                        </Link>{" "}
+                        (version {PRIVACY_NOTICE_VERSION}) and understand how BrightCap will use my
+                        information.
+                        <span aria-hidden="true" className="text-primary">
+                          {" *"}
+                        </span>
+                      </span>
+                    </label>
                   </div>
                 )}
 
@@ -453,41 +516,6 @@ const InvestorEligibility = () => {
                   </div>
                 )}
 
-                {step === 3 && (
-                  <div className="space-y-6">
-                    <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
-                      <input
-                        type="checkbox"
-                        checked={privacyAcknowledged}
-                        onChange={(event) => setPrivacyAcknowledged(event.target.checked)}
-                        className="mt-1 h-4 w-4 accent-primary"
-                      />
-                      <span>
-                        I have read the{" "}
-                        <Link
-                          to="/privacy"
-                          className="text-foreground underline underline-offset-4"
-                        >
-                          privacy notice
-                        </Link>{" "}
-                        (version {PRIVACY_NOTICE_VERSION}) and understand how BrightCap will use my
-                        information. Required.
-                      </span>
-                    </label>
-                    <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
-                      <input
-                        type="checkbox"
-                        checked={marketingOptIn}
-                        onChange={(event) => setMarketingOptIn(event.target.checked)}
-                        className="mt-1 h-4 w-4 accent-primary"
-                      />
-                      <span>
-                        Optional and separate: I would like to receive occasional updates from
-                        BrightCap. You can withdraw this at any time.
-                      </span>
-                    </label>
-                  </div>
-                )}
               </div>
 
               <div className="mt-12 flex items-center gap-4">
@@ -500,7 +528,7 @@ const InvestorEligibility = () => {
                   <Button variant="outline" onClick={() => navigate("/")}>
                     Cancel certification
                   </Button>
-                ) : step < STEPS.length - 1 ? (
+                ) : step < 2 ? (
                   <Button disabled={!canContinue()} onClick={() => setStep(step + 1)}>
                     Continue
                   </Button>
