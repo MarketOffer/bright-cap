@@ -290,49 +290,15 @@ const StatementQuestions = ({
       </div>
 
       <div className={anyYes ? "space-y-4 border-t border-border pt-6" : "hidden"}>
-
-        {declarationIds(kind).map((id) => {
-          const block = definition.blocks.find((candidate) => candidate.id === id);
-          if (!block || block.type !== "declaration") return null;
-
-          /**
-           * "I understand that this means:" is a prescribed lead-in to the
-           * lettered sub-points, not a separate declaration — it is shown as
-           * text and accepted implicitly.
-           */
-          if (id.endsWith("-understand")) {
-            return (
-              <p
-                key={id}
-                className="font-sans text-sm leading-relaxed text-statutory"
-              >
-                {renderSegments(block.segments)}
-              </p>
-            );
-          }
-
-          const isSubPoint = id.endsWith("-understand-b");
-
-          return (
-            <label
-              key={id}
-              className={`flex cursor-pointer items-start gap-3 font-sans text-sm leading-relaxed text-statutory${
-                isSubPoint ? " -mt-2" : ""
-              }`}
-            >
-
-              <Checkbox
-                checked={declarations[id]?.accepted === true}
-                onCheckedChange={(checked) => onDeclaration(id, checked === true)}
-                className="mt-1"
-              />
-              <span>{renderSegments(block.segments)}</span>
-            </label>
-          );
-        })}
-
-
+        <DeclarationList
+          kind={kind}
+          ids={statementStepDeclarationIds(kind)}
+          declarations={declarations}
+          onDeclaration={onDeclaration}
+          autoAcceptLeadIn={anyYes}
+        />
       </div>
+
     </section>
   );
 };
