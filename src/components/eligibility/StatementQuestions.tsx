@@ -277,7 +277,7 @@ const StatementQuestions = ({
                 }}
                 className="h-4 w-4 accent-primary"
               />
-              Confirm
+              Yes
             </label>
           </div>
         </fieldset>
