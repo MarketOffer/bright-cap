@@ -166,6 +166,31 @@ export const declarationIds = (kind: StatementKind): string[] =>
     .blocks.filter((block) => block.type === "declaration")
     .map((block) => block.id);
 
+/**
+ * Declarations shown alongside the conditions, on the statement step.
+ *
+ * HNW: only the "I declare that I have answered yes to A and/or B…" line stays with
+ * the conditions; the consequences are ticked on the Declaration step.
+ * SCSI: still shown in full on the statement step — to be migrated later.
+ */
+export const STATEMENT_STEP_DECLARATIONS: Record<StatementKind, string[] | null> = {
+  hnw: ["hnw-declaration"],
+  scsi: null,
+};
+
+export const statementStepDeclarationIds = (kind: StatementKind): string[] => {
+  const only = STATEMENT_STEP_DECLARATIONS[kind];
+  return only ?? declarationIds(kind);
+};
+
+/** Declarations moved to the Declaration step (ticked next to the signature). */
+export const declarationStepDeclarationIds = (kind: StatementKind): string[] => {
+  const only = STATEMENT_STEP_DECLARATIONS[kind];
+  if (!only) return [];
+  return declarationIds(kind).filter((id) => !only.includes(id));
+};
+
+
 export const REASON_MESSAGES: Record<string, string> = {
   none_apply_selected:
     "On the information given, you do not meet the statutory conditions, so we cannot send you investment information.",
