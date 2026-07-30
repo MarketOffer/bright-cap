@@ -311,7 +311,7 @@ const StatementQuestions = ({
             );
           }
 
-          const isSubPoint = id.endsWith("-understand-a") || id.endsWith("-understand-b");
+          const isSubPoint = id.endsWith("-understand-b");
 
           return (
             <label
