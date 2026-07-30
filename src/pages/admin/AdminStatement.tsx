@@ -167,22 +167,6 @@ const AdminStatement = () => {
             <dl>
               <Row label="Type" value={KIND_LABEL[detail.statement.statementKind]} />
               <Row
-                label="Instrument"
-                value={INSTRUMENT_LABEL[detail.statement.instrument] ?? detail.statement.instrument}
-              />
-              <Row
-                label="Version"
-                value={
-                  <>
-                    {VERSION_LABEL[detail.statement.statementVersion] ??
-                      detail.statement.statementVersion}
-                    <span className="block text-xs text-muted-foreground mt-1">
-                      Reference: {detail.statement.statementVersion}
-                    </span>
-                  </>
-                }
-              />
-              <Row
                 label="Qualifying criteria"
                 value={
                   detail.statement.qualifyingCriteria.length === 0 ? (
@@ -210,7 +194,42 @@ const AdminStatement = () => {
                 />
               )}
             </dl>
+
+            <details className="mt-6 border border-border rounded-md p-4">
+              <summary className="text-sm uppercase tracking-wider text-muted-foreground cursor-pointer">
+                Statement version
+              </summary>
+              <dl className="mt-3">
+                <Row
+                  label="Instrument"
+                  value={INSTRUMENT_LABEL[detail.statement.instrument] ?? detail.statement.instrument}
+                />
+                <Row
+                  label="Version"
+                  value={
+                    <>
+                      {VERSION_LABEL[detail.statement.statementVersion] ??
+                        detail.statement.statementVersion}
+                      <span className="block text-xs text-muted-foreground mt-1">
+                        Reference: {detail.statement.statementVersion}
+                      </span>
+                    </>
+                  }
+                />
+              </dl>
+            </details>
+
+            <details className="mt-4 border border-border rounded-md p-4">
+              <summary className="text-sm uppercase tracking-wider text-muted-foreground cursor-pointer">
+                Statement as signed
+              </summary>
+              <div
+                className="statement-snapshot text-sm mt-4 border border-border rounded-md p-6 bg-card overflow-x-auto"
+                dangerouslySetInnerHTML={{ __html: detail.statement.snapshot }}
+              />
+            </details>
           </section>
+
 
           <section>
             <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-3">Contact</h2>
