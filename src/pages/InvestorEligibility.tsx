@@ -4,12 +4,15 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StatementQuestions from "@/components/eligibility/StatementQuestions";
+import DeclarationList from "@/components/eligibility/DeclarationList";
 import {
   CONDITIONS,
   PRIVACY_NOTICE_VERSION,
   REASON_MESSAGES,
   ROUTE_OPTIONS,
   declarationIds,
+  declarationStepDeclarationIds,
+
   type Answer,
   type EligibilityPayload,
   type EligibilityResponse,
