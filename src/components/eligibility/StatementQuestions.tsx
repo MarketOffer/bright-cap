@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { MoneyInput } from "@/components/eligibility/MoneyInput";
+import { MoneyInput, LARGE_FIGURE_THRESHOLD } from "@/components/eligibility/MoneyInput";
 import DeclarationList from "@/components/eligibility/DeclarationList";
 import {
   CURRENT_STATEMENT_VERSION,
@@ -77,6 +77,7 @@ const StatementQuestions = ({
       delete next[spec.letter];
       spec.detailField?.keys.forEach((key) => {
         delete next[key];
+        delete next[`${key}_confirmed`];
       });
     });
     next.none = none;
