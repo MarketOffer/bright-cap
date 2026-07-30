@@ -424,42 +424,15 @@ const InvestorEligibility = () => {
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
                     />
-                  </div>
-                )}
 
-
-                {step === 3 && (
-                  <div className="space-y-6">
-                    {noneApply ? (
-                      <p className="font-sans leading-relaxed text-secondary">
-                        No declaration is required.
-                      </p>
-                    ) : (
-                      <>
-                        {kind && declarationStepDeclarationIds(kind).length > 0 ? (
-                          <div className="space-y-4 border border-border p-6 md:p-8">
-                            <DeclarationList
-                              kind={kind}
-                              ids={declarationStepDeclarationIds(kind)}
-                              declarations={declarations[kind] ?? {}}
-                              onDeclaration={(id, accepted) =>
-                                setDeclaration(kind, id, accepted)
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <p className="font-sans leading-relaxed text-secondary">
-                            The declarations are ticked alongside the conditions in the previous
-                            step. Sign below to complete your statement.
-                          </p>
-                        )}
-
+                    {!cancelOnly && (
+                      <div className="space-y-6">
                         <div className="space-y-1.5">
                           <Label htmlFor="signature">
                             Signature — type your full name
                             <span aria-hidden="true" className="text-primary">
-                          {" *"}
-                        </span>
+                              {" *"}
+                            </span>
                           </Label>
                           <Input
                             id="signature"
@@ -478,12 +451,12 @@ const InvestorEligibility = () => {
                             edited.
                           </p>
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
                 )}
 
-                {step === 4 && (
+                {step === 3 && (
                   <div className="space-y-6">
                     <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
                       <input
