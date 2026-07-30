@@ -20,6 +20,31 @@ const KIND_LABEL: Record<string, string> = {
   scsi: "Self-certified sophisticated investor",
 };
 
+const INSTRUMENT_LABEL: Record<string, string> = {
+  FPO: "Financial Services and Markets Act 2000 (Financial Promotion) Order 2005 (FPO)",
+};
+
+const VERSION_LABEL: Record<string, string> = {
+  "FPO_SCH5_PT1_SI2024-301":
+    "Schedule 5, Part 1 (High net worth individual statement) of the FPO 2005, as substituted by the Financial Services and Markets Act 2000 (Financial Promotion) (Amendment) Order 2024 (SI 2024/301), Schedule 3 — in force 27 March 2024",
+  "FPO_SCH5_PT2_SI2024-301":
+    "Schedule 5, Part 2 (Self-certified sophisticated investor statement) of the FPO 2005, as substituted by the Financial Services and Markets Act 2000 (Financial Promotion) (Amendment) Order 2024 (SI 2024/301), Schedule 4 — in force 27 March 2024",
+};
+
+/** Plain-English summary of each lettered condition, by statement kind. */
+const CRITERIA_LABEL: Record<string, Record<string, string>> = {
+  hnw: {
+    A: "A — Annual income of £100,000 or more in the last financial year (excluding one-off pension withdrawals).",
+    B: "B — Net assets of £250,000 or more (excluding primary residence, pensions and insurance rights).",
+  },
+  scsi: {
+    A: "A — Worked in a professional capacity in private equity, or in providing finance to SMEs, in the last two years.",
+    B: "B — Been a director of a company with annual turnover of at least £1 million in the last two years.",
+    C: "C — Made two or more investments in an unlisted company in the last two years.",
+    D: "D — Been a member of a network or syndicate of business angels for more than six months, and still a member.",
+  },
+};
+
 const money = (value: number | null) =>
   value === null || value === undefined
     ? "—"
@@ -35,6 +60,7 @@ const Row = ({ label, value }: { label: string; value: React.ReactNode }) => (
     <dd className="text-sm break-words">{value}</dd>
   </div>
 );
+
 
 /** Full statement record. Financial bands stay hidden until explicitly revealed. */
 const AdminStatement = () => {
