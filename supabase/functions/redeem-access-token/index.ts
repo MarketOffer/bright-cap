@@ -9,6 +9,7 @@ import {
   WARNING_BLOCK_VERSION,
 } from "../_shared/gatedDelivery.ts";
 import {
+  enforceClaim,
   logCommunication,
   markTokenUsed,
   resolveToken,
@@ -30,6 +31,7 @@ Deno.serve(async (req) => {
     body = null;
   }
   const token = String((body as { token?: string } | null)?.token ?? "");
+  const presentedClaim = String((body as { claim?: string } | null)?.claim ?? "");
 
   const outcome = await resolveToken(supabase, token, ip, userAgent);
   if (!outcome.ok) {
@@ -46,6 +48,12 @@ Deno.serve(async (req) => {
 
   const { value } = outcome;
 
+  // One-device rule: the first browser to open the link claims it.
+  const claim = await enforceClaim(supabase, value, presentedClaim, ip, userAgent);
+  if (!claim.ok) {
+    return jsonResponse({ ok: false, reason: claim.reason, reissuable: true }, 403);
+  }
+
   try {
     // Audit row is written before anything is served.
     await logCommunication(supabase, value, "page_view", ip, userAgent);
@@ -61,6 +69,7 @@ Deno.serve(async (req) => {
 
   return jsonResponse({
     ok: true,
+    ...(claim.claim ? { claim: claim.claim } : {}),
     document: {
       slug: value.document.slug,
       title: value.document.title,

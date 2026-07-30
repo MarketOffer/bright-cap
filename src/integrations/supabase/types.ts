@@ -43,6 +43,10 @@ export type Database = {
       }
       access_tokens: {
         Row: {
+          claim_hash: string | null
+          claimed_at: string | null
+          claimed_ip: unknown
+          claimed_user_agent: string | null
           contact_id: string
           created_at: string
           document_id: string
@@ -57,6 +61,10 @@ export type Database = {
           use_count: number
         }
         Insert: {
+          claim_hash?: string | null
+          claimed_at?: string | null
+          claimed_ip?: unknown
+          claimed_user_agent?: string | null
           contact_id: string
           created_at?: string
           document_id: string
@@ -71,6 +79,10 @@ export type Database = {
           use_count?: number
         }
         Update: {
+          claim_hash?: string | null
+          claimed_at?: string | null
+          claimed_ip?: unknown
+          claimed_user_agent?: string | null
           contact_id?: string
           created_at?: string
           document_id?: string
