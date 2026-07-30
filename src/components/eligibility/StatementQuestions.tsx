@@ -1,5 +1,6 @@
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { MoneyInput } from "@/components/eligibility/MoneyInput";
+import DeclarationList from "@/components/eligibility/DeclarationList";
 import {
   CURRENT_STATEMENT_VERSION,
   getStatement,
@@ -9,12 +10,12 @@ import {
 import {
   CONDITIONS,
   JURISDICTIONS,
-  declarationIds,
+  statementStepDeclarationIds,
   type Answer,
 } from "@/legal/eligibility/contract";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+
 
 /**
  * Renders the prescribed statement as an answerable form.
