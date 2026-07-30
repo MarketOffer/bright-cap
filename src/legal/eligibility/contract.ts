@@ -80,13 +80,14 @@ export const CONDITIONS: Record<StatementKind, ConditionSpec[]> = {
       blockId: "scsi-b",
       detailField: {
         kind: "company",
-        keys: ["B_company_name", "B_company_number", "B_jurisdiction"],
-        labels: [
+        keys: ["B_company_name", "B_company_number"],
+        prompt:
           "If yes, what is/was the name of the company, and its Companies House number (or international equivalent)?",
+        labels: [
+          "Name of the company",
           "Companies House number (or international equivalent)",
-          "Jurisdiction",
         ],
-        statutory: [true, false, false],
+        statutory: [false, false],
       },
     },
     {
