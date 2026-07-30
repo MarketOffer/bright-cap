@@ -10,7 +10,12 @@ import {
   serviceClient,
   SIGNED_URL_TTL_SECONDS,
 } from "../_shared/gatedDelivery.ts";
-import { logCommunication, markTokenUsed, resolveToken } from "../_shared/tokenAccess.ts";
+import {
+  enforceClaim,
+  logCommunication,
+  markTokenUsed,
+  resolveToken,
+} from "../_shared/tokenAccess.ts";
 
 const REISSUABLE = new Set(["token_expired", "token_revoked"]);
 
@@ -59,6 +64,7 @@ Deno.serve(async (req) => {
     body = null;
   }
   const token = String((body as { token?: string } | null)?.token ?? "");
+  const presentedClaim = String((body as { claim?: string } | null)?.claim ?? "");
 
   const outcome = await resolveToken(supabase, token, ip, userAgent);
   if (!outcome.ok) {
@@ -69,6 +75,11 @@ Deno.serve(async (req) => {
     );
   }
   const { value } = outcome;
+
+  const claim = await enforceClaim(supabase, value, presentedClaim, ip, userAgent);
+  if (!claim.ok) {
+    return jsonResponse({ ok: false, reason: claim.reason, reissuable: true }, 403);
+  }
 
   try {
     await logCommunication(supabase, value, "download", ip, userAgent);
