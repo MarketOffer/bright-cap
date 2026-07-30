@@ -200,9 +200,9 @@ const InvestorSummary = () => {
               {formatDate(state.payload.statementExpiresAt)}
             </p>
 
-            <pre className="mt-10 whitespace-pre-wrap border border-border p-6 text-sm leading-relaxed text-foreground">
+            <div className="mt-10 whitespace-pre-wrap border border-border p-6 font-sans text-sm leading-relaxed text-foreground">
               {state.payload.document.warningBlock}
-            </pre>
+            </div>
 
             <div className="mt-10">
               <Button onClick={download} disabled={downloading}>
