@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 const canonical = "https://brightcap.capital/investors/eligibility";
-const STEPS = ["Your details", "Basis", "Statement", "Communication"];
+const STEPS = ["Your details", "Basis", "Statement"];
 
 type Outcome =
   | { state: "idle" }
@@ -226,46 +226,42 @@ const InvestorEligibility = () => {
           {outcome.state === "accepted" ? (
 
             <div className="mt-8">
-              <h1 className={heading}>Thank you — your statement is recorded</h1>
+              <h1 className={heading}>Certification complete</h1>
               <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
-                We have recorded your investor statement. It is valid for twelve months. A member
-                of the team will be in touch shortly.
+                Your investor statement has been recorded and is valid for twelve months. We have
+                emailed you a confirmation, and a member of the team will be in touch shortly.
               </p>
 
-              <ol className="mt-12 flex flex-wrap gap-x-6 gap-y-2 font-sans text-xs uppercase tracking-widest">
-                {STEPS.map((label, index) => (
-                  <li
-                    key={label}
-                    className={
-                      index === 3 ? "font-semibold text-foreground" : "text-muted-foreground"
-                    }
-                  >
-                    {index + 1}. {label}
-                  </li>
-                ))}
-              </ol>
+              <div className="mt-12 border border-border p-6">
+                <h2 className="font-sans text-sm font-semibold uppercase tracking-widest text-foreground">
+                  Communication preferences
+                </h2>
+                <p className="mt-3 font-sans text-sm leading-relaxed text-secondary">
+                  This is separate from your certification, which is already complete.
+                </p>
 
-              <div className="mt-8 space-y-6">
-                <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
-                  <input
-                    type="checkbox"
-                    checked={marketingOptIn}
-                    disabled={preferenceSaved}
-                    onChange={(event) => setMarketingOptIn(event.target.checked)}
-                    className="mt-1 h-4 w-4 accent-primary"
-                  />
-                  <span>
-                    Optional and separate: I would like to receive occasional updates from
-                    BrightCap. You can withdraw this at any time.
-                  </span>
-                </label>
-                {preferenceSaved ? (
-                  <p className="font-sans text-sm text-secondary">
-                    Your communication preference has been noted.
-                  </p>
-                ) : (
-                  <Button onClick={() => setPreferenceSaved(true)}>Save preference</Button>
-                )}
+                <div className="mt-6 space-y-6">
+                  <label className="flex cursor-pointer items-start gap-3 font-sans leading-relaxed text-foreground">
+                    <input
+                      type="checkbox"
+                      checked={marketingOptIn}
+                      disabled={preferenceSaved}
+                      onChange={(event) => setMarketingOptIn(event.target.checked)}
+                      className="mt-1 h-4 w-4 accent-primary"
+                    />
+                    <span>
+                      Optional and separate: I would like to receive occasional updates from
+                      BrightCap. You can withdraw this at any time.
+                    </span>
+                  </label>
+                  {preferenceSaved ? (
+                    <p className="font-sans text-sm text-secondary">
+                      Your communication preference has been noted.
+                    </p>
+                  ) : (
+                    <Button onClick={() => setPreferenceSaved(true)}>Save preference</Button>
+                  )}
+                </div>
               </div>
             </div>
           ) : outcome.state === "offer_alternative" ? (
