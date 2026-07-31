@@ -160,8 +160,9 @@ const InvestorEligibility = () => {
     CONDITIONS[kind].forEach((spec) => {
       const anchor = `anchor-cond-${spec.letter}`;
       const value = currentAnswers[spec.letter] as Answer;
-      /* SCSI only — the HNW gating is unchanged. */
-      if (kind === "scsi" && value !== "yes" && value !== "no") {
+      /* Every lettered condition must be answered No or Yes on both routes.
+         Selecting "None of these apply to me" is handled separately (cancelOnly). */
+      if (value !== "yes" && value !== "no") {
         items.push({ text: `Answer No or Yes to condition ${spec.letter}`, anchor });
         return;
       }
