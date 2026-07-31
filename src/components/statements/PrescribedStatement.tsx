@@ -7,6 +7,20 @@ import {
 } from "@/legal/statements/statementDefinitions";
 
 /**
+ * ============================================================================
+ * LEGISLATIVE COPY — DO NOT EDIT.
+ *
+ * Every string rendered by this component is wording prescribed verbatim by the
+ * Financial Services and Markets Act 2000 (Financial Promotion) Order 2005, as
+ * amended by SI 2024/301. It is a legal requirement that it appears exactly as
+ * enacted: do not reword, shorten, re-punctuate, re-order or "tidy" it, and do
+ * not change where emphasis falls. Any change must be signed off by the firm's
+ * solicitor before it ships.
+ *
+ * The source text lives in `@/legal/statements/statementDefinitions` — that file
+ * is the frozen record, and it is equally off-limits.
+ * ============================================================================
+ *
  * Locked renderer for the prescribed FPO statements.
  *
  * `<strong>` and `<u>` here are CONTENT, mandated by SI 2024/301. Do not replace them

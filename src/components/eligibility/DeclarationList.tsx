@@ -8,6 +8,15 @@ import {
 } from "@/legal/statements/statementDefinitions";
 
 /**
+ * ============================================================================
+ * LEGISLATIVE COPY — DO NOT EDIT.
+ *
+ * The declaration wording rendered here is prescribed verbatim by the Financial
+ * Services and Markets Act 2000 (Financial Promotion) Order 2005, as amended by
+ * SI 2024/301. Do not reword, shorten, re-punctuate, re-order or restyle it.
+ * Only the tick controls around it are ours to change.
+ * ============================================================================
+ *
  * Renders a subset of the prescribed declarations as tickable statements.
  *
  * The statutory wording is taken verbatim from the frozen definitions and is
