@@ -75,13 +75,13 @@ const InvestorProfileSection = () => (
             </ul>
             <div className="mt-10 border-t border-background/10 pt-8">
               <p className="text-base font-medium text-background/70">
-                Interested in exploring becoming a partner investor?
+                Interested in learning how we work with investors?
               </p>
               <a
                 href="#invest"
                 className="mt-5 inline-flex items-center gap-2 rounded-sm border border-background/20 px-6 py-2.5 text-sm font-medium text-background/70 transition-colors hover:border-background/40 hover:text-background"
               >
-                Invest With Us
+                Book a Call
                 <ArrowRight className="h-3.5 w-3.5 text-primary" />
               </a>
             </div>

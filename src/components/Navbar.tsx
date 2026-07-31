@@ -57,7 +57,7 @@ const Navbar = () => {
             href={to("#invest")}
             className="rounded-sm bg-primary px-6 py-2.5 text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
           >
-            Invest With Us
+            Book a Call
           </a>
         </div>
 
@@ -70,7 +70,7 @@ const Navbar = () => {
               heroCtaVisible ? "pointer-events-none translate-y-1 opacity-0" : "translate-y-0 opacity-100"
             }`}
           >
-            Invest With Us
+            Book a Call
           </a>
 
           <button
@@ -103,7 +103,7 @@ const Navbar = () => {
             onClick={() => setMobileOpen(false)}
             className="mt-3 inline-block rounded-sm bg-primary px-6 py-2.5 text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
           >
-            Invest With Us
+            Book a Call
           </a>
         </div>
       )}

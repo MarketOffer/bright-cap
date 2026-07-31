@@ -41,7 +41,7 @@ const HeroSection = () => {
               href="#invest"
               className="mt-10 inline-block rounded-sm bg-primary px-8 py-3.5 font-sans text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
             >
-              Invest With Us
+              Book a Call
             </a>
           </FadeIn>
         </div>

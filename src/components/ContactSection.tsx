@@ -24,7 +24,7 @@ const ContactSection = () => {
       <div className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.10)] md:p-14">
         <FadeIn>
           <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-            Book a partner investor call
+            Book a call with our investment team
           </h2>
         </FadeIn>
         <FadeIn delay={0.1}>
