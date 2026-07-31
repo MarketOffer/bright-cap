@@ -17,6 +17,20 @@ import { Label } from "@/components/ui/label";
 
 
 /**
+ * ============================================================================
+ * LEGISLATIVE COPY — DO NOT EDIT.
+ *
+ * All statement text, condition wording and declaration wording rendered here
+ * is prescribed verbatim by the Financial Services and Markets Act 2000
+ * (Financial Promotion) Order 2005, as amended by SI 2024/301, and is pulled
+ * from the frozen definitions. Do not reword, shorten, re-punctuate or
+ * re-order it, and do not alter its emphasis. Elements tagged
+ * `text-statutory` carry that prescribed wording.
+ *
+ * Only the interactive controls (No/Yes boxes, detail inputs, tick boxes) and
+ * their layout are ours to change.
+ * ============================================================================
+ *
  * Renders the prescribed statement as an answerable form.
  *
  * The statutory wording, bold and underline come from the frozen definitions and are
