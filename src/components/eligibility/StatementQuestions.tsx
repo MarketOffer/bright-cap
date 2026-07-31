@@ -347,8 +347,9 @@ const StatementQuestions = ({
       </div>
 
       <fieldset
+        id="anchor-declarations"
         disabled={!anyYes}
-        className={`space-y-4 border-t border-border pt-6${anyYes ? "" : " opacity-50"}`}
+        className={`scroll-mt-28 space-y-4 border-t border-border pt-6${anyYes ? "" : " opacity-50"}`}
       >
         <DeclarationList
           kind={kind}
