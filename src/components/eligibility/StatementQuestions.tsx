@@ -175,7 +175,11 @@ const StatementQuestions = ({
               : undefined;
 
           return (
-            <div key={spec.letter} className="space-y-8">
+            <div
+              key={spec.letter}
+              id={`anchor-cond-${spec.letter}`}
+              className="scroll-mt-28 space-y-8"
+            >
               {connector && connector.type === "connector" && (
                 <p className="font-sans text-sm font-semibold uppercase tracking-widest text-statutory">
                   {connector.value}
