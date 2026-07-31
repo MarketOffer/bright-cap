@@ -1,0 +1,1 @@
+CREATE RULE investor_statements_no_delete AS ON DELETE TO public.investor_statements DO INSTEAD NOTHING;
