@@ -20,7 +20,7 @@ const OpportunitySection = () => (
       </FadeIn>
       <FadeIn delay={0.3}>
         <p className="mt-8 font-sans text-base leading-relaxed text-foreground md:text-lg">
-          BrightCap was built around this shift. We believe property markets have yet to price it in fully. Since our launch, JLL has published research showing that this divergence is already underway.<sup>1</sup>
+          Since our launch, JLL has published research showing that this divergence is already underway.<sup>1</sup>
         </p>
       </FadeIn>
     </div>
