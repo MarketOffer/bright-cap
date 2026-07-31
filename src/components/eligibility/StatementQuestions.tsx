@@ -380,6 +380,7 @@ const StatementQuestions = ({
           onDeclaration={onDeclaration}
           autoAcceptLeadIn={anyYes}
         />
+        <FieldErrors messages={errors["anchor-declarations"]} />
         {children}
       </fieldset>
 
