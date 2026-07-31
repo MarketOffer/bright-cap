@@ -46,6 +46,10 @@ const App = () => (
           <Route path="/admin/investors" element={<AdminInvestors />} />
           <Route path="/admin/investors/:statementId" element={<AdminStatement />} />
 
+          {/* Friendly aliases for the staff sign-in page */}
+          <Route path="/log-in" element={<Navigate to="/admin/login" replace />} />
+          <Route path="/login" element={<Navigate to="/admin/login" replace />} />
+
           {/* Legacy path — permanent client-side redirect */}
           <Route path="/contactus" element={<Navigate to="/contact" replace />} />
 
