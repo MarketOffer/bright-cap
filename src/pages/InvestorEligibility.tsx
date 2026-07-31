@@ -698,6 +698,12 @@ const InvestorEligibility = () => {
                     Continue
                   </Button>
                 ) : (
+                  <>
+                    {outstanding().length > 0 && (
+                      <Button variant="outline" onClick={() => navigate("/")}>
+                        Cancel certification
+                      </Button>
+                    )}
                   <Button
                     disabled={outcome.state === "submitting"}
                     onClick={attemptSubmit}
