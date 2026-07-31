@@ -143,18 +143,19 @@ const InvestorEligibility = () => {
   };
 
   /**
-   * What is still missing on the statement step, in plain words. Shown next to the
-   * Submit button so a disabled control always explains itself.
+   * What is still missing on the statement step, in plain words. Each item carries
+   * the id of the field it refers to so a failed submit can scroll straight to it.
    */
-  const outstanding = (): string[] => {
+  const outstanding = (): { text: string; anchor: string }[] => {
     if (step !== 2 || !kind || cancelOnly) return [];
-    const items: string[] = [];
+    const items: { text: string; anchor: string }[] = [];
 
     CONDITIONS[kind].forEach((spec) => {
+      const anchor = `anchor-cond-${spec.letter}`;
       const value = currentAnswers[spec.letter] as Answer;
       /* SCSI only — the HNW gating is unchanged. */
       if (kind === "scsi" && value !== "yes" && value !== "no") {
-        items.push(`Answer No or Yes to condition ${spec.letter}`);
+        items.push({ text: `Answer No or Yes to condition ${spec.letter}`, anchor });
         return;
       }
       if (value !== "yes") return;
@@ -164,34 +165,50 @@ const InvestorEligibility = () => {
         if (spec.detailField?.kind === "integer") {
           if (kind !== "scsi") return;
           if (!Number.isInteger(numeric) || numeric < 2) {
-            items.push(
-              `Give the number of investments for condition ${spec.letter} (two or more)`,
-            );
+            items.push({
+              text: `Give the number of investments for condition ${spec.letter} (two or more)`,
+              anchor,
+            });
           }
           return;
         }
         if (spec.detailField?.kind === "text" || spec.detailField?.kind === "company") {
           if (kind !== "scsi") return;
           if (String(raw ?? "").trim().length === 0) {
-            items.push(`Complete the details for condition ${spec.letter}`);
+            items.push({
+              text: `Complete the details for condition ${spec.letter}`,
+              anchor,
+            });
           }
+          return;
+        }
+        /* A figure is required once the condition is answered Yes. */
+        if (raw === undefined || raw === "" || !Number.isFinite(numeric)) {
+          items.push({
+            text: `Enter the figure for condition ${spec.letter}`,
+            anchor,
+          });
           return;
         }
         /* Large figures require an explicit confirmation before they can be signed. */
         if (
-          Number.isFinite(numeric) &&
           numeric >= LARGE_FIGURE_THRESHOLD &&
           currentAnswers[`${key}_confirmed`] !== true
         ) {
-          items.push(`Confirm the figure entered for condition ${spec.letter}`);
+          items.push({
+            text: `Confirm the figure entered for condition ${spec.letter}`,
+            anchor,
+          });
         }
       });
     });
 
     if (!declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)) {
-      items.push("Tick every declaration");
+      items.push({ text: "Tick every declaration", anchor: "anchor-declarations" });
     }
-    if (signatureTyped.trim().length === 0) items.push("Type your signature");
+    if (signatureTyped.trim().length === 0) {
+      items.push({ text: "Type your signature", anchor: "signature" });
+    }
     return items;
   };
 
@@ -212,6 +229,25 @@ const InvestorEligibility = () => {
 
     return true;
   };
+
+  /** Failed submit: show the missing fields in red and scroll to the first one. */
+  const [showErrors, setShowErrors] = useState(false);
+  const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+
+  const attemptSubmit = () => {
+    const missing = outstanding();
+    if (missing.length > 0) {
+      setShowErrors(true);
+      const target = document.getElementById(missing[0].anchor) ?? errorSummaryRef.current;
+      window.requestAnimationFrame(() =>
+        target?.scrollIntoView({ behavior: "smooth", block: "center" }),
+      );
+      return;
+    }
+    setShowErrors(false);
+    void submit();
+  };
+
 
   const submit = async () => {
     if (!kind) return;
