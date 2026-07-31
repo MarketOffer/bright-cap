@@ -242,6 +242,10 @@ const StatementQuestions = ({
                   ))}
                 </div>
 
+                <FieldErrors messages={errors[`anchor-cond-${spec.letter}`]} />
+
+
+
                 {detail && (
                   <fieldset
                     disabled={value !== "yes"}
