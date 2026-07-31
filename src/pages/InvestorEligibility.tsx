@@ -212,7 +212,11 @@ const InvestorEligibility = () => {
     });
 
     if (!declarationIds(kind).every((id) => declarations[kind]?.[id]?.accepted === true)) {
-      items.push({ text: "Tick every declaration", anchor: "anchor-declarations" });
+      items.push({
+        text:
+          "All declarations must be ticked to complete certification. If you'd rather not accept them, select Cancel certification.",
+        anchor: "anchor-declarations",
+      });
     }
     if (signatureTyped.trim().length === 0) {
       items.push({ text: "Type your signature", anchor: "signature-field" });
