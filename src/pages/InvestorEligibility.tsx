@@ -214,7 +214,7 @@ const InvestorEligibility = () => {
       items.push({ text: "Tick every declaration", anchor: "anchor-declarations" });
     }
     if (signatureTyped.trim().length === 0) {
-      items.push({ text: "Type your signature", anchor: "signature" });
+      items.push({ text: "Type your signature", anchor: "signature-field" });
     }
     return items;
   };
@@ -240,6 +240,18 @@ const InvestorEligibility = () => {
   /** Failed submit: show the missing fields in red and scroll to the first one. */
   const [showErrors, setShowErrors] = useState(false);
   const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+
+  /**
+   * Outstanding items grouped by the control they belong to, so each message can be
+   * shown beneath the checkboxes or field at fault. Identical on both routes.
+   */
+  const fieldErrors = showErrors
+    ? outstanding().reduce<Record<string, string[]>>((accumulator, item) => {
+        accumulator[item.anchor] = [...(accumulator[item.anchor] ?? []), item.text];
+        return accumulator;
+      }, {})
+    : {};
+
 
   const attemptSubmit = () => {
     const missing = outstanding();
