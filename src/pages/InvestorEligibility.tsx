@@ -704,12 +704,13 @@ const InvestorEligibility = () => {
                         Cancel certification
                       </Button>
                     )}
-                  <Button
-                    disabled={outcome.state === "submitting"}
-                    onClick={attemptSubmit}
-                  >
-                    {outcome.state === "submitting" ? "Submitting…" : "Submit"}
-                  </Button>
+                    <Button
+                      disabled={outcome.state === "submitting"}
+                      onClick={attemptSubmit}
+                    >
+                      {outcome.state === "submitting" ? "Submitting…" : "Submit"}
+                    </Button>
+                  </>
                 )}
               </div>
 
