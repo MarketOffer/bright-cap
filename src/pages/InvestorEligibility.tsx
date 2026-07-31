@@ -613,10 +613,11 @@ const InvestorEligibility = () => {
                       onAnswers={(next) => setAnswers({ ...answers, [kind]: next })}
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
+                      errors={fieldErrors}
                     >
                       {!cancelOnly && (
                         <div className="space-y-6 pt-2">
-                          <div className="space-y-1.5">
+                          <div className="space-y-1.5 scroll-mt-28" id="signature-field">
                             <Label htmlFor="signature">
                               Signature
                               <span aria-hidden="true" className="text-primary">
@@ -638,7 +639,13 @@ const InvestorEligibility = () => {
                             >
                               Type your full name.
                             </p>
+                            {fieldErrors["signature-field"]?.map((message) => (
+                              <p key={message} className="font-sans text-sm text-destructive">
+                                {message}
+                              </p>
+                            ))}
                           </div>
+
                           <div className="space-y-1.5">
                             <Label htmlFor="signed-date">Date</Label>
                             <Input id="signed-date" value={serverDate} readOnly disabled />
