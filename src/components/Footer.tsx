@@ -71,7 +71,7 @@ const Footer = () => (
           .
         </p>
         <p className="font-sans text-[11px] italic leading-relaxed text-muted-foreground">
-          <sup>2</sup> Testimonial relates to a project delivered by our founder's construction and property business prior to the launch of BrightCap.
+          <sup>2</sup> Testimonial relates to an HMO joint-venture project delivered through SJC Property Developments (Cambridge) Ltd, a separate business from BrightCap, before BrightCap launched. It reflects this investor’s experience of that project. Past performance is not a reliable indicator of future results.
         </p>
       </div>
 
