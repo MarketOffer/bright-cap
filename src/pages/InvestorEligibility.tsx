@@ -95,6 +95,13 @@ const InvestorEligibility = () => {
     formTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
+  /** After a successful submission, ease back to the top of the confirmation page. */
+  useEffect(() => {
+    if (outcome.state === "accepted") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [outcome.state]);
+
   const serverDate = useMemo(
     () =>
       new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(new Date()),
