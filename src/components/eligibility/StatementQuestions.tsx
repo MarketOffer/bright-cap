@@ -50,9 +50,26 @@ interface Props {
   onAnswers: (next: Record<string, unknown>) => void;
   declarations: Record<string, { accepted: boolean; at: string }>;
   onDeclaration: (id: string, accepted: boolean) => void;
+  /**
+   * Validation messages after a failed submit, keyed by anchor id
+   * ("anchor-cond-A", "anchor-declarations"). Shown beside the control at fault.
+   */
+  errors?: Record<string, string[]>;
   /** Signature and date fields, rendered inside the declaration block. */
   children?: ReactNode;
 }
+
+/** Red helper text shown directly beneath the control it refers to. */
+const FieldErrors = ({ messages }: { messages?: string[] }) =>
+  messages && messages.length > 0 ? (
+    <ul className="space-y-1 pt-1">
+      {messages.map((message) => (
+        <li key={message} className="font-sans text-sm text-destructive">
+          {message}
+        </li>
+      ))}
+    </ul>
+  ) : null;
 
 const StatementQuestions = ({
   kind,
@@ -60,6 +77,7 @@ const StatementQuestions = ({
   onAnswers,
   declarations,
   onDeclaration,
+  errors = {},
   children,
 }: Props) => {
   const definition = getStatement(CURRENT_STATEMENT_VERSION[kind]);
