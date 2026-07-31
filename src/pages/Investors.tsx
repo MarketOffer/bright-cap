@@ -6,6 +6,9 @@ import FadeIn from "@/components/FadeIn";
 
 const canonical = "https://brightcap.capital/investors";
 
+// Temporarily hidden — set to true to restore these sections.
+const SHOW_DETAIL_SECTIONS = false;
+
 const credentials = [
   {
     title: "Operators, not allocators",
@@ -74,68 +77,75 @@ const Investors = () => {
             </h1>
             <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
               BrightCap acquires and operates residential blocks in Cambridge, directly and through
-              joint ventures with a small number of partners. This page sets out who we are and how
-              we work. It contains no investment offer and no financial figures.
+              joint ventures with a small number of partners.
             </p>
           </FadeIn>
 
-          <FadeIn>
-            <section className="mt-20">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Credentials
-              </h2>
-              <div className="mt-8 space-y-10">
-                {credentials.map((item) => (
-                  <div key={item.title}>
-                    <h3 className="text-xl font-semibold tracking-[-0.01em] text-foreground">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 font-sans leading-relaxed text-secondary">{item.body}</p>
+          {SHOW_DETAIL_SECTIONS && (
+            <>
+              <FadeIn>
+                <section className="mt-20">
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    Credentials
+                  </h2>
+                  <div className="mt-8 space-y-10">
+                    {credentials.map((item) => (
+                      <div key={item.title}>
+                        <h3 className="text-xl font-semibold tracking-[-0.01em] text-foreground">
+                          {item.title}
+                        </h3>
+                        <p className="mt-3 font-sans leading-relaxed text-secondary">{item.body}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
-          </FadeIn>
+                </section>
+              </FadeIn>
 
-          <FadeIn>
-            <section className="mt-20">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Track record
-              </h2>
-              <p className="mt-8 font-sans leading-relaxed text-secondary">
-                The founders have acquired, refurbished and let residential property in and around
-                Cambridge over a number of years, alongside careers in property management and
-                development. Blocks are held for the long term and managed by the same team that
-                bought them.
-              </p>
-              <p className="mt-4 font-sans leading-relaxed text-secondary">
-                Details of individual acquisitions, performance and any current opportunity are not
-                published here. They are shared only with investors who have completed the
-                eligibility process below.
-              </p>
-            </section>
-          </FadeIn>
+              <FadeIn>
+                <section className="mt-20">
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    Track record
+                  </h2>
+                  <p className="mt-8 font-sans leading-relaxed text-secondary">
+                    The founders have acquired, refurbished and let residential property in and
+                    around Cambridge over a number of years, alongside careers in property
+                    management and development. Blocks are held for the long term and managed by the
+                    same team that bought them.
+                  </p>
+                  <p className="mt-4 font-sans leading-relaxed text-secondary">
+                    Details of individual acquisitions, performance and any current opportunity are
+                    not published here. They are shared only with investors who have completed the
+                    eligibility process below.
+                  </p>
+                </section>
+              </FadeIn>
 
-          <FadeIn>
-            <section className="mt-20">
-              <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                How we work
-              </h2>
-              <div className="mt-8 space-y-8">
-                {strategy.map((item) => (
-                  <div key={item.step} className="flex gap-6">
-                    <span className="font-sans text-sm font-semibold text-primary">{item.step}</span>
-                    <div>
-                      <h3 className="text-xl font-semibold tracking-[-0.01em] text-foreground">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 font-sans leading-relaxed text-secondary">{item.body}</p>
-                    </div>
+              <FadeIn>
+                <section className="mt-20">
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    How we work
+                  </h2>
+                  <div className="mt-8 space-y-8">
+                    {strategy.map((item) => (
+                      <div key={item.step} className="flex gap-6">
+                        <span className="font-sans text-sm font-semibold text-primary">
+                          {item.step}
+                        </span>
+                        <div>
+                          <h3 className="text-xl font-semibold tracking-[-0.01em] text-foreground">
+                            {item.title}
+                          </h3>
+                          <p className="mt-3 font-sans leading-relaxed text-secondary">
+                            {item.body}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </section>
-          </FadeIn>
+                </section>
+              </FadeIn>
+            </>
+          )}
 
           <FadeIn>
             <section className="mt-20 rounded-sm border border-primary/60 p-8 md:p-12">
