@@ -214,7 +214,7 @@ const InvestorEligibility = () => {
       items.push({ text: "Tick every declaration", anchor: "anchor-declarations" });
     }
     if (signatureTyped.trim().length === 0) {
-      items.push({ text: "Type your signature", anchor: "signature" });
+      items.push({ text: "Type your signature", anchor: "signature-field" });
     }
     return items;
   };
@@ -240,6 +240,18 @@ const InvestorEligibility = () => {
   /** Failed submit: show the missing fields in red and scroll to the first one. */
   const [showErrors, setShowErrors] = useState(false);
   const errorSummaryRef = useRef<HTMLDivElement | null>(null);
+
+  /**
+   * Outstanding items grouped by the control they belong to, so each message can be
+   * shown beneath the checkboxes or field at fault. Identical on both routes.
+   */
+  const fieldErrors = showErrors
+    ? outstanding().reduce<Record<string, string[]>>((accumulator, item) => {
+        accumulator[item.anchor] = [...(accumulator[item.anchor] ?? []), item.text];
+        return accumulator;
+      }, {})
+    : {};
+
 
   const attemptSubmit = () => {
     const missing = outstanding();
@@ -613,10 +625,11 @@ const InvestorEligibility = () => {
                       onAnswers={(next) => setAnswers({ ...answers, [kind]: next })}
                       declarations={declarations[kind] ?? {}}
                       onDeclaration={(id, accepted) => setDeclaration(kind, id, accepted)}
+                      errors={fieldErrors}
                     >
                       {!cancelOnly && (
                         <div className="space-y-6 pt-2">
-                          <div className="space-y-1.5">
+                          <div className="space-y-1.5 scroll-mt-28" id="signature-field">
                             <Label htmlFor="signature">
                               Signature
                               <span aria-hidden="true" className="text-primary">
@@ -638,7 +651,13 @@ const InvestorEligibility = () => {
                             >
                               Type your full name.
                             </p>
+                            {fieldErrors["signature-field"]?.map((message) => (
+                              <p key={message} className="font-sans text-sm text-destructive">
+                                {message}
+                              </p>
+                            ))}
                           </div>
+
                           <div className="space-y-1.5">
                             <Label htmlFor="signed-date">Date</Label>
                             <Input id="signed-date" value={serverDate} readOnly disabled />
@@ -655,27 +674,18 @@ const InvestorEligibility = () => {
 
               </div>
 
-              {step === 2 && !cancelOnly && outstanding().length > 0 && (
-                <div
-                  ref={errorSummaryRef}
-                  className={`mt-10 scroll-mt-28 border-l-2 pl-4 ${
-                    showErrors ? "border-destructive" : "border-border"
-                  }`}
-                >
-                  <p
-                    className={`font-sans text-xs uppercase tracking-widest ${
-                      showErrors ? "text-destructive" : "text-muted-foreground"
-                    }`}
-                  >
+              {/* Guidance before any submit attempt; after one, the messages appear
+                  in red beside the control at fault instead. */}
+              {step === 2 && !cancelOnly && !showErrors && outstanding().length > 0 && (
+                <div ref={errorSummaryRef} className="mt-10 scroll-mt-28 border-l-2 border-border pl-4">
+                  <p className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
                     Before you can submit
                   </p>
                   <ul className="mt-2 space-y-1">
                     {outstanding().map((item) => (
                       <li
                         key={item.anchor + item.text}
-                        className={`font-sans text-sm ${
-                          showErrors ? "text-destructive" : "text-muted-foreground"
-                        }`}
+                        className="font-sans text-sm text-muted-foreground"
                       >
                         {item.text}
                       </li>
@@ -683,6 +693,7 @@ const InvestorEligibility = () => {
                   </ul>
                 </div>
               )}
+
 
               <div className="mt-12 flex items-center gap-4">
                 {step > (routeLocked ? 2 : 0) && (
