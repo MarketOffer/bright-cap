@@ -1,0 +1,1 @@
+DROP RULE IF EXISTS investor_statements_no_delete ON public.investor_statements;
