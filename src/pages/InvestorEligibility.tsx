@@ -679,25 +679,8 @@ const InvestorEligibility = () => {
 
               </div>
 
-              {/* Guidance before any submit attempt; after one, the messages appear
-                  in red beside the control at fault instead. */}
-              {step === 2 && !cancelOnly && !showErrors && outstanding().length > 0 && (
-                <div ref={errorSummaryRef} className="mt-10 scroll-mt-28 border-l-2 border-border pl-4">
-                  <p className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
-                    Before you can submit
-                  </p>
-                  <ul className="mt-2 space-y-1">
-                    {outstanding().map((item) => (
-                      <li
-                        key={item.anchor + item.text}
-                        className="font-sans text-sm text-muted-foreground"
-                      >
-                        {item.text}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+
+
 
 
               <div className="mt-12 flex items-center gap-4">
