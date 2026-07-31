@@ -51,15 +51,12 @@ const CalBookingSection = () => {
         <FadeIn>
           <div className="rounded-2xl border border-border bg-white p-8 shadow-[0_12px_48px_-12px_hsl(var(--foreground)/0.10)] md:p-14">
             <div className="text-center">
-              <p className="font-sans text-sm font-semibold uppercase tracking-widest text-primary">
-                Interested in investing with us?
-              </p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-                Book an Investor Discovery Call
+              <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
+                Book a call with our investment team
               </h2>
               <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                A no-obligation call to discuss your investment goals, explore our
-                Cambridge block strategy, and find out whether there's a genuine fit.
+                A no-obligation introductory call to learn about BrightCap, our
+                Cambridge residential-block strategy and how we work with investors.
               </p>
               <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-muted-foreground/60 md:text-sm">
                 Investment opportunities are discussed privately with suitable investors and subject to separate documentation.
