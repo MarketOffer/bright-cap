@@ -649,14 +649,28 @@ const InvestorEligibility = () => {
               </div>
 
               {step === 2 && !cancelOnly && outstanding().length > 0 && (
-                <div className="mt-10 border-l-2 border-border pl-4">
-                  <p className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
+                <div
+                  ref={errorSummaryRef}
+                  className={`mt-10 scroll-mt-28 border-l-2 pl-4 ${
+                    showErrors ? "border-destructive" : "border-border"
+                  }`}
+                >
+                  <p
+                    className={`font-sans text-xs uppercase tracking-widest ${
+                      showErrors ? "text-destructive" : "text-muted-foreground"
+                    }`}
+                  >
                     Before you can submit
                   </p>
                   <ul className="mt-2 space-y-1">
                     {outstanding().map((item) => (
-                      <li key={item} className="font-sans text-sm text-muted-foreground">
-                        {item}
+                      <li
+                        key={item.anchor + item.text}
+                        className={`font-sans text-sm ${
+                          showErrors ? "text-destructive" : "text-muted-foreground"
+                        }`}
+                      >
+                        {item.text}
                       </li>
                     ))}
                   </ul>
@@ -679,13 +693,14 @@ const InvestorEligibility = () => {
                   </Button>
                 ) : (
                   <Button
-                    disabled={!canContinue() || outcome.state === "submitting"}
-                    onClick={submit}
+                    disabled={outcome.state === "submitting"}
+                    onClick={attemptSubmit}
                   >
                     {outcome.state === "submitting" ? "Submitting…" : "Submit"}
                   </Button>
                 )}
               </div>
+
             </>
           )}
         </div>
