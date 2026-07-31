@@ -9,7 +9,7 @@ const TestimonialSection = () => (
         <div className="lg:col-span-3">
           <FadeIn>
             <h2 className="text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
-              What investors say about working with our team
+              An investor’s experience
             </h2>
           </FadeIn>
           <FadeIn delay={0.1}>
