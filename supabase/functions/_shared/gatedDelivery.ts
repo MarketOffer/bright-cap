@@ -243,8 +243,46 @@ export async function sendAccessEmail(
     "",
     "If the link has expired you can request a new one from the same page.",
     "",
+    "Best Regards,",
+    "Sam",
+    "",
+    "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+    "",
     warning,
   ].join("\n");
+
+  // HTML body: same wording, link rendered as a button, statutory block in
+  // italics below a divider. Legislative copy is unchanged.
+  const esc = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+
+  const bodyStyle =
+    "font-family:Lato,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#171717;";
+  const p = "margin:0 0 14px;";
+  const warningHtml = warning
+    .split("\n\n")
+    .map((block) => `<p style="${p}">${esc(block)}</p>`)
+    .join("");
+
+  const html = [
+    `<div style="${bodyStyle}">`,
+    `<p style="${p}">Dear ${esc(params.fullName)},</p>`,
+    `<p style="${p}">Thank you for completing the investor certification. Your access link is below. It is personal to you, expires on ${
+      esc(expiry)
+    }, and should not be forwarded.</p>`,
+    `<p style="margin:0 0 20px;"><a href="${
+      esc(params.link)
+    }" style="display:inline-block;background-color:#3CD7B6;color:#0B1F1A;text-decoration:none;font-size:14px;font-weight:700;padding:12px 22px;border-radius:4px;">Download the Investor Summary</a></p>`,
+    `<p style="${p}">If the link has expired you can request a new one from the same page.</p>`,
+    `<p style="${p}">Best Regards,<br />Sam</p>`,
+    `<hr style="border:none;border-top:1px dashed #cccccc;margin:24px 0;" />`,
+    `<div style="font-style:italic;font-size:13px;color:#444444;">${warningHtml}</div>`,
+    `</div>`,
+  ].join("");
 
   const result = await sendPromotion(supabase, {
     contactId: params.contactId,
@@ -256,12 +294,14 @@ export async function sendAccessEmail(
     userAgent: params.userAgent ?? null,
     email: {
       to: params.to,
-      subject: "Your BrightCap access link",
+      subject: "Certified investor: Download the Investor Summary",
       text,
+      html,
       fullName: params.fullName,
       emailType: params.emailType ?? EMAIL_TYPES.ACCESS_LINK_REISSUE,
     },
   });
+
 
   return { sent: result.ok, reason: result.reason };
 }
