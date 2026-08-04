@@ -11,6 +11,10 @@ const navLinks = [
 const Navbar = () => {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
+  const isInvestors = pathname === "/investors";
+  const links = isInvestors ? [] : navLinks;
+  const ctaLabel = isInvestors ? "Start self-certification" : "Book a Call";
+  const ctaHref = isInvestors ? "/investors/eligibility" : to("#invest");
   const to = (hash: string) => (isHome ? hash : `/${hash}`);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -44,7 +48,7 @@ const Navbar = () => {
 
         {/* Desktop */}
         <div className="hidden items-center gap-10 md:flex">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <a
               key={link.href}
               href={to(link.href)}
@@ -54,10 +58,10 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href={to("#invest")}
+            href={ctaHref}
             className="rounded-sm bg-primary px-6 py-2.5 text-base font-semibold tracking-wide text-primary-foreground transition-opacity hover:opacity-85"
           >
-            Book a Call
+            {ctaLabel}
           </a>
         </div>
 
@@ -65,15 +69,15 @@ const Navbar = () => {
         <div className="flex items-center gap-3 md:hidden">
           {/* Slide-in CTA when hero button scrolls away */}
           <a
-            href={to("#invest")}
+            href={ctaHref}
             className={`rounded-sm bg-primary px-4 py-1.5 text-xs font-semibold tracking-wide text-primary-foreground transition-all duration-300 ${
-              heroCtaVisible ? "pointer-events-none translate-y-1 opacity-0" : "translate-y-0 opacity-100"
+              !isInvestors && heroCtaVisible ? "pointer-events-none translate-y-1 opacity-0" : "translate-y-0 opacity-100"
             }`}
           >
-            Book a Call
+            {ctaLabel}
           </a>
 
-          <button
+          {!isInvestors && <button
             className="flex flex-col gap-1.5"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
@@ -81,14 +85,14 @@ const Navbar = () => {
             <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "translate-y-[4px] rotate-45" : ""}`} />
             <span className={`block h-px w-6 bg-foreground transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
             <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
-          </button>
+          </button>}
         </div>
       </div>
 
       {/* Mobile menu */}
-      {mobileOpen && (
+      {mobileOpen && !isInvestors && (
         <div className="border-t border-border bg-background px-6 pb-6 md:hidden">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <a
               key={link.href}
               href={to(link.href)}
