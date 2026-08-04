@@ -72,7 +72,10 @@ const Investors = () => {
           </Link>
 
           <FadeIn>
-            <h1 className="mt-8 text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
+            <p className="mt-8 font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Investor self-certification
+            </p>
+            <h1 className="mt-4 text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
               Investing alongside BrightCap
             </h1>
             <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
@@ -80,6 +83,7 @@ const Investors = () => {
               joint ventures with a small number of partners.
             </p>
           </FadeIn>
+
 
           {SHOW_DETAIL_SECTIONS && (
             <>
@@ -150,21 +154,41 @@ const Investors = () => {
           <FadeIn>
             <section className="mt-20 rounded-sm border border-primary/60 p-8 md:p-12">
               <h2 className="text-2xl font-semibold tracking-[-0.01em] text-foreground">
-                Check your investor eligibility
+                Self-certify your investor status
               </h2>
               <p className="mt-4 font-sans leading-relaxed text-secondary">
-                Investment information can only be shared with individuals who qualify as
-                high-net-worth or self-certified sophisticated investors. Completing the short
-                eligibility statement lets us send you our investment summary.
+                UK financial promotion rules mean we can only send investment details to individuals
+                who have self-certified their investor status.
+              </p>
+              <p className="mt-4 font-sans leading-relaxed text-secondary">
+                It's a short declaration you make about yourself. There are two routes:
+              </p>
+              <ol className="mt-4 list-decimal space-y-2 pl-5 font-sans leading-relaxed text-secondary">
+                <li>
+                  <strong className="font-semibold text-foreground">Income or assets</strong> — based
+                  on your income or net assets in the last financial year
+                </li>
+                <li>
+                  <strong className="font-semibold text-foreground">
+                    Investment or business experience
+                  </strong>{" "}
+                  — based on your professional or investing background. This route doesn't ask about
+                  your finances.
+                </li>
+              </ol>
+              <p className="mt-4 font-sans leading-relaxed text-secondary">
+                Takes about two minutes, and covers you for 12 months across any opportunity we
+                share.
               </p>
               <Link
                 to="/investors/eligibility"
                 className="mt-8 inline-block rounded-full bg-primary px-8 py-3 font-sans text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
               >
-                Check your investor eligibility
+                Self-certify your investor status
               </Link>
             </section>
           </FadeIn>
+
 
           <FadeIn>
             <p className="mt-16 font-sans text-sm leading-relaxed text-muted-foreground">
