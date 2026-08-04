@@ -72,13 +72,14 @@ const Investors = () => {
           </Link>
 
           <FadeIn>
-            <p className="mt-8 font-sans text-xs font-semibold uppercase tracking-widest text-primary">
+            <p className="mt-8 font-sans text-lg uppercase tracking-[0.18em] text-foreground md:text-xl">
               Investor self-certification
             </p>
 
-            <h1 className="mt-4 text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
+            <h1 className="mt-5 text-2xl font-semibold tracking-[-0.01em] text-foreground md:text-3xl">
               Investing alongside BrightCap
             </h1>
+
             <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
               BrightCap acquires and operates residential blocks in Cambridge, directly and through
               joint ventures with a small number of partners.
