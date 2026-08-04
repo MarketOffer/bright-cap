@@ -14,8 +14,9 @@ const Navbar = () => {
   const isInvestors = pathname === "/investors";
   const links = isInvestors ? [] : navLinks;
   const ctaLabel = isInvestors ? "Start self-certification" : "Book a Call";
-  const ctaHref = isInvestors ? "/investors/eligibility" : to("#invest");
   const to = (hash: string) => (isHome ? hash : `/${hash}`);
+  const ctaHref = isInvestors ? "/investors/eligibility" : to("#invest");
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [heroCtaVisible, setHeroCtaVisible] = useState(true);
