@@ -12,7 +12,8 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const isInvestors = pathname === "/investors";
-  const links = isInvestors ? [] : navLinks;
+  const isFlow = pathname.startsWith("/investors/");
+  const links = isInvestors || isFlow ? [] : navLinks;
   const ctaLabel = isInvestors ? "Start self-certification" : "Book a Call";
   const to = (hash: string) => (isHome ? hash : `/${hash}`);
   const ctaHref = isInvestors ? "/investors/eligibility" : to("#invest");
@@ -48,7 +49,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <div className="hidden items-center gap-10 md:flex">
+        {!isFlow && <div className="hidden items-center gap-10 md:flex">
           {links.map((link) => (
             <a
               key={link.href}
@@ -64,10 +65,10 @@ const Navbar = () => {
           >
             {ctaLabel}
           </a>
-        </div>
+        </div>}
 
         {/* Mobile: CTA + hamburger */}
-        <div className="flex items-center gap-3 md:hidden">
+        {!isFlow && <div className="flex items-center gap-3 md:hidden">
           {/* Slide-in CTA when hero button scrolls away */}
           <a
             href={ctaHref}
@@ -87,11 +88,11 @@ const Navbar = () => {
             <span className={`block h-px w-6 bg-foreground transition-opacity duration-200 ${mobileOpen ? "opacity-0" : ""}`} />
             <span className={`block h-px w-6 bg-foreground transition-transform duration-200 ${mobileOpen ? "-translate-y-[4px] -rotate-45" : ""}`} />
           </button>}
-        </div>
+        </div>}
       </div>
 
       {/* Mobile menu */}
-      {mobileOpen && !isInvestors && (
+      {mobileOpen && !isInvestors && !isFlow && (
         <div className="border-t border-border bg-background px-6 pb-6 md:hidden">
           {links.map((link) => (
             <a
