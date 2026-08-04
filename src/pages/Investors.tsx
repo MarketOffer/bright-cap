@@ -87,8 +87,9 @@ const Investors = () => {
 
             <div className="mt-8 border-l-2 border-primary bg-primary/5 py-5 pl-5 pr-6 md:pl-6">
               <p className="font-sans text-lg font-semibold leading-relaxed tracking-[-0.01em] text-foreground md:text-xl">
-                Complete the short statement below and we'll email you our current investment
-                summary.
+                Complete the short statement below and we'll automatically email you our current
+                investment summary.
+
               </p>
             </div>
 
