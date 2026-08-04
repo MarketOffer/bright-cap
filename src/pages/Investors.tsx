@@ -72,9 +72,10 @@ const Investors = () => {
           </Link>
 
           <FadeIn>
-            <p className="mt-8 font-sans text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="mt-8 font-sans text-xs font-semibold uppercase tracking-widest text-primary">
               Investor self-certification
             </p>
+
             <h1 className="mt-4 text-3xl font-semibold tracking-[-0.02em] text-foreground md:text-[2.75rem] md:leading-[1.1]">
               Investing alongside BrightCap
             </h1>
