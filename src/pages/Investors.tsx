@@ -85,9 +85,13 @@ const Investors = () => {
               joint ventures with a small number of partners.
             </p>
 
-            <p className="mt-6 font-sans text-lg font-semibold leading-relaxed text-foreground">
-              Complete the short statement below and we'll email you our current investment summary.
-            </p>
+            <div className="mt-8 border-l-2 border-primary bg-primary/5 py-5 pl-5 pr-6 md:pl-6">
+              <p className="font-sans text-lg font-semibold leading-relaxed tracking-[-0.01em] text-foreground md:text-xl">
+                Complete the short statement below and we'll email you our current investment
+                summary.
+              </p>
+            </div>
+
 
             <p className="mt-6 font-sans leading-relaxed text-secondary">
               UK financial promotion rules mean we can only send investment details to individuals
