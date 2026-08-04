@@ -72,124 +72,60 @@ const Investors = () => {
           </Link>
 
           <FadeIn>
-            <p className="mt-8 font-sans text-lg uppercase tracking-[0.18em] text-foreground md:text-xl">
-              Investor self-certification
+            <p className="mt-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Investing alongside BrightCap
             </p>
 
-            <h1 className="mt-5 text-2xl font-semibold tracking-[-0.01em] text-foreground md:text-3xl">
-              Investing alongside BrightCap
+            <h1 className="mt-5 text-3xl font-semibold tracking-[-0.01em] text-foreground md:text-4xl">
+              Self-certify your investor status
             </h1>
 
             <p className="mt-6 font-sans text-lg leading-relaxed text-secondary">
               BrightCap acquires and operates residential blocks in Cambridge, directly and through
               joint ventures with a small number of partners.
             </p>
+
+            <p className="mt-6 font-sans text-lg font-semibold leading-relaxed text-foreground">
+              Complete the short statement below and we'll email you our current investment summary.
+            </p>
+
+            <p className="mt-6 font-sans leading-relaxed text-secondary">
+              UK financial promotion rules mean we can only send investment details to individuals
+              who have self-certified their investor status. It's a short declaration you make about
+              yourself. There are two routes:
+            </p>
+
+            <ol className="mt-4 list-decimal space-y-2 pl-5 font-sans leading-relaxed text-secondary">
+              <li>
+                <strong className="font-semibold text-foreground">Income or assets</strong> — based
+                on your income or net assets in the last financial year
+              </li>
+              <li>
+                <strong className="font-semibold text-foreground">
+                  Investment or business experience
+                </strong>{" "}
+                — based on your professional or investing background. This route doesn't ask about
+                your finances.
+              </li>
+            </ol>
+
+            <p className="mt-6 font-sans leading-relaxed text-secondary">
+              Takes about two minutes.
+            </p>
+
+            <p className="mt-4 font-sans leading-relaxed text-secondary">
+              You'll also be registered for 12 months, so we can share future opportunities directly
+              without repeating this step.
+            </p>
+
+            <Link
+              to="/investors/eligibility"
+              className="mt-8 inline-block rounded-full bg-primary px-8 py-3 font-sans text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Start self-certification
+            </Link>
           </FadeIn>
 
-
-          {SHOW_DETAIL_SECTIONS && (
-            <>
-              <FadeIn>
-                <section className="mt-20">
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Credentials
-                  </h2>
-                  <div className="mt-8 space-y-10">
-                    {credentials.map((item) => (
-                      <div key={item.title}>
-                        <h3 className="text-xl font-semibold tracking-[-0.01em] text-foreground">
-                          {item.title}
-                        </h3>
-                        <p className="mt-3 font-sans leading-relaxed text-secondary">{item.body}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </FadeIn>
-
-              <FadeIn>
-                <section className="mt-20">
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Track record
-                  </h2>
-                  <p className="mt-8 font-sans leading-relaxed text-secondary">
-                    The founders have acquired, refurbished and let residential property in and
-                    around Cambridge over a number of years, alongside careers in property
-                    management and development. Blocks are held for the long term and managed by the
-                    same team that bought them.
-                  </p>
-                  <p className="mt-4 font-sans leading-relaxed text-secondary">
-                    Details of individual acquisitions, performance and any current opportunity are
-                    not published here. They are shared only with investors who have completed the
-                    eligibility process below.
-                  </p>
-                </section>
-              </FadeIn>
-
-              <FadeIn>
-                <section className="mt-20">
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    How we work
-                  </h2>
-                  <div className="mt-8 space-y-8">
-                    {strategy.map((item) => (
-                      <div key={item.step} className="flex gap-6">
-                        <span className="font-sans text-sm font-semibold text-primary">
-                          {item.step}
-                        </span>
-                        <div>
-                          <h3 className="text-xl font-semibold tracking-[-0.01em] text-foreground">
-                            {item.title}
-                          </h3>
-                          <p className="mt-3 font-sans leading-relaxed text-secondary">
-                            {item.body}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </FadeIn>
-            </>
-          )}
-
-          <FadeIn>
-            <section className="mt-20 rounded-sm border border-primary/60 p-8 md:p-12">
-              <h2 className="text-2xl font-semibold tracking-[-0.01em] text-foreground">
-                Self-certify your investor status
-              </h2>
-              <p className="mt-4 font-sans leading-relaxed text-secondary">
-                UK financial promotion rules mean we can only send investment details to individuals
-                who have self-certified their investor status.
-              </p>
-              <p className="mt-4 font-sans leading-relaxed text-secondary">
-                It's a short declaration you make about yourself. There are two routes:
-              </p>
-              <ol className="mt-4 list-decimal space-y-2 pl-5 font-sans leading-relaxed text-secondary">
-                <li>
-                  <strong className="font-semibold text-foreground">Income or assets</strong> — based
-                  on your income or net assets in the last financial year
-                </li>
-                <li>
-                  <strong className="font-semibold text-foreground">
-                    Investment or business experience
-                  </strong>{" "}
-                  — based on your professional or investing background. This route doesn't ask about
-                  your finances.
-                </li>
-              </ol>
-              <p className="mt-4 font-sans leading-relaxed text-secondary">
-                Takes about two minutes, and covers you for 12 months across any opportunity we
-                share.
-              </p>
-              <Link
-                to="/investors/eligibility"
-                className="mt-8 inline-block rounded-full bg-primary px-8 py-3 font-sans text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                Self-certify your investor status
-              </Link>
-            </section>
-          </FadeIn>
 
 
           <FadeIn>
